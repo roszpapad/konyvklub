@@ -1,0 +1,19 @@
+.menu > li a:hover {
+    background-color: grey;
+    color: black !important;
+}
+
+.logo-image {
+    width : 300px;
+    height : auto;
+}
+
+.logo-text {
+    vertical-align : middle;
+    font-size : 80px;
+}
+
+.carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
