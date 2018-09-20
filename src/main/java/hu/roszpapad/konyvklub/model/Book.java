@@ -16,6 +16,9 @@ public class Book {
     private Byte[] image;
     private LocalDateTime dateOfPublishing;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
+
     @OneToOne(mappedBy = "bookToSell")
     private Ticket sellingTicket;
 
@@ -84,5 +87,13 @@ public class Book {
 
     public void setOfferingTicket(Ticket offeringTicket) {
         this.offeringTicket = offeringTicket;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

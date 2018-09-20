@@ -11,6 +11,11 @@ import hu.roszpapad.konyvklub.repositories.UserRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class OverallBootstrap implements ApplicationListener<ContextRefreshedEvent>{
@@ -28,9 +33,17 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         Ticket toSave = getTickets();
         ticketRepository.save(toSave);
+        User user = userRepository.findById(1L).get();
+        user.removeBook(bookRepository.findById(1L).get());
+        Set<Book> books = user.getBooks();
+        List<String> ticketList = books.stream().map(e -> e.getTitle()).collect(Collectors.toList());
+        for (String s : ticketList){
+            System.out.println(s);
+        }
     }
 
     private Ticket getTickets(){
@@ -61,17 +74,23 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
         costumer.setAddress(address1);
 
+        Book book = new Book();
+        book.setTitle("Gyuruk ura");
+        seller.addBook(book);
+
+
+        Book book1 = new Book();
+        book1.setTitle("Sotet vilag");
+        costumer.addBook(book1);
+
+
+
+
         userRepository.save(seller);
         userRepository.save(costumer);
         addressRepository.save(address);
         addressRepository.save(address1);
-
-        Book book = new Book();
-        book.setTitle("Gyuruk ura");
         bookRepository.save(book);
-
-        Book book1 = new Book();
-        book1.setTitle("Sotet vilag");
         bookRepository.save(book1);
 
         Ticket ticket = new Ticket();

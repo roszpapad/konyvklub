@@ -16,6 +16,9 @@ public class User {
     private String password;
     private Boolean admin;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Book> books = new HashSet<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
@@ -96,5 +99,13 @@ public class User {
 
     public void setTicketsInInterest(Set<Ticket> ticketsInInterest) {
         this.ticketsInInterest = ticketsInInterest;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }
