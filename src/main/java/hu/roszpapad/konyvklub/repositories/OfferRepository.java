@@ -1,9 +1,9 @@
 package hu.roszpapad.konyvklub.repositories;
 
-import hu.roszpapad.konyvklub.model.Ticket;
+import hu.roszpapad.konyvklub.model.Offer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TicketRepository extends CrudRepository<Ticket, Long> {
+public interface OfferRepository extends CrudRepository<Offer, Long> {
 }

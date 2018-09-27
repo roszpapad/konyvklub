@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addBookToUser(User user, Book book) {
         Set<Book> books = user.getBooks();
+        book.setOwner(user);
         books.add(book);
         user.setBooks(books);
     }

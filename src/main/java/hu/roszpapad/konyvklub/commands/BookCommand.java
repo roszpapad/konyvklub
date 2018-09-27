@@ -1,28 +1,22 @@
-package hu.roszpapad.konyvklub.model;
+package hu.roszpapad.konyvklub.commands;
 
-import javax.persistence.*;
+import hu.roszpapad.konyvklub.model.Offer;
+import hu.roszpapad.konyvklub.model.Ticket;
+import hu.roszpapad.konyvklub.model.User;
 
-@Entity
-public class Book {
+public class BookCommand {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String writer;
     private String publisher;
-
     private Integer yearOfPublishing;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
-
-    @OneToOne(mappedBy = "bookToSell")
     private Ticket sellingTicket;
-
-    @OneToOne(mappedBy = "bookToPay")
     private Offer offer;
+
+    public BookCommand() {
+    }
 
     public Long getId() {
         return id;
@@ -60,8 +54,16 @@ public class Book {
         return yearOfPublishing;
     }
 
-    public void setYearOfPublishing(Integer dateOfPublishing) {
-        this.yearOfPublishing = dateOfPublishing;
+    public void setYearOfPublishing(Integer yearOfPublishing) {
+        this.yearOfPublishing = yearOfPublishing;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Ticket getSellingTicket() {
@@ -78,13 +80,5 @@ public class Book {
 
     public void setOffer(Offer offer) {
         this.offer = offer;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 }

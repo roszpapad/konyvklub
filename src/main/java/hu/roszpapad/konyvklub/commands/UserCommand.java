@@ -1,32 +1,28 @@
-package hu.roszpapad.konyvklub.model;
+package hu.roszpapad.konyvklub.commands;
 
-import javax.persistence.*;
+import hu.roszpapad.konyvklub.model.Address;
+import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.Offer;
+import hu.roszpapad.konyvklub.model.Ticket;
+
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class User {
+public class UserCommand {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
     private Boolean admin;
-
-    @OneToMany(mappedBy = "owner")
     private Set<Book> books = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-
-    @OneToMany(mappedBy = "seller")
     private Set<Ticket> ticketsCreated = new HashSet<>();
-
-    @OneToMany(mappedBy = "customer")
     private Set<Offer> offersInInterest = new HashSet<>();
+
+    public UserCommand() {
+    }
 
     public Long getId() {
         return id;
@@ -76,12 +72,19 @@ public class User {
         this.admin = admin;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
-        address.setUser(this);
         this.address = address;
     }
 
@@ -99,13 +102,5 @@ public class User {
 
     public void setOffersInInterest(Set<Offer> offersInInterest) {
         this.offersInInterest = offersInInterest;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 }

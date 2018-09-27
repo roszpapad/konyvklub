@@ -1,37 +1,24 @@
-package hu.roszpapad.konyvklub.model;
+package hu.roszpapad.konyvklub.commands;
 
-import javax.persistence.*;
+import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.Offer;
+import hu.roszpapad.konyvklub.model.User;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Ticket {
+public class TicketCommand {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-
-    @OneToOne
     private Book bookToSell;
-
-    @OneToMany(mappedBy = "ticket")
     private Set<Offer> offers = new HashSet<>();
-
-    @Lob
     private String description;
-
-    @ManyToOne
     private User seller;
-
     private LocalDateTime endDate;
 
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public TicketCommand() {
     }
 
     public Long getId() {
@@ -47,7 +34,6 @@ public class Ticket {
     }
 
     public void setBookToSell(Book bookToSell) {
-        bookToSell.setSellingTicket(this);
         this.bookToSell = bookToSell;
     }
 
@@ -72,9 +58,14 @@ public class Ticket {
     }
 
     public void setSeller(User seller) {
-        Set<Ticket> tickets = seller.getTicketsCreated();
-        tickets.add(this);
-        seller.setTicketsCreated(tickets);
         this.seller = seller;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 }
