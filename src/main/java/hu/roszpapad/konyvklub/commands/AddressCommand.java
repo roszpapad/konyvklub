@@ -1,11 +1,9 @@
 package hu.roszpapad.konyvklub.commands;
 
-import hu.roszpapad.konyvklub.model.User;
-
 public class AddressCommand {
 
     private Long id;
-    private User user;
+    private UserCommand user;
     private String city;
     private String street;
     private String number;
@@ -21,11 +19,11 @@ public class AddressCommand {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserCommand getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserCommand user) {
         this.user = user;
     }
 

@@ -1,9 +1,5 @@
 package hu.roszpapad.konyvklub.commands;
 
-import hu.roszpapad.konyvklub.model.Offer;
-import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.model.User;
-
 public class BookCommand {
 
     private Long id;
@@ -11,9 +7,9 @@ public class BookCommand {
     private String writer;
     private String publisher;
     private Integer yearOfPublishing;
-    private User owner;
-    private Ticket sellingTicket;
-    private Offer offer;
+    private UserCommand owner;
+    private TicketCommand sellingTicket;
+    private OfferCommand offer;
 
     public BookCommand() {
     }
@@ -58,27 +54,27 @@ public class BookCommand {
         this.yearOfPublishing = yearOfPublishing;
     }
 
-    public User getOwner() {
+    public UserCommand getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserCommand owner) {
         this.owner = owner;
     }
 
-    public Ticket getSellingTicket() {
+    public TicketCommand getSellingTicket() {
         return sellingTicket;
     }
 
-    public void setSellingTicket(Ticket sellingTicket) {
+    public void setSellingTicket(TicketCommand sellingTicket) {
         this.sellingTicket = sellingTicket;
     }
 
-    public Offer getOffer() {
+    public OfferCommand getOffer() {
         return offer;
     }
 
-    public void setOffer(Offer offer) {
+    public void setOffer(OfferCommand offer) {
         this.offer = offer;
     }
 }

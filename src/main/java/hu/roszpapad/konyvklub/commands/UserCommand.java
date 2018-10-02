@@ -1,10 +1,5 @@
 package hu.roszpapad.konyvklub.commands;
 
-import hu.roszpapad.konyvklub.model.Address;
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.Offer;
-import hu.roszpapad.konyvklub.model.Ticket;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,10 +11,10 @@ public class UserCommand {
     private String userName;
     private String password;
     private Boolean admin;
-    private Set<Book> books = new HashSet<>();
-    private Address address;
-    private Set<Ticket> ticketsCreated = new HashSet<>();
-    private Set<Offer> offersInInterest = new HashSet<>();
+    private Set<BookCommand> books = new HashSet<>();
+    private AddressCommand address;
+    private Set<TicketCommand> ticketsCreated = new HashSet<>();
+    private Set<OfferCommand> offersInInterest = new HashSet<>();
 
     public UserCommand() {
     }
@@ -72,35 +67,35 @@ public class UserCommand {
         this.admin = admin;
     }
 
-    public Set<Book> getBooks() {
+    public Set<BookCommand> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(Set<BookCommand> books) {
         this.books = books;
     }
 
-    public Address getAddress() {
+    public AddressCommand getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressCommand address) {
         this.address = address;
     }
 
-    public Set<Ticket> getTicketsCreated() {
+    public Set<TicketCommand> getTicketsCreated() {
         return ticketsCreated;
     }
 
-    public void setTicketsCreated(Set<Ticket> ticketsCreated) {
+    public void setTicketsCreated(Set<TicketCommand> ticketsCreated) {
         this.ticketsCreated = ticketsCreated;
     }
 
-    public Set<Offer> getOffersInInterest() {
+    public Set<OfferCommand> getOffersInInterest() {
         return offersInInterest;
     }
 
-    public void setOffersInInterest(Set<Offer> offersInInterest) {
+    public void setOffersInInterest(Set<OfferCommand> offersInInterest) {
         this.offersInInterest = offersInInterest;
     }
 }

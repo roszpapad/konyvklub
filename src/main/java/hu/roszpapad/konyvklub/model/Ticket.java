@@ -15,7 +15,7 @@ public class Ticket {
     @OneToOne
     private Book bookToSell;
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private Set<Offer> offers = new HashSet<>();
 
     @Lob

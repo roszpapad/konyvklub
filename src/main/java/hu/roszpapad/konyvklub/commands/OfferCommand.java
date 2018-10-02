@@ -1,17 +1,14 @@
 package hu.roszpapad.konyvklub.commands;
 
-import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.Status;
-import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.model.User;
 
 public class OfferCommand {
 
     private Long id;
-    private Book bookToPay;
-    private Ticket ticket;
+    private BookCommand bookToPay;
+    private TicketCommand ticket;
     private Status status;
-    private User customer;
+    private UserCommand customer;
 
     public OfferCommand() {
     }
@@ -24,19 +21,19 @@ public class OfferCommand {
         this.id = id;
     }
 
-    public Book getBookToPay() {
+    public BookCommand getBookToPay() {
         return bookToPay;
     }
 
-    public void setBookToPay(Book bookToPay) {
+    public void setBookToPay(BookCommand bookToPay) {
         this.bookToPay = bookToPay;
     }
 
-    public Ticket getTicket() {
+    public TicketCommand getTicket() {
         return ticket;
     }
 
-    public void setTicket(Ticket ticket) {
+    public void setTicket(TicketCommand ticket) {
         this.ticket = ticket;
     }
 
@@ -48,11 +45,11 @@ public class OfferCommand {
         this.status = status;
     }
 
-    public User getCustomer() {
+    public UserCommand getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(UserCommand customer) {
         this.customer = customer;
     }
 }

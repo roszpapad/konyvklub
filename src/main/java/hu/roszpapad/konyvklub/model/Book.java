@@ -15,7 +15,7 @@ public class Book {
 
     private Integer yearOfPublishing;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User owner;
 
     @OneToOne(mappedBy = "bookToSell")

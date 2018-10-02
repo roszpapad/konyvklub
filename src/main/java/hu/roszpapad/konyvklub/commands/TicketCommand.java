@@ -1,9 +1,5 @@
 package hu.roszpapad.konyvklub.commands;
 
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.Offer;
-import hu.roszpapad.konyvklub.model.User;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,10 +8,10 @@ public class TicketCommand {
 
 
     private Long id;
-    private Book bookToSell;
-    private Set<Offer> offers = new HashSet<>();
+    private BookCommand bookToSell;
+    private Set<OfferCommand> offers = new HashSet<>();
     private String description;
-    private User seller;
+    private UserCommand seller;
     private LocalDateTime endDate;
 
     public TicketCommand() {
@@ -29,19 +25,19 @@ public class TicketCommand {
         this.id = id;
     }
 
-    public Book getBookToSell() {
+    public BookCommand getBookToSell() {
         return bookToSell;
     }
 
-    public void setBookToSell(Book bookToSell) {
+    public void setBookToSell(BookCommand bookToSell) {
         this.bookToSell = bookToSell;
     }
 
-    public Set<Offer> getOffers() {
+    public Set<OfferCommand> getOffers() {
         return offers;
     }
 
-    public void setOffers(Set<Offer> offers) {
+    public void setOffers(Set<OfferCommand> offers) {
         this.offers = offers;
     }
 
@@ -53,11 +49,11 @@ public class TicketCommand {
         this.description = description;
     }
 
-    public User getSeller() {
+    public UserCommand getSeller() {
         return seller;
     }
 
-    public void setSeller(User seller) {
+    public void setSeller(UserCommand seller) {
         this.seller = seller;
     }
 

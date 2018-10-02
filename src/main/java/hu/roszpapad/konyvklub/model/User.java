@@ -16,16 +16,16 @@ public class User {
     private String password;
     private Boolean admin;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private Set<Ticket> ticketsCreated = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Offer> offersInInterest = new HashSet<>();
 
     public Long getId() {
