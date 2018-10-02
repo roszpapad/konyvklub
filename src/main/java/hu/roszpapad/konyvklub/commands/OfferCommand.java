@@ -6,9 +6,9 @@ public class OfferCommand {
 
     private Long id;
     private BookCommand bookToPay;
-    private TicketCommand ticket;
+    //private TicketCommand ticket;
     private Status status;
-    private UserCommand customer;
+    //private UserCommand customer;
 
     public OfferCommand() {
     }
@@ -29,13 +29,13 @@ public class OfferCommand {
         this.bookToPay = bookToPay;
     }
 
-    public TicketCommand getTicket() {
+    /*public TicketCommand getTicket() {
         return ticket;
     }
 
     public void setTicket(TicketCommand ticket) {
         this.ticket = ticket;
-    }
+    }*/
 
     public Status getStatus() {
         return status;
@@ -45,11 +45,11 @@ public class OfferCommand {
         this.status = status;
     }
 
-    public UserCommand getCustomer() {
+   /* public UserCommand getCustomer() {
         return customer;
     }
 
     public void setCustomer(UserCommand customer) {
         this.customer = customer;
-    }
+    }*/
 }

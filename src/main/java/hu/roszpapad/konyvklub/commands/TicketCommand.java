@@ -11,7 +11,7 @@ public class TicketCommand {
     private BookCommand bookToSell;
     private Set<OfferCommand> offers = new HashSet<>();
     private String description;
-    private UserCommand seller;
+    //private UserCommand seller; //todo private Long sellerId;
     private LocalDateTime endDate;
 
     public TicketCommand() {
@@ -49,13 +49,13 @@ public class TicketCommand {
         this.description = description;
     }
 
-    public UserCommand getSeller() {
+   /* public UserCommand getSeller() {
         return seller;
     }
 
     public void setSeller(UserCommand seller) {
         this.seller = seller;
-    }
+    }*/
 
     public LocalDateTime getEndDate() {
         return endDate;

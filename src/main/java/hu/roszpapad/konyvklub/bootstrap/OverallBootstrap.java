@@ -1,6 +1,9 @@
 
 package hu.roszpapad.konyvklub.bootstrap;
 
+import hu.roszpapad.konyvklub.commands.UserCommand;
+import hu.roszpapad.konyvklub.converters.UserCommandToUser;
+import hu.roszpapad.konyvklub.converters.UserToUserCommand;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.AddressRepository;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
@@ -20,13 +23,17 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     private TicketRepository ticketRepository;
     private UserRepository userRepository;
     private UserService userService;
+    private UserToUserCommand userToUserCommand;
+    private UserCommandToUser userCommandToUser;
 
-    public OverallBootstrap(AddressRepository addressRepository, BookRepository bookRepository, TicketRepository ticketRepository, UserRepository userRepository, UserService userService) {
+    public OverallBootstrap(AddressRepository addressRepository, BookRepository bookRepository, TicketRepository ticketRepository, UserRepository userRepository, UserService userService, UserToUserCommand userToUserCommand, UserCommandToUser userCommandToUser) {
         this.addressRepository = addressRepository;
         this.bookRepository = bookRepository;
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.userToUserCommand = userToUserCommand;
+        this.userCommandToUser = userCommandToUser;
     }
 
     @Override
@@ -34,6 +41,11 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         Ticket toSave = getTickets();
         ticketRepository.save(toSave);
+        User user = userRepository.findById(1L).get();
+        UserCommand userCommand = userToUserCommand.convert(user);
+        User newUser = userCommandToUser.convert(userCommand);
+        newUser.setId(3L);
+        userRepository.save(newUser);
     }
 
     private Ticket getTickets(){
@@ -76,10 +88,10 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
         userRepository.save(seller);
         userRepository.save(costumer);
-        addressRepository.save(address);
-        addressRepository.save(address1);
-        bookRepository.save(book);
-        bookRepository.save(book1);
+        //addressRepository.save(address);
+        //addressRepository.save(address1);
+       // bookRepository.save(book);
+        //bookRepository.save(book1);
 
         Ticket ticket = new Ticket();
         ticket.setSeller(seller);

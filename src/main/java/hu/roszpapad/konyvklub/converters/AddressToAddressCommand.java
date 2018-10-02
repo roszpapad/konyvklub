@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddressToAddressCommand implements Converter<Address, AddressCommand> {
 
-    private UserToUserCommand userConverter;
+    /*private UserToUserCommand userConverter;
 
     public AddressToAddressCommand(UserToUserCommand userConverter) {
         this.userConverter = userConverter;
-    }
+    }*/
 
     @Override
     public AddressCommand convert(Address address) {
@@ -26,7 +26,7 @@ public class AddressToAddressCommand implements Converter<Address, AddressComman
         addressCommand.setCity(address.getCity());
         addressCommand.setNumber(address.getNumber());
         addressCommand.setStreet(address.getStreet());
-        addressCommand.setUser(userConverter.convert(address.getUser()));
+       // addressCommand.setUser(userConverter.convert(address.getUser()));
         return addressCommand;
     }
 }

@@ -7,10 +7,10 @@ public class BookCommand {
     private String writer;
     private String publisher;
     private Integer yearOfPublishing;
-    private UserCommand owner;
-    private TicketCommand sellingTicket;
+   // private UserCommand owner;
+    /*private TicketCommand sellingTicket;
     private OfferCommand offer;
-
+*/
     public BookCommand() {
     }
 
@@ -54,15 +54,15 @@ public class BookCommand {
         this.yearOfPublishing = yearOfPublishing;
     }
 
-    public UserCommand getOwner() {
+    /*public UserCommand getOwner() {
         return owner;
     }
 
     public void setOwner(UserCommand owner) {
         this.owner = owner;
-    }
+    }*/
 
-    public TicketCommand getSellingTicket() {
+   /* public TicketCommand getSellingTicket() {
         return sellingTicket;
     }
 
@@ -76,5 +76,5 @@ public class BookCommand {
 
     public void setOffer(OfferCommand offer) {
         this.offer = offer;
-    }
+    }*/
 }

@@ -3,7 +3,7 @@ package hu.roszpapad.konyvklub.commands;
 public class AddressCommand {
 
     private Long id;
-    private UserCommand user;
+    //private UserCommand user;
     private String city;
     private String street;
     private String number;
@@ -19,13 +19,13 @@ public class AddressCommand {
         this.id = id;
     }
 
-    public UserCommand getUser() {
+   /* public UserCommand getUser() {
         return user;
     }
 
     public void setUser(UserCommand user) {
         this.user = user;
-    }
+    }*/
 
     public String getCity() {
         return city;

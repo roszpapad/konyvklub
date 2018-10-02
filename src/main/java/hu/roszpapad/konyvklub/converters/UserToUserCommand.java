@@ -4,9 +4,11 @@ import hu.roszpapad.konyvklub.commands.UserCommand;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.model.User;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+@Component
 public class UserToUserCommand implements Converter<User, UserCommand> {
 
     private AddressToAddressCommand addressConverter;
