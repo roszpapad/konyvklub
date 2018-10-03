@@ -44,7 +44,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         User user = userRepository.findById(1L).get();
         UserCommand userCommand = userToUserCommand.convert(user);
         User newUser = userCommandToUser.convert(userCommand);
-        newUser.setId(3L);
         userRepository.save(newUser);
     }
 

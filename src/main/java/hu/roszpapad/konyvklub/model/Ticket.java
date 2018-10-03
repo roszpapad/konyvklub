@@ -77,4 +77,10 @@ public class Ticket {
         seller.setTicketsCreated(tickets);
         this.seller = seller;
     }
+
+    public Ticket addOffer(Offer offer){
+        offer.setTicket(this);
+        this.getOffers().add(offer);
+        return this;
+    }
 }

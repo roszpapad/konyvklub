@@ -20,6 +20,9 @@ public class BookToBookCommand implements Converter<Book, BookCommand> {
         bookCommand.setTitle(book.getTitle());
         bookCommand.setWriter(book.getWriter());
         bookCommand.setYearOfPublishing(book.getYearOfPublishing());
+        if (book.getOwner() != null){
+            bookCommand.setOwnerId(book.getOwner().getId());
+        }
         return bookCommand;
     }
 }

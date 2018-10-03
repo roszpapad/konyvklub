@@ -2,6 +2,7 @@ package hu.roszpapad.konyvklub.converters;
 
 import hu.roszpapad.konyvklub.commands.BookCommand;
 import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,11 @@ public class BookCommandToBook implements Converter<BookCommand, Book> {
         book.setTitle(bookCommand.getTitle());
         book.setWriter(bookCommand.getWriter());
         book.setYearOfPublishing(bookCommand.getYearOfPublishing());
+        if (bookCommand.getOwnerId() != null){
+            User user = new User();
+            user.setId(bookCommand.getOwnerId());
+            user.addBook(book);
+        }
         return book;
     }
 }

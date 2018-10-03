@@ -16,7 +16,7 @@ public class TicketController {
 
     @RequestMapping("/tickets")
     public String getAllTickets(Model model) {
-        model.addAttribute("tickets",ticketService.getTickets());
+        model.addAttribute("tickets",ticketService.getTicketCommands());
 
         return "tickets/tickets";
     }

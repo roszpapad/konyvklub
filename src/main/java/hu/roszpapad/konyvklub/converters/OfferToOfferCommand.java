@@ -24,6 +24,15 @@ public class OfferToOfferCommand implements Converter<Offer, OfferCommand>{
         offerCommand.setId(offer.getId());
         offerCommand.setBookToPay(bookToBookCommand.convert(offer.getBookToPay()));
         offerCommand.setStatus(offer.getStatus());
+
+        if (offer.getCustomer().getId() != null){
+            offerCommand.setCustomerId(offer.getCustomer().getId());
+        }
+
+        if (offer.getTicket().getId() != null){
+            offerCommand.setTicketId(offer.getTicket().getId());
+        }
+
         return offerCommand;
     }
 }

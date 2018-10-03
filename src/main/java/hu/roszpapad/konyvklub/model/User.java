@@ -108,4 +108,22 @@ public class User {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
+
+    public User addTicket(Ticket ticket){
+        ticket.setSeller(this);
+        this.getTicketsCreated().add(ticket);
+        return this;
+    }
+
+    public User addBook(Book book){
+        book.setOwner(this);
+        this.getBooks().add(book);
+        return this;
+    }
+
+    public User addOffer(Offer offer){
+        offer.setCustomer(this);
+        this.getOffersInInterest().add(offer);
+        return this;
+    }
 }

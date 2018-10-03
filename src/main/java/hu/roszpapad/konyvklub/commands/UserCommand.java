@@ -13,8 +13,8 @@ public class UserCommand {
     private Boolean admin;
     private Set<BookCommand> books = new HashSet<>();
     private AddressCommand address;
-    private Set<TicketCommand> ticketsCreated = new HashSet<>();
-    private Set<OfferCommand> offersInInterest = new HashSet<>();
+    /*private Set<TicketCommand> ticketsCreated = new HashSet<>();
+    private Set<OfferCommand> offersInInterest = new HashSet<>();*/
 
     public UserCommand() {
     }
@@ -83,7 +83,7 @@ public class UserCommand {
         this.address = address;
     }
 
-    public Set<TicketCommand> getTicketsCreated() {
+   /* public Set<TicketCommand> getTicketsCreated() {
         return ticketsCreated;
     }
 
@@ -97,5 +97,5 @@ public class UserCommand {
 
     public void setOffersInInterest(Set<OfferCommand> offersInInterest) {
         this.offersInInterest = offersInInterest;
-    }
+    }*/
 }

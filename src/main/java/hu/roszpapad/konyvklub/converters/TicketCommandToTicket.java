@@ -9,9 +9,13 @@ import org.springframework.stereotype.Component;
 public class TicketCommandToTicket implements Converter<TicketCommand, Ticket> {
 
     private BookCommandToBook bookCommandToBook;
+    private OfferCommandToOffer offerCommandToOffer;
+    private UserCommandToUser userCommandToUser;
 
-    public TicketCommandToTicket(BookCommandToBook bookCommandToBook) {
+    public TicketCommandToTicket(BookCommandToBook bookCommandToBook, OfferCommandToOffer offerCommandToOffer, UserCommandToUser userCommandToUser) {
         this.bookCommandToBook = bookCommandToBook;
+        this.offerCommandToOffer = offerCommandToOffer;
+        this.userCommandToUser = userCommandToUser;
     }
 
     @Override
@@ -26,8 +30,13 @@ public class TicketCommandToTicket implements Converter<TicketCommand, Ticket> {
         ticket.setBookToSell(bookCommandToBook.convert(ticketCommand.getBookToSell()));
         ticket.setDescription(ticketCommand.getDescription());
         ticket.setEndDate(ticketCommand.getEndDate());
-        //ticket.setOffers();
-        //ticket.setSeller(userCommandConverter.convert(ticketCommand.getSeller()));
+        ticket.setSeller(userCommandToUser.convert(ticketCommand.getSeller()));
+
+        if (ticketCommand.getOffers() != null && ticketCommand.getOffers().size() > 0){
+            ticketCommand.getOffers()
+                    .forEach(offerCommand -> ticket.getOffers().add(offerCommandToOffer.convert(offerCommand)));
+        }
+
         return ticket;
     }
 }
