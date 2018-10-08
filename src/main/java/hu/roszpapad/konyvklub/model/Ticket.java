@@ -15,13 +15,15 @@ public class Ticket {
     @OneToOne
     private Book bookToSell;
 
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ticket_id")
     private Set<Offer> offers = new HashSet<>();
 
     @Lob
     private String description;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "seller_id")
     private User seller;
 
     private LocalDateTime endDate;
@@ -72,15 +74,14 @@ public class Ticket {
     }
 
     public void setSeller(User seller) {
-        Set<Ticket> tickets = seller.getTicketsCreated();
+       /* Set<Ticket> tickets = seller.getTicketsCreated();
         tickets.add(this);
-        seller.setTicketsCreated(tickets);
+        seller.setTicketsCreated(tickets);*/
         this.seller = seller;
     }
 
     public Ticket addOffer(Offer offer){
-        offer.setTicket(this);
-        this.getOffers().add(offer);
+        this.offers.add(offer);
         return this;
     }
 }

@@ -16,17 +16,18 @@ public class User {
     private String password;
     private Boolean admin;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
     private Set<Book> books = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+   /* @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private Set<Ticket> ticketsCreated = new HashSet<>();
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Offer> offersInInterest = new HashSet<>();
+    private Set<Offer> offersInInterest = new HashSet<>();*/
 
     public Long getId() {
         return id;
@@ -81,11 +82,11 @@ public class User {
     }
 
     public void setAddress(Address address) {
-        address.setUser(this);
+        //address.setUser(this);
         this.address = address;
     }
 
-    public Set<Ticket> getTicketsCreated() {
+   /* public Set<Ticket> getTicketsCreated() {
         return ticketsCreated;
     }
 
@@ -99,7 +100,7 @@ public class User {
 
     public void setOffersInInterest(Set<Offer> offersInInterest) {
         this.offersInInterest = offersInInterest;
-    }
+    }*/
 
     public Set<Book> getBooks() {
         return books;
@@ -109,21 +110,20 @@ public class User {
         this.books = books;
     }
 
-    public User addTicket(Ticket ticket){
+    /*public User addTicket(Ticket ticket){
         ticket.setSeller(this);
         this.getTicketsCreated().add(ticket);
         return this;
-    }
+    }*/
 
     public User addBook(Book book){
-        book.setOwner(this);
         this.getBooks().add(book);
         return this;
     }
 
-    public User addOffer(Offer offer){
+    /*public User addOffer(Offer offer){
         offer.setCustomer(this);
         this.getOffersInInterest().add(offer);
         return this;
-    }
+    }*/
 }

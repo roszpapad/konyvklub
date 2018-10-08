@@ -1,7 +1,6 @@
 package hu.roszpapad.konyvklub.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Offer {
@@ -13,14 +12,11 @@ public class Offer {
     @OneToOne
     private Book bookToPay;
 
-    @ManyToOne
-    private Ticket ticket;
-
-
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.PENDING;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "costumer_id")
     private User customer;
 
 
@@ -46,18 +42,10 @@ public class Offer {
     }
 
     public void setCustomer(User customer) {
-        Set<Offer> ticketSet = customer.getOffersInInterest();
+        /*Set<Offer> ticketSet = customer.getOffersInInterest();
         ticketSet.add(this);
-        customer.setOffersInInterest(ticketSet);
+        customer.setOffersInInterest(ticketSet);*/
         this.customer = customer;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
     }
 
     public Status getStatus() {

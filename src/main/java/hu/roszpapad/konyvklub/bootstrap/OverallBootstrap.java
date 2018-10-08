@@ -1,49 +1,48 @@
 
 package hu.roszpapad.konyvklub.bootstrap;
 
-import hu.roszpapad.konyvklub.commands.UserCommand;
-import hu.roszpapad.konyvklub.converters.UserCommandToUser;
-import hu.roszpapad.konyvklub.converters.UserToUserCommand;
-import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.dtos.UserDTO;
+import hu.roszpapad.konyvklub.model.Address;
+import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.Ticket;
+import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.AddressRepository;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import hu.roszpapad.konyvklub.services.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class OverallBootstrap implements ApplicationListener<ContextRefreshedEvent>{
 
-    private AddressRepository addressRepository;
-    private BookRepository bookRepository;
-    private TicketRepository ticketRepository;
-    private UserRepository userRepository;
-    private UserService userService;
-    private UserToUserCommand userToUserCommand;
-    private UserCommandToUser userCommandToUser;
-
-    public OverallBootstrap(AddressRepository addressRepository, BookRepository bookRepository, TicketRepository ticketRepository, UserRepository userRepository, UserService userService, UserToUserCommand userToUserCommand, UserCommandToUser userCommandToUser) {
-        this.addressRepository = addressRepository;
-        this.bookRepository = bookRepository;
-        this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
-        this.userService = userService;
-        this.userToUserCommand = userToUserCommand;
-        this.userCommandToUser = userCommandToUser;
-    }
+    private final AddressRepository addressRepository;
+    private final BookRepository bookRepository;
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         Ticket toSave = getTickets();
         ticketRepository.save(toSave);
+        ticketRepository.save(getTicketss());
         User user = userRepository.findById(1L).get();
-        UserCommand userCommand = userToUserCommand.convert(user);
-        User newUser = userCommandToUser.convert(userCommand);
+        user.getBooks().forEach(book -> System.out.println(book.getTitle()));
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.getBooks().forEach(bookDTO -> System.out.println(bookDTO));
+        User newUser = modelMapper.map(userDTO, User.class);
+        newUser.getBooks().forEach(book -> System.out.println(book.getTitle()));
         userRepository.save(newUser);
     }
 
@@ -77,11 +76,11 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
         Book book = new Book();
         book.setTitle("Gyuruk ura");
-        userService.addBookToUser(seller,book);
+        seller.addBook(book);
 
         Book book1 = new Book();
         book1.setTitle("Sotet vilag");
-        userService.addBookToUser(costumer,book1);
+        costumer.addBook(book1);
 
 
 
@@ -96,6 +95,18 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         ticket.setSeller(seller);
         ticket.setBookToSell(book);
         ticket.setDescription("I want to sell this book.");
+
+        return ticket;
+    }
+
+
+    private Ticket getTicketss(){
+
+        User seller = userRepository.findById(1L).get();
+
+        Ticket ticket = new Ticket();
+        ticket.setSeller(seller);
+        ticket.setDescription("I WANT to sell this book.");
 
         return ticket;
     }

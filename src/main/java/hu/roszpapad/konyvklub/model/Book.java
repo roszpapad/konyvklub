@@ -15,9 +15,6 @@ public class Book {
 
     private Integer yearOfPublishing;
 
-    @ManyToOne
-    private User owner;
-
     @OneToOne(mappedBy = "bookToSell")
     private Ticket sellingTicket;
 
@@ -80,11 +77,4 @@ public class Book {
         this.offer = offer;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 }

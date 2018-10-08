@@ -4,25 +4,21 @@ import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
-
-    public UserServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
-        this.bookRepository = bookRepository;
-        this.userRepository = userRepository;
-    }
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void addBookToUser(User user, Book book) {
         Set<Book> books = user.getBooks();
-        book.setOwner(user);
         books.add(book);
         user.setBooks(books);
     }

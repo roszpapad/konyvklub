@@ -1,11 +1,11 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.commands.OfferCommand;
-import hu.roszpapad.konyvklub.commands.TicketCommand;
-import hu.roszpapad.konyvklub.converters.OfferToOfferCommand;
-import hu.roszpapad.konyvklub.converters.TicketToTicketCommand;
+import hu.roszpapad.konyvklub.dtos.OfferDTO;
+import hu.roszpapad.konyvklub.dtos.TicketDTO;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,17 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService{
 
-    private TicketRepository ticketRepository;
-    private TicketToTicketCommand ticketToTicketCommand;
-    private OfferToOfferCommand offerToOfferCommand;
+    private final TicketRepository ticketRepository;
 
-    public TicketServiceImpl(TicketRepository ticketRepository, TicketToTicketCommand ticketToTicketCommand, OfferToOfferCommand offerToOfferCommand) {
-        this.ticketRepository = ticketRepository;
-        this.ticketToTicketCommand = ticketToTicketCommand;
-        this.offerToOfferCommand = offerToOfferCommand;
-    }
+    private final ModelMapper modelMapper;
+
+
 
     @Override
     public Iterable<Ticket> getTickets() {
@@ -36,25 +33,25 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public TicketCommand getCommandById(Long id) {
-        return ticketToTicketCommand.convert(ticketRepository.findById(id).get());
+    public TicketDTO getTicketDTOById(Long id) {
+        return modelMapper.map(ticketRepository.findById(id).get(),TicketDTO.class);
     }
 
     @Override
-    public Iterable<TicketCommand> getTicketCommands() {
-        List<TicketCommand> ticketCommands = new ArrayList<>();
-        ticketRepository.findAll().forEach(ticket -> ticketCommands.add(ticketToTicketCommand.convert(ticket)));
-        return ticketCommands;
+    public Iterable<TicketDTO> getTicketDTOs() {
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+        ticketRepository.findAll().forEach(ticket -> ticketDTOs.add(modelMapper.map(ticket,TicketDTO.class)));
+        return ticketDTOs;
     }
 
     @Override
-    public Iterable<OfferCommand> getOfferCommands(Long ticketId) {
+    public Iterable<OfferDTO> getOfferDTOs(Long ticketId) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
         if (ticketOptional.isPresent()) {
             Ticket ticket = ticketOptional.get();
-            List<OfferCommand> offerCommands = new ArrayList<>();
-            ticket.getOffers().forEach(offer -> offerCommands.add(offerToOfferCommand.convert(offer)));
-            return offerCommands;
+            List<OfferDTO> offerDTOs = new ArrayList<>();
+            ticket.getOffers().forEach(offer -> offerDTOs.add(modelMapper.map(offer,OfferDTO.class)));
+            return offerDTOs;
         }
         else {
             return null; //todo error
