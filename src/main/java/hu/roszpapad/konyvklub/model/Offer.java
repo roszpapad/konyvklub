@@ -33,7 +33,7 @@ public class Offer {
     }
 
     public void setBookToPay(Book bookToPay) {
-        bookToPay.setOffer(this);
+        //bookToPay.setOffer(this);
         this.bookToPay = bookToPay;
     }
 

@@ -45,7 +45,7 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Iterable<OfferDTO> getOfferDTOs(Long ticketId) {
+    public List<OfferDTO> getOfferDTOs(Long ticketId) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
         if (ticketOptional.isPresent()) {
             Ticket ticket = ticketOptional.get();
@@ -56,5 +56,15 @@ public class TicketServiceImpl implements TicketService{
         else {
             return null; //todo error
         }
+    }
+
+    @Override
+    public OfferDTO getOfferDTO(Long ticketId, Long offerId) {
+
+        OfferDTO offerDTO = getOfferDTOs(ticketId).stream()
+                .filter(offer -> offer.getId().equals(offerId))
+                .findFirst().get();
+
+        return offerDTO;
     }
 }

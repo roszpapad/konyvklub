@@ -49,7 +49,7 @@ public class Ticket {
     }
 
     public void setBookToSell(Book bookToSell) {
-        bookToSell.setSellingTicket(this);
+        //bookToSell.setSellingTicket(this);
         this.bookToSell = bookToSell;
     }
 

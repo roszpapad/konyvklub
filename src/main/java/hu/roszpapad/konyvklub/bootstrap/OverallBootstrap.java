@@ -1,15 +1,8 @@
 
 package hu.roszpapad.konyvklub.bootstrap;
 
-import hu.roszpapad.konyvklub.dtos.UserDTO;
-import hu.roszpapad.konyvklub.model.Address;
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.model.User;
-import hu.roszpapad.konyvklub.repositories.AddressRepository;
-import hu.roszpapad.konyvklub.repositories.BookRepository;
-import hu.roszpapad.konyvklub.repositories.TicketRepository;
-import hu.roszpapad.konyvklub.repositories.UserRepository;
+import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.repositories.*;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +23,7 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     private final UserRepository userRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final OfferRepository offerRepository;
 
     @Override
     @Transactional
@@ -37,13 +31,9 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         Ticket toSave = getTickets();
         ticketRepository.save(toSave);
         ticketRepository.save(getTicketss());
-        User user = userRepository.findById(1L).get();
-        user.getBooks().forEach(book -> System.out.println(book.getTitle()));
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        userDTO.getBooks().forEach(bookDTO -> System.out.println(bookDTO));
-        User newUser = modelMapper.map(userDTO, User.class);
-        newUser.getBooks().forEach(book -> System.out.println(book.getTitle()));
-        userRepository.save(newUser);
+        Ticket ticket = ticketRepository.findById(1L).get();
+        ticket.addOffer(getOffer());
+        ticketRepository.save(ticket);
     }
 
     private Ticket getTickets(){
@@ -109,6 +99,13 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         ticket.setDescription("I WANT to sell this book.");
 
         return ticket;
+    }
+
+    private Offer getOffer(){
+        Offer offer = new Offer();
+        offer.setCustomer(userRepository.findById(2L).get());
+        offer.setBookToPay(bookRepository.findById(2L).get());
+        return offer;
     }
 }
 

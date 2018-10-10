@@ -15,11 +15,11 @@ public class Book {
 
     private Integer yearOfPublishing;
 
-    @OneToOne(mappedBy = "bookToSell")
+   /* @OneToOne(mappedBy = "bookToSell")
     private Ticket sellingTicket;
 
     @OneToOne(mappedBy = "bookToPay")
-    private Offer offer;
+    private Offer offer;*/
 
     public Long getId() {
         return id;
@@ -61,7 +61,7 @@ public class Book {
         this.yearOfPublishing = dateOfPublishing;
     }
 
-    public Ticket getSellingTicket() {
+    /*public Ticket getSellingTicket() {
         return sellingTicket;
     }
 
@@ -75,6 +75,6 @@ public class Book {
 
     public void setOffer(Offer offer) {
         this.offer = offer;
-    }
+    }*/
 
 }
