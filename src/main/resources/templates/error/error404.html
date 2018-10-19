@@ -44,21 +44,8 @@
 </nav>
 
 <div class="container" style="margin-top:90px;">
-    <div class="row">
-        <div class="col-6">
-            <p th:text="${offer.ticket.bookToSell.title}"></p>
-            <p th:text="${offer.ticket.seller.firstName}"></p>
-            <p th:text="${offer.ticket.description}"></p>
-        </div>
-        <div class="col-6">
-            <p th:text="${offer.bookToPay.title}"></p>
-            <p th:text="${offer.customer.firstName}"></p>
-            <p th:text="${offer.status}"></p>
-        </div>
-    </div>
-    <a th:href="@{'/ticket/' + ${ticket.id} + '/offer/' + ${offer.id} + '/accept'}">Accept</a>
+    <h1 th:text="${exception.message}"></h1>
 </div>
-
 
 </body>
 </html>

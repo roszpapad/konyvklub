@@ -12,6 +12,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -28,15 +31,17 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        Ticket toSave = getTickets();
-        ticketRepository.save(toSave);
-        ticketRepository.save(getTicketss());
-        Ticket ticket = ticketRepository.findById(1L).get();
+        List<Ticket> toSave = getTickets();
+        //toSave.addOffer(getOffer());
+        ticketRepository.saveAll(toSave);
+        //ticketRepository.save(getTicketss());
+       /* Ticket ticket = ticketRepository.findById(1L).get();
         ticket.addOffer(getOffer());
-        ticketRepository.save(ticket);
+        ticketRepository.save(ticket);*/
     }
 
-    private Ticket getTickets(){
+    private List<Ticket> getTickets(){
+        List<Ticket> tickets = new ArrayList<>();
         Address address = new Address();
         address.setCity("Debrecen");
         address.setStreet("Petofi");
@@ -72,6 +77,21 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book1.setTitle("Sotet vilag");
         costumer.addBook(book1);
 
+        Book book2 = new Book();
+        book2.setTitle("Gyuruk ura 2");
+        seller.addBook(book2);
+
+        Book book3 = new Book();
+        book3.setTitle("Gyuruk ura 3");
+        seller.addBook(book3);
+
+        Book book4 = new Book();
+        book4.setTitle("Gyuruk ura 4");
+        seller.addBook(book4);
+
+        Book book5 = new Book();
+        book5.setTitle("Gyuruk ura 5");
+        seller.addBook(book5);
 
 
         userRepository.save(seller);
@@ -85,8 +105,33 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         ticket.setSeller(seller);
         ticket.setBookToSell(book);
         ticket.setDescription("I want to sell this book.");
+        tickets.add(ticket);
 
-        return ticket;
+        Ticket ticket1 = new Ticket();
+        ticket1.setSeller(seller);
+        ticket1.setBookToSell(book2);
+        ticket1.setDescription("I want to sell this book.");
+        tickets.add(ticket1);
+
+        Ticket ticket2 = new Ticket();
+        ticket2.setSeller(seller);
+        ticket2.setBookToSell(book3);
+        ticket2.setDescription("I want to sell this book.");
+        tickets.add(ticket2);
+
+        Ticket ticket3 = new Ticket();
+        ticket3.setSeller(seller);
+        ticket3.setBookToSell(book4);
+        ticket3.setDescription("I want to sell this book.");
+        tickets.add(ticket3);
+
+        Ticket ticket4 = new Ticket();
+        ticket4.setSeller(seller);
+        ticket4.setBookToSell(book5);
+        ticket4.setDescription("I want to sell this book.");
+        tickets.add(ticket4);
+
+        return tickets;
     }
 
 

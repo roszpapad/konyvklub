@@ -2,8 +2,8 @@ package hu.roszpapad.konyvklub.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Ticket {
@@ -12,17 +12,18 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.PERSIST)
     private Book bookToSell;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ticket_id")
-    private Set<Offer> offers = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
+    private List<Offer> offers = new ArrayList<>();
+
+    private Boolean open = true;
 
     @Lob
     private String description;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private User seller;
 
@@ -49,15 +50,15 @@ public class Ticket {
     }
 
     public void setBookToSell(Book bookToSell) {
-        //bookToSell.setSellingTicket(this);
+        bookToSell.setTicket(this);
         this.bookToSell = bookToSell;
     }
 
-    public Set<Offer> getOffers() {
+    public List<Offer> getOffers() {
         return offers;
     }
 
-    public void setOffers(Set<Offer> offers) {
+    public void setOffers(List<Offer> offers) {
         this.offers = offers;
     }
 
@@ -74,14 +75,23 @@ public class Ticket {
     }
 
     public void setSeller(User seller) {
-       /* Set<Ticket> tickets = seller.getTicketsCreated();
-        tickets.add(this);
-        seller.setTicketsCreated(tickets);*/
+        seller.addTicket(this);
         this.seller = seller;
     }
 
     public Ticket addOffer(Offer offer){
-        this.offers.add(offer);
+        offer.setTicket(this);
+        if (!offers.contains(offer))
+            this.offers.add(offer);
+
         return this;
+    }
+
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public void setOpen(Boolean open) {
+        this.open = open;
     }
 }

@@ -7,7 +7,7 @@ import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addBookToUser(User user, Book book) {
-        Set<Book> books = user.getBooks();
+        List<Book> books = user.getBooks();
         books.add(book);
         user.setBooks(books);
     }

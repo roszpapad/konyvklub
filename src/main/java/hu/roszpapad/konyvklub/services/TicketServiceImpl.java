@@ -1,11 +1,15 @@
+
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.dtos.OfferDTO;
-import hu.roszpapad.konyvklub.dtos.TicketDTO;
-import hu.roszpapad.konyvklub.model.Ticket;
+import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayed;
+import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayed;
+import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
+import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +22,11 @@ public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
 
-    private final ModelMapper modelMapper;
+    private final Converter<Ticket,TicketToBeDisplayed> diplayableTicketConverter;
 
+    private final Converter<Offer,OfferToBeDisplayed> displayableOfferConverter;
+
+    private final OfferRepository offerRepository;
 
 
     @Override
@@ -33,38 +40,38 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public TicketDTO getTicketDTOById(Long id) {
-        return modelMapper.map(ticketRepository.findById(id).get(),TicketDTO.class);
+    public TicketToBeDisplayed getTicketDTOById(Long id) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new TicketNotFoundException("Ticket with id :" + id + " not found"));
+        return diplayableTicketConverter.toDTO(ticket);
     }
 
     @Override
-    public Iterable<TicketDTO> getTicketDTOs() {
-        List<TicketDTO> ticketDTOs = new ArrayList<>();
-        ticketRepository.findAll().forEach(ticket -> ticketDTOs.add(modelMapper.map(ticket,TicketDTO.class)));
+    public Iterable<TicketToBeDisplayed> getTicketDTOs() {
+        List<TicketToBeDisplayed> ticketDTOs = new ArrayList<>();
+        ticketRepository.findAll().forEach(ticket -> ticketDTOs.add(diplayableTicketConverter.toDTO(ticket)));
         return ticketDTOs;
     }
 
     @Override
-    public List<OfferDTO> getOfferDTOs(Long ticketId) {
-        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketId);
-        if (ticketOptional.isPresent()) {
-            Ticket ticket = ticketOptional.get();
-            List<OfferDTO> offerDTOs = new ArrayList<>();
-            ticket.getOffers().forEach(offer -> offerDTOs.add(modelMapper.map(offer,OfferDTO.class)));
-            return offerDTOs;
-        }
-        else {
-            return null; //todo error
-        }
-    }
+    public Ticket acceptOffer(Long ticketId, Long offerId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new TicketNotFoundException());
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new OfferNotFoundException());
+        offer.setStatus(Status.ACCEPTED);
+        ticket.setOpen(false);
 
-    @Override
-    public OfferDTO getOfferDTO(Long ticketId, Long offerId) {
+        Book soldBook = ticket.getBookToSell();
+        Book paidBook = offer.getBookToPay();
 
-        OfferDTO offerDTO = getOfferDTOs(ticketId).stream()
-                .filter(offer -> offer.getId().equals(offerId))
-                .findFirst().get();
+        User seller = ticket.getSeller();
+        User customer = offer.getCustomer();
 
-        return offerDTO;
+        seller.addBook(paidBook);
+        seller.getBooks().remove(soldBook);
+        customer.addBook(soldBook);
+        customer.getBooks().remove(paidBook);
+
+        ticketRepository.save(ticket);
+        return ticket;
     }
 }
+

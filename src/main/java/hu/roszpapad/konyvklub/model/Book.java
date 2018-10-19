@@ -15,11 +15,16 @@ public class Book {
 
     private Integer yearOfPublishing;
 
-   /* @OneToOne(mappedBy = "bookToSell")
-    private Ticket sellingTicket;
+    @OneToOne
+    private Ticket ticket;
 
-    @OneToOne(mappedBy = "bookToPay")
-    private Offer offer;*/
+    @OneToOne
+    private Offer offer;
+
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     public Long getId() {
         return id;
@@ -61,12 +66,20 @@ public class Book {
         this.yearOfPublishing = dateOfPublishing;
     }
 
-    /*public Ticket getSellingTicket() {
-        return sellingTicket;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setSellingTicket(Ticket sellingTicket) {
-        this.sellingTicket = sellingTicket;
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     public Offer getOffer() {
@@ -75,6 +88,5 @@ public class Book {
 
     public void setOffer(Offer offer) {
         this.offer = offer;
-    }*/
-
+    }
 }

@@ -9,16 +9,19 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "offer",cascade = CascadeType.PERSIST)
     private Book bookToPay;
 
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.PENDING;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "costumer_id")
     private User customer;
 
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
     public Long getId() {
         return id;
@@ -33,7 +36,7 @@ public class Offer {
     }
 
     public void setBookToPay(Book bookToPay) {
-        //bookToPay.setOffer(this);
+        bookToPay.setOffer(this);
         this.bookToPay = bookToPay;
     }
 
@@ -42,9 +45,7 @@ public class Offer {
     }
 
     public void setCustomer(User customer) {
-        /*Set<Offer> ticketSet = customer.getOffersInInterest();
-        ticketSet.add(this);
-        customer.setOffersInInterest(ticketSet);*/
+        customer.addOffer(this);
         this.customer = customer;
     }
 
@@ -54,5 +55,13 @@ public class Offer {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 }

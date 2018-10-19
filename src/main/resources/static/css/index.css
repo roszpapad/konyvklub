@@ -1,6 +1,11 @@
 .menu > li a:hover {
-    background-color: grey;
+    background-color: rgb(116, 185, 255);
     color: black !important;
+}
+
+.menu > li a {
+    color: rgb(253, 203, 110) !important;
+    border-radius: 15%;
 }
 
 .logo-image {
@@ -21,4 +26,12 @@
 .carousel-inner {
     width : 100%;
     height: 500px;
+}
+
+.navbar {
+    background-color : rgb(9, 132, 227);
+}
+
+body {
+    background-color : rgb(223, 230, 233) !important;
 }

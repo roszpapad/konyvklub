@@ -1,0 +1,33 @@
+.card {
+    margin-bottom : 30px;
+}
+
+.profile-pic {
+    display:block;
+    border-radius: 50%;
+    width: auto;
+    height: 100px;
+    margin-right:auto;
+    margin-left:auto;
+}
+
+.hide {
+    display : none;
+}
+
+.center {
+    text-align: center;
+}
+
+.profile-name {
+    color : black;
+}
+
+.profile-name:hover {
+    text-decoration : none !important;
+    color : black;
+}
+
+.card-content {
+    font-size : 30px;
+}

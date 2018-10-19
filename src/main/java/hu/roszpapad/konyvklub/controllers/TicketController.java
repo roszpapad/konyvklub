@@ -1,6 +1,6 @@
+
 package hu.roszpapad.konyvklub.controllers;
 
-import hu.roszpapad.konyvklub.dtos.TicketDTO;
 import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,19 +21,34 @@ public class TicketController {
         return "tickets/tickets";
     }
 
-    @GetMapping("/ticket/{ticketId}/offers")
-    public String getTicketOffers(@PathVariable Long ticketId, Model model){
+    @GetMapping("/ticket/{ticketId}")
+    public String getTicket(@PathVariable Long ticketId, Model model){
         model.addAttribute("ticket",ticketService.getTicketDTOById(ticketId));
 
-        return "tickets/offers";
+        return "tickets/ticket";
     }
 
-    @GetMapping("/ticket/{ticketId}/offer/{offerId}")
-    public String getOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId, Model model){
-        TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
-        model.addAttribute("ticket", ticketDTO);
-        model.addAttribute("offer",ticketService.getOfferDTO(ticketId,offerId));
+    @GetMapping("/ticket/{ticketId}/offer/{offerId}/accept")
+    public String acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
 
-        return "tickets/offer";
+        ticketService.acceptOffer(ticketId,offerId);
+
+        return "redirect:/ticket/" + ticketId + "/offer/" + offerId;
     }
+
+    /*@GetMapping("/ticket/{ticketId}/offer/new")
+    public String newOffer(@PathVariable("ticketId") Long ticketId,Model model){
+        OfferDTO offerDTO = new OfferDTO();
+        Ticket ticket = ticketService.getTicketById(ticketId).get();
+        model.addAttribute("offer",new OfferDTO());
+
+        return "tickets/makeOffer";
+    }
+
+    @PostMapping("/offer")
+    public String saveOrUpdateOffer(@ModelAttribute("offer") OfferDTO offerDTO){
+
+        return "/ticket/ticketidjaamitkiszamolokmajd/offer/offeridja";
+    }*/
 }
+

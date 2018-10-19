@@ -1,8 +1,8 @@
 package hu.roszpapad.konyvklub.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -16,18 +16,17 @@ public class User {
     private String password;
     private Boolean admin;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id")
-    private Set<Book> books = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private List<Book> books = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Address address;
 
-   /* @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
-    private Set<Ticket> ticketsCreated = new HashSet<>();
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Ticket> ticketsCreated = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Offer> offersInInterest = new HashSet<>();*/
+    private List<Offer> offersInInterest = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -82,48 +81,53 @@ public class User {
     }
 
     public void setAddress(Address address) {
-        //address.setUser(this);
+        address.setUser(this);
         this.address = address;
     }
 
-   /* public Set<Ticket> getTicketsCreated() {
-        return ticketsCreated;
-    }
-
-    public void setTicketsCreated(Set<Ticket> ticketsCreated) {
-        this.ticketsCreated = ticketsCreated;
-    }
-
-    public Set<Offer> getOffersInInterest() {
-        return offersInInterest;
-    }
-
-    public void setOffersInInterest(Set<Offer> offersInInterest) {
-        this.offersInInterest = offersInInterest;
-    }*/
-
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 
-    /*public User addTicket(Ticket ticket){
-        ticket.setSeller(this);
-        this.getTicketsCreated().add(ticket);
-        return this;
-    }*/
+    public List<Ticket> getTicketsCreated() {
+        return ticketsCreated;
+    }
 
-    public User addBook(Book book){
-        this.getBooks().add(book);
+    public void setTicketsCreated(List<Ticket> ticketsCreated) {
+        this.ticketsCreated = ticketsCreated;
+    }
+
+    public List<Offer> getOffersInInterest() {
+        return offersInInterest;
+    }
+
+    public void setOffersInInterest(List<Offer> offersInInterest) {
+        this.offersInInterest = offersInInterest;
+    }
+
+    public User addTicket(Ticket ticket){
+        if (!ticketsCreated.contains(ticket))
+            this.ticketsCreated.add(ticket);
+
         return this;
     }
 
-    /*public User addOffer(Offer offer){
-        offer.setCustomer(this);
-        this.getOffersInInterest().add(offer);
+    public User addBook(Book book){
+        book.setOwner(this);
+        if (!books.contains(book))
+            this.books.add(book);
+
         return this;
-    }*/
+    }
+
+    public User addOffer(Offer offer){
+        if (!offersInInterest.contains(offer))
+            this.offersInInterest.add(offer);
+
+        return this;
+    }
 }

@@ -11,4 +11,5 @@ public class DTOConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }

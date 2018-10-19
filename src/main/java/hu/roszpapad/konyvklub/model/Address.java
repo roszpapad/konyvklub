@@ -9,9 +9,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /*@OneToOne
+    @OneToOne
     private User user;
-*/
+
     private String city;
     private String street;
     private String number;
@@ -24,14 +24,14 @@ public class Address {
         this.id = id;
     }
 
-    /*public User getUser() {
+    public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
-*/
+
     public String getCity() {
         return city;
     }
