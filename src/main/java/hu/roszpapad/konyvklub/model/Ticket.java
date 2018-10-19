@@ -87,7 +87,7 @@ public class Ticket {
         return this;
     }
 
-    public Boolean getOpen() {
+    public Boolean isOpen() {
         return open;
     }
 

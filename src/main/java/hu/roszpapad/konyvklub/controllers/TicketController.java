@@ -35,20 +35,5 @@ public class TicketController {
 
         return "redirect:/ticket/" + ticketId + "/offer/" + offerId;
     }
-
-    /*@GetMapping("/ticket/{ticketId}/offer/new")
-    public String newOffer(@PathVariable("ticketId") Long ticketId,Model model){
-        OfferDTO offerDTO = new OfferDTO();
-        Ticket ticket = ticketService.getTicketById(ticketId).get();
-        model.addAttribute("offer",new OfferDTO());
-
-        return "tickets/makeOffer";
-    }
-
-    @PostMapping("/offer")
-    public String saveOrUpdateOffer(@ModelAttribute("offer") OfferDTO offerDTO){
-
-        return "/ticket/ticketidjaamitkiszamolokmajd/offer/offeridja";
-    }*/
 }
 
