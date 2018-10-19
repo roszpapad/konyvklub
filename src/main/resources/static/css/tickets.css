@@ -19,15 +19,26 @@
     text-align: center;
 }
 
-.profile-name {
-    color : black;
-}
-
 .profile-name:hover {
     text-decoration : none !important;
     color : black;
 }
 
+.profile-name {
+    color : black;
+}
+
 .card-content {
-    font-size : 30px;
+    font-size : 18px;
+}
+
+.card-header {
+    background-color : rgb(255, 159, 26) !important;
+    color : rgb(236, 240, 241);
+    text-align: center;
+}
+
+.card-body {
+    background-color : rgb(246, 229, 141) !important;
+    text-align : left;
 }
