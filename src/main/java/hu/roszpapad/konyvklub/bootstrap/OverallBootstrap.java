@@ -57,13 +57,13 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         seller.setFirstName("Laszlo");
         seller.setLastName("Kovacs");
         seller.setPassword("lola");
-        seller.setUserName("kola");
+        seller.setUsername("kola");
 
         User costumer = new User();
         costumer.setFirstName("Zita");
         costumer.setLastName("Marias");
         costumer.setPassword("kima");
-        costumer.setUserName("tibo");
+        costumer.setUsername("tibo");
 
         seller.setAddress(address);
 

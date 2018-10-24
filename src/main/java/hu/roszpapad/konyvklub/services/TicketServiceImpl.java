@@ -13,12 +13,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService{
+
+    private final UserService userService;
+
+    private final BookService bookService;
 
     private final TicketRepository ticketRepository;
 
@@ -30,7 +36,7 @@ public class TicketServiceImpl implements TicketService{
 
 
     @Override
-    public Iterable<Ticket> getTickets() {
+    public Collection<Ticket> getTickets() {
         return ticketRepository.findAll();
     }
 
@@ -72,6 +78,35 @@ public class TicketServiceImpl implements TicketService{
 
         ticketRepository.save(ticket);
         return ticket;
+    }
+
+    @Override
+    public Ticket createTicket(Ticket ticket) {
+
+        return ticketRepository.save(ticket);
+    }
+
+    @Override
+    public Ticket updateTicket(Ticket ticket) {
+        Ticket current = ticketRepository.findById(ticket.getId())
+                .orElseThrow(() -> new TicketNotFoundException());
+
+        current.setDescription(ticket.getDescription());
+
+        return ticketRepository.save(ticket);
+    }
+
+    @Override
+    public void deleteTicket(Long id) {
+        Ticket current = ticketRepository.findById(id)
+                .orElseThrow(() -> new TicketNotFoundException());
+
+        List<Offer> offersPending = current.getOffers().stream().filter(offer -> offer.getStatus().equals(Status.PENDING))
+                .collect(Collectors.toList());
+        offersPending.forEach(offer -> bookService.freeBook(offer.getBookToPay()));
+        current.getOffers().forEach(offer -> userService.removeOfferFromUser(offer.getCustomer(), offer));
+        userService.removeTicketFromUser(current.getSeller(),current);
+        ticketRepository.delete(current);
     }
 }
 

@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.controllers;
 
+import hu.roszpapad.konyvklub.converter.Converter;
 import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdated;
 import hu.roszpapad.konyvklub.exceptions.TicketClosedException;
 import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
@@ -23,6 +24,8 @@ public class OfferController {
 
     private final TicketService ticketService;
 
+    private final Converter<Offer, OfferToBeSavedOrUpdated> offerConverter;
+
     @GetMapping("/ticket/{ticketId}/offer/new")
     public String newOffer(@PathVariable("ticketId") Long ticketId, Model model){
         Ticket ticket = ticketService.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException());
@@ -39,9 +42,9 @@ public class OfferController {
     }
 
     @PostMapping("/ticket/{ticketId}/offer")
-    public String saveOrUpdateOffer(@ModelAttribute("offer") OfferToBeSavedOrUpdated offerDTO){
+    public String createOffer(@ModelAttribute("offer") OfferToBeSavedOrUpdated offerDTO){
 
-        Offer offer = offerService.saveOfferDTO(offerDTO);
+        Offer offer = offerService.createOffer(offerConverter.toEntity(offerDTO));
 
         return "redirect:/ticket/" + offer.getTicket().getId();
     }

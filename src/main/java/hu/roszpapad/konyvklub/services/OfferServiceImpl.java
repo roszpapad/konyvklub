@@ -1,32 +1,50 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdated;
-import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
 import hu.roszpapad.konyvklub.model.Offer;
+import hu.roszpapad.konyvklub.model.Status;
 import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.repositories.TicketRepository;
+import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
-    private final TicketRepository ticketRepository;
+    private final UserService userService;
 
-    private final Converter<Offer, OfferToBeSavedOrUpdated> offerSaveOrUpdateConverter;
+    private final OfferRepository offerRepository;
+
+    private final BookService bookService;
 
     @Override
-    public Offer saveOfferDTO(OfferToBeSavedOrUpdated offerDTO) {
+    public Offer createOffer(Offer offer) {
+        return offerRepository.save(offer);
+    }
 
-        Ticket ticket = ticketRepository.findById(offerDTO.getTicketId()).orElseThrow(() -> new TicketNotFoundException());
-        Offer offer = offerSaveOrUpdateConverter.toEntity(offerDTO);
+    @Override
+    public Collection<Offer> getOffersByStatusAndTicket(Status status, Ticket ticket) {
+        return offerRepository.findAllByStatusAndTicket(status,ticket);
+    }
 
-        ticket.addOffer(offer);
+    @Override
+    public Offer updateOffer(Offer offer) {
+        //TODO: if (!offer.getStatus().equals(Status.PENDING)) throw vmi exception;
+        Offer current = offerRepository.findById(offer.getId()).orElseThrow(() -> new OfferNotFoundException());
 
-        ticketRepository.save(ticket);
+        current.setBookToPay(offer.getBookToPay());
+        return current;
+    }
 
-        return offer;
+    @Override
+    public void deleteOffer(Long offerId) {
+        Offer current = offerRepository.findById(offerId).
+                orElseThrow(() -> new OfferNotFoundException());
+        bookService.freeBook(current.getBookToPay());
+        userService.removeOfferFromUser(current.getCustomer(), current);
+        offerRepository.delete(current);
     }
 }

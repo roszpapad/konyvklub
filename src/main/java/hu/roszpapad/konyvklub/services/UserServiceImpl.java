@@ -1,6 +1,8 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.Offer;
+import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
@@ -27,5 +29,22 @@ public class UserServiceImpl implements UserService {
     public void deleteBookFromUser(User user, Book book) {
         user.getBooks().remove(book);
         bookRepository.delete(book);
+    }
+
+    @Override
+    public User removeTicketFromUser(User user, Ticket ticket) {
+        user.getTicketsCreated().remove(ticket);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User removeOfferFromUser(User user, Offer offer) {
+        user.getOffersInInterest().remove(offer);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 }
