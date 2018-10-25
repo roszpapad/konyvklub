@@ -9,7 +9,8 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "offer",cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "book_to_pay_id")
     private Book bookToPay;
 
     @Enumerated(value = EnumType.STRING)
@@ -36,7 +37,6 @@ public class Offer {
     }
 
     public void setBookToPay(Book bookToPay) {
-        bookToPay.setOffer(this);
         this.bookToPay = bookToPay;
     }
 

@@ -12,15 +12,8 @@ public class Book {
     private String title;
     private String writer;
     private String publisher;
-
     private Integer yearOfPublishing;
-
-    @OneToOne
-    private Ticket ticket;
-
-    @OneToOne
-    private Offer offer;
-
+    private Boolean offerable;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -74,19 +67,11 @@ public class Book {
         this.owner = owner;
     }
 
-    public Ticket getTicket() {
-        return ticket;
+    public Boolean isOfferable() {
+        return offerable;
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public Offer getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    public void setOfferable(Boolean offerable) {
+        this.offerable = offerable;
     }
 }

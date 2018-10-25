@@ -1,40 +1,40 @@
 package hu.roszpapad.konyvklub.converter;
 
 import hu.roszpapad.konyvklub.dtos.AddressForEverything;
-import hu.roszpapad.konyvklub.dtos.UserToBeCreated;
+import hu.roszpapad.konyvklub.dtos.UserToBeDisplayed;
 import hu.roszpapad.konyvklub.model.Address;
 import hu.roszpapad.konyvklub.model.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
-public class UserToBeCreatedConverter implements Converter<User, UserToBeCreated> {
+@Component
+public class UserToBeDisplayedConverter implements Converter<User, UserToBeDisplayed> {
 
     private final ModelMapper modelMapper;
 
     private final Converter<Address, AddressForEverything> addressForEverythingConverter;
 
     @Override
-    public UserToBeCreated toDTO(User entity) {
-        UserToBeCreated userDTO = new UserToBeCreated();
-        userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
+    public UserToBeDisplayed toDTO(User entity) {
+        UserToBeDisplayed userDTO = new UserToBeDisplayed();
+        userDTO.setId(entity.getId());
         userDTO.setEmail(entity.getEmail());
         userDTO.setFirstName(entity.getFirstName());
         userDTO.setLastName(entity.getLastName());
-        userDTO.setPassword(entity.getPassword());
+        userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
         return userDTO;
     }
 
     @Override
-    public User toEntity(UserToBeCreated dto) {
+    public User toEntity(UserToBeDisplayed dto) {
         User user = new User();
-        user.setEmail(dto.getEmail());
+        user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setAddress(addressForEverythingConverter.toEntity(dto.getAddress()));
-        user.setPassword(dto.getPassword());
+        user.setEmail(dto.getEmail());
         return user;
     }
 }

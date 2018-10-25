@@ -12,7 +12,6 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
-    private String username;
     private String password;
     private Boolean admin;
     private String email;
@@ -20,7 +19,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
@@ -28,6 +28,8 @@ public class User {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Offer> offersInInterest = new ArrayList<>();
+
+    private Boolean active = true;
 
     public Long getId() {
         return id;
@@ -53,14 +55,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -82,7 +76,6 @@ public class User {
     }
 
     public void setAddress(Address address) {
-        address.setUser(this);
         this.address = address;
     }
 
@@ -138,5 +131,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

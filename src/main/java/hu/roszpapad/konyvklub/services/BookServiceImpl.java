@@ -14,8 +14,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book freeBook(Book book) {
 
-        book.setTicket(null);
-        book.setOffer(null);
+        book.setOfferable(true);
         return bookRepository.save(book);
     }
 }

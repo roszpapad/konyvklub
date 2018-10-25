@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 @Data
 public class UserToBeCreated {
 
+
     @NotBlank
     @NotNull
     private String firstName;
@@ -17,11 +18,6 @@ public class UserToBeCreated {
     @NotBlank
     private String lastName;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 5, max = 25)
-    private String username;
-
     private String email;
 
     @NotBlank
@@ -29,4 +25,6 @@ public class UserToBeCreated {
     private String password;
 
     private String passConfirm;
+
+    private AddressForEverything address;
 }

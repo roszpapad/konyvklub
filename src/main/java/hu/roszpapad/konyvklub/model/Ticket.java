@@ -12,7 +12,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "ticket", cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "book_to_sell_id")
     private Book bookToSell;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
@@ -50,7 +51,6 @@ public class Ticket {
     }
 
     public void setBookToSell(Book bookToSell) {
-        bookToSell.setTicket(this);
         this.bookToSell = bookToSell;
     }
 
