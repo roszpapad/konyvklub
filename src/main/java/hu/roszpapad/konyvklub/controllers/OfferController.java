@@ -1,9 +1,8 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdated;
+import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdatedDTO;
 import hu.roszpapad.konyvklub.exceptions.TicketClosedException;
-import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.OfferService;
@@ -24,16 +23,24 @@ public class OfferController {
 
     private final TicketService ticketService;
 
-    private final Converter<Offer, OfferToBeSavedOrUpdated> offerConverter;
+    private final Converter<Offer, OfferToBeSavedOrUpdatedDTO> offerConverter;
+
+    @GetMapping("/ticket/{ticketId}/offer/{offerId}/accept")
+    public String acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
+
+        offerService.acceptOffer(ticketService.findById(ticketId),offerService.findById(offerId));
+
+        return "redirect:/ticket/" + ticketId + "/offer/" + offerId;
+    }
 
     @GetMapping("/ticket/{ticketId}/offer/new")
     public String newOffer(@PathVariable("ticketId") Long ticketId, Model model){
-        Ticket ticket = ticketService.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException());
+        Ticket ticket = ticketService.findById(ticketId);
 
         if (!ticket.isOpen())
             throw new TicketClosedException();
 
-        OfferToBeSavedOrUpdated offerDTO = new OfferToBeSavedOrUpdated();
+        OfferToBeSavedOrUpdatedDTO offerDTO = new OfferToBeSavedOrUpdatedDTO();
         offerDTO.setTicketId(ticketId);
         //todo offerDTO.setCustomer(currentUser);
         model.addAttribute("offer",offerDTO);
@@ -42,7 +49,7 @@ public class OfferController {
     }
 
     @PostMapping("/ticket/{ticketId}/offer")
-    public String createOffer(@ModelAttribute("offer") OfferToBeSavedOrUpdated offerDTO){
+    public String createOffer(@ModelAttribute("offer") OfferToBeSavedOrUpdatedDTO offerDTO){
 
         Offer offer = offerService.createOffer(offerConverter.toEntity(offerDTO));
 

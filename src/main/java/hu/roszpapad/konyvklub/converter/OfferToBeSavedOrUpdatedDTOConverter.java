@@ -1,6 +1,6 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdated;
+import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdatedDTO;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OfferToBeSavedOrUpdatedConverter implements Converter<Offer, OfferToBeSavedOrUpdated> {
+public class OfferToBeSavedOrUpdatedDTOConverter implements Converter<Offer, OfferToBeSavedOrUpdatedDTO> {
 
     private final TicketRepository ticketRepository;
 
     @Override
-    public OfferToBeSavedOrUpdated toDTO(Offer entity) {
-        OfferToBeSavedOrUpdated offerDTO = new OfferToBeSavedOrUpdated();
+    public OfferToBeSavedOrUpdatedDTO toDTO(Offer entity) {
+        OfferToBeSavedOrUpdatedDTO offerDTO = new OfferToBeSavedOrUpdatedDTO();
         offerDTO.setBookToPay(entity.getBookToPay());
         offerDTO.setId(entity.getId());
         offerDTO.setCustomer(entity.getCustomer());
@@ -25,7 +25,7 @@ public class OfferToBeSavedOrUpdatedConverter implements Converter<Offer, OfferT
     }
 
     @Override
-    public Offer toEntity(OfferToBeSavedOrUpdated dto) {
+    public Offer toEntity(OfferToBeSavedOrUpdatedDTO dto) {
         Offer offer = new Offer();
         offer.setId(dto.getId());
         offer.setCustomer(dto.getCustomer());

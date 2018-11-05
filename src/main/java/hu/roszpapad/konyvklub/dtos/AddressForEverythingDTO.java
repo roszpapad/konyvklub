@@ -3,7 +3,7 @@ package hu.roszpapad.konyvklub.dtos;
 import lombok.Data;
 
 @Data
-public class AddressForEverything {
+public class AddressForEverythingDTO {
 
     private Long id;
     private String city;

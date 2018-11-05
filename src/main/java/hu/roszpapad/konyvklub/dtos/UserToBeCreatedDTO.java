@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class UserToBeCreated {
+public class UserToBeCreatedDTO {
 
 
     @NotBlank
@@ -26,5 +26,5 @@ public class UserToBeCreated {
 
     private String passConfirm;
 
-    private AddressForEverything address;
+    private AddressForEverythingDTO address;
 }

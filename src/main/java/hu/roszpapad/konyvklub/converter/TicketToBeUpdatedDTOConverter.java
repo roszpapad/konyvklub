@@ -1,6 +1,6 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayed;
+import hu.roszpapad.konyvklub.dtos.TicketToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.model.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TicketToBeDisplayedConverter implements Converter<Ticket,TicketToBeDisplayed>{
+public class TicketToBeUpdatedDTOConverter implements Converter<Ticket, TicketToBeUpdatedDTO>{
 
     private final ModelMapper modelMapper;
 
     @Override
-    public TicketToBeDisplayed toDTO(Ticket entity) {
-        return modelMapper.map(entity,TicketToBeDisplayed.class);
+    public TicketToBeUpdatedDTO toDTO(Ticket entity) {
+        return modelMapper.map(entity, TicketToBeUpdatedDTO.class);
     }
 
     @Override
-    public Ticket toEntity(TicketToBeDisplayed dto) {
+    public Ticket toEntity(TicketToBeUpdatedDTO dto) {
         return modelMapper.map(dto, Ticket.class);
     }
 }

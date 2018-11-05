@@ -3,7 +3,7 @@ package hu.roszpapad.konyvklub.dtos;
 import lombok.Data;
 
 @Data
-public class UserToBeDisplayed {
+public class UserToBeDisplayedDTO {
 
     private Long id;
 
@@ -13,5 +13,5 @@ public class UserToBeDisplayed {
 
     private String email;
 
-    private AddressForEverything address;
+    private AddressForEverythingDTO address;
 }

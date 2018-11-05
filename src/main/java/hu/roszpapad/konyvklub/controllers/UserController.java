@@ -1,8 +1,8 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.UserToBeCreated;
-import hu.roszpapad.konyvklub.dtos.UserToBeDisplayed;
+import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
+import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,11 @@ public class UserController {
 
     private final UserService userService;
 
-    private final Converter<User, UserToBeCreated> userToBeCreatedConverter;
+    private final Converter<User, UserToBeCreatedDTO> userToBeCreatedConverter;
 
-    private final Converter<User, UserToBeDisplayed> userToBeDisplayedConverter;
+    private final Converter<User, UserToBeDisplayedDTO> userToBeDisplayedConverter;
 
-    @GetMapping("/user/register")
+    @GetMapping("/register")
     public String registerUser(Model model){
 
         model.addAttribute("user",userService.prepareUserForCreation());
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("user") UserToBeCreated userToBeCreated, BindingResult bindingResult){
+    public String register(@Valid @ModelAttribute("user") UserToBeCreatedDTO userToBeCreated, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "user/registration";
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public String update(@Valid @ModelAttribute(name = "user") UserToBeDisplayed userDTO, BindingResult bindingResult){
+    public String update(@Valid @ModelAttribute(name = "user") UserToBeDisplayedDTO userDTO, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             return "user/update";
@@ -69,7 +69,7 @@ public class UserController {
     @GetMapping("/user/{userId}/switchActive")
     public String switchActive(@PathVariable(name = "userId") Long userId){
 
-        userService.switchActive(userService.findById(userId));
+        userService.switchActive(userId);
         return "redirect:/";
     }
 }

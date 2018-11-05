@@ -1,40 +1,40 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.AddressForEverything;
-import hu.roszpapad.konyvklub.dtos.UserToBeDisplayed;
+import hu.roszpapad.konyvklub.dtos.AddressForEverythingDTO;
+import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.model.Address;
 import hu.roszpapad.konyvklub.model.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 @Component
-public class UserToBeDisplayedConverter implements Converter<User, UserToBeDisplayed> {
+@RequiredArgsConstructor
+public class UserToBeCreatedDTOConverter implements Converter<User, UserToBeCreatedDTO> {
 
     private final ModelMapper modelMapper;
 
-    private final Converter<Address, AddressForEverything> addressForEverythingConverter;
+    private final Converter<Address, AddressForEverythingDTO> addressForEverythingConverter;
 
     @Override
-    public UserToBeDisplayed toDTO(User entity) {
-        UserToBeDisplayed userDTO = new UserToBeDisplayed();
-        userDTO.setId(entity.getId());
+    public UserToBeCreatedDTO toDTO(User entity) {
+        UserToBeCreatedDTO userDTO = new UserToBeCreatedDTO();
+        userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
         userDTO.setEmail(entity.getEmail());
         userDTO.setFirstName(entity.getFirstName());
         userDTO.setLastName(entity.getLastName());
-        userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
+        userDTO.setPassword(entity.getPassword());
         return userDTO;
     }
 
     @Override
-    public User toEntity(UserToBeDisplayed dto) {
+    public User toEntity(UserToBeCreatedDTO dto) {
         User user = new User();
-        user.setId(dto.getId());
+        user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setAddress(addressForEverythingConverter.toEntity(dto.getAddress()));
-        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
         return user;
     }
 }

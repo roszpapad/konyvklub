@@ -6,7 +6,7 @@ import hu.roszpapad.konyvklub.model.User;
 import lombok.Data;
 
 @Data
-public class OfferToBeSavedOrUpdated {
+public class OfferToBeSavedOrUpdatedDTO {
 
     private Long id;
     private Book bookToPay;

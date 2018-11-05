@@ -57,13 +57,13 @@
                             <h2 class="card-header" th:text="${ticket.bookToSell.title}"></h2>
                             <div class="card-body">
                                 <a data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-html="true" href="#" id="user-profile"
-                                   th:text="${'Elado: ' + ticket.seller.userName}" class="profile-name"></a>
+                                   th:text="${'Elado: ' + ticket.seller.email}" class="profile-name"></a>
                                 <p th:text="${ticket.description}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                             </div>
                             <div id="popover-content-user-profile" class="hide">
                                 <img th:src="@{/img/book1.jpg}" class="profile-pic"/>
-                                <h2 th:text="${ticket.seller.userName}" class="center"></h2>
+                                <h2 th:text="${ticket.seller.email}" class="center"></h2>
                                 <ul class="list-unstyled">
                                     <li th:text="${ticket.seller.firstName + ' ' + ticket.seller.lastName}"></li>
                                     <li th:text="${ticket.seller.address.city}"></li>

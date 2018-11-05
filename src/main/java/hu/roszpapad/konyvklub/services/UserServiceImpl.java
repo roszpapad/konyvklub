@@ -1,7 +1,7 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.dtos.AddressForEverything;
-import hu.roszpapad.konyvklub.dtos.UserToBeCreated;
+import hu.roszpapad.konyvklub.dtos.AddressForEverythingDTO;
+import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.exceptions.UserAlreadyExistsException;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.Book;
@@ -26,9 +26,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserToBeCreated prepareUserForCreation() {
-        UserToBeCreated user = new UserToBeCreated();
-        AddressForEverything address = new AddressForEverything();
+    public UserToBeCreatedDTO prepareUserForCreation() {
+        UserToBeCreatedDTO user = new UserToBeCreatedDTO();
+        AddressForEverythingDTO address = new AddressForEverythingDTO();
         user.setAddress(address);
         return user;
     }
@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User user) {
         User current = findById(user.getId());
 
-        current.setId(user.getId());
         current.setFirstName(user.getFirstName());
         current.setLastName(user.getLastName());
         current.setEmail(user.getEmail());
@@ -75,8 +74,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User switchActive(User user) {
-
+    public User switchActive(Long id) {
+        User user = findById(id);
         user.setActive(!user.isActive());
         return userRepository.save(user);
     }
@@ -106,4 +105,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void changeBookBetweenUsers(User user1, Book book1, User user2, Book book2) {
+        user1.getBooks().remove(book1);
+        user2.getBooks().remove(book2);
+
+        user1.getBooks().add(book2);
+        user2.getBooks().add(book1);
+
+        book1.setOwner(user2);
+        book2.setOwner(user1);
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        userRepository.save(user1);
+        userRepository.save(user2);
+    }
 }

@@ -5,4 +5,6 @@ import hu.roszpapad.konyvklub.model.Book;
 public interface BookService {
 
     Book freeBook(Book book);
+
+    Book findById(Long id);
 }
