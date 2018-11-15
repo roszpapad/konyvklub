@@ -7,4 +7,12 @@ public interface BookService {
     Book freeBook(Book book);
 
     Book findById(Long id);
+
+    Book createBook(Book book);
+
+    Book updateBook(Book book);
+
+    void deleteBook(Long id);
+
+    Book makeBookNotOfferable(Book book);
 }

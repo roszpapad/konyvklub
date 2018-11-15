@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,9 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addBookToUser(User user, Book book) {
-        List<Book> books = user.getBooks();
-        books.add(book);
-        user.setBooks(books);
+        user.getBooks().add(book);
     }
 
     @Override
