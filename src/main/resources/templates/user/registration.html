@@ -31,10 +31,9 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <div  th:class="${#fields.hasErrors('firstName')}
-                                ?  'has-error'">
+                            <div>
                                 <label>First Name</label>
-                                <input type="text" class="form-control" th:field="*{firstName}" th:errorclass="has-error"/>
+                                <input type="text" class="form-control" th:field="*{firstName}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('firstName')}">
                                         <ul th:each="err : ${#fields.errors('firstName')}">
                                             <li th:text="${err}"></li>
@@ -42,10 +41,9 @@
                                 </span>
                             </div>
 
-                            <div  th:class="${#fields.hasErrors('lastName')}
-                                ?  'has-error'">
+                            <div>
                                 <label>Last Name</label>
-                                <input type="text" class="form-control" th:field="*{lastName}" th:errorclass="has-error"/>
+                                <input type="text" class="form-control" th:field="*{lastName}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('lastName')}">
                                         <ul th:each="err : ${#fields.errors('lastName')}">
                                             <li th:text="${err}"></li>
@@ -53,10 +51,9 @@
                                 </span>
                             </div>
 
-                            <div  th:class="${#fields.hasErrors('email')}
-                                ?  'has-error'">
+                            <div>
                                 <label>Email Address</label>
-                                <input type="text" class="form-control" th:field="*{email}" th:errorclass="has-error"/>
+                                <input type="text" class="form-control" th:field="*{email}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('email')}">
                                         <ul th:each="err : ${#fields.errors('email')}">
                                             <li th:text="${err}"></li>
@@ -64,10 +61,9 @@
                                 </span>
                             </div>
 
-                            <div  th:class="${#fields.hasErrors('password')}
-                                ?  'has-error'">
+                            <div>
                                 <label>Password</label>
-                                <input type="text" class="form-control" th:field="*{password}" th:errorclass="has-error"/>
+                                <input type="password" class="form-control" th:field="*{password}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('password')}">
                                         <ul th:each="err : ${#fields.errors('password')}">
                                             <li th:text="${err}"></li>
@@ -75,16 +71,50 @@
                                 </span>
                             </div>
 
-                            <div  th:class="${#fields.hasErrors('passConfirm')}
-                                ?  'has-error'">
+                            <div>
                                 <label>Confirm Password</label>
-                                <input type="text" class="form-control" th:field="*{passConfirm}" th:errorclass="has-error"/>
+                                <input type="password" class="form-control" th:field="*{passConfirm}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('passConfirm')}">
                                         <ul th:each="err : ${#fields.errors('passConfirm')}">
                                             <li th:text="${err}"></li>
                                         </ul>
                                 </span>
                             </div>
+
+                            <div>
+                                <p th:if="${#fields.hasErrors('global')}" th:text="${#fields.errors('global')}"></p>
+                            </div>
+
+                            <div>
+                                <label>City</label>
+                                <input type="text" class="form-control" th:field="*{address.city}"/>
+                                <span class="help-block" th:if="${#fields.hasErrors('address.city')}">
+                                        <ul th:each="err : ${#fields.errors('address.city')}">
+                                            <li th:text="${err}"></li>
+                                        </ul>
+                                </span>
+                            </div>
+
+                            <div>
+                                <label>Street</label>
+                                <input type="text" class="form-control" th:field="*{address.street}"/>
+                                <span class="help-block" th:if="${#fields.hasErrors('address.street')}">
+                                        <ul th:each="err : ${#fields.errors('address.street')}">
+                                            <li th:text="${err}"></li>
+                                        </ul>
+                                </span>
+                            </div>
+
+                            <div>
+                                <label>Number</label>
+                                <input type="text" class="form-control" th:field="*{address.number}"/>
+                                <span class="help-block" th:if="${#fields.hasErrors('address.number')}">
+                                        <ul th:each="err : ${#fields.errors('address.number')}">
+                                            <li th:text="${err}"></li>
+                                        </ul>
+                                </span>
+                            </div>
+
 
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
