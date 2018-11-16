@@ -13,7 +13,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
-    private Boolean admin;
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
@@ -61,14 +60,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Boolean getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
     }
 
     public Address getAddress() {

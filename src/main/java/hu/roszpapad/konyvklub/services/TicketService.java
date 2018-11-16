@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.Ticket;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface TicketService {
     Ticket createTicket(Ticket ticket);
     Ticket updateTicket(Ticket ticket);
     void deleteTicket(Long id);
+    Ticket removeOfferFromTicket(Ticket ticket, Offer offer);
 }

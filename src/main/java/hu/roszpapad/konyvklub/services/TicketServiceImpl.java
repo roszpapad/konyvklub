@@ -31,8 +31,6 @@ public class TicketServiceImpl implements TicketService{
 
     private final Converter<Offer,OfferToBeDisplayedDTO> displayableOfferConverter;
 
-    private final OfferService offerService;
-
     private final Long NUMBER_OF_MONTHS_ACTIVE = 3L;
 
     @Override
@@ -87,5 +85,10 @@ public class TicketServiceImpl implements TicketService{
     }
 
 
+    @Override
+    public Ticket removeOfferFromTicket(Ticket ticket, Offer offer) {
+        ticket.getOffers().remove(offer);
+        return ticketRepository.save(ticket);
+    }
 }
 

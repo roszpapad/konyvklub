@@ -5,7 +5,6 @@ import hu.roszpapad.konyvklub.model.Status;
 import hu.roszpapad.konyvklub.model.Ticket;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface OfferService {
 
@@ -15,5 +14,5 @@ public interface OfferService {
     Collection<Offer> getOffersByStatusAndTicket(Status status, Ticket ticket);
     void deleteOffer(Long offerId);
     Ticket acceptOffer(Ticket ticket, Offer offer);
-    void rejectPendingOffers(List<Offer> offers);
+    void rejectOffer(Offer offer);
 }

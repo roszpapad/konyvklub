@@ -53,17 +53,6 @@
                                 </span>
                             </div>
 
-                            <div  th:class="${#fields.hasErrors('username')}
-                                ?  'has-error'">
-                                <label>Username</label>
-                                <input type="text" class="form-control" th:field="*{username}" th:errorclass="has-error"/>
-                                <span class="help-block" th:if="${#fields.hasErrors('username')}">
-                                        <ul th:each="err : ${#fields.errors('username')}">
-                                            <li th:text="${err}"></li>
-                                        </ul>
-                                </span>
-                            </div>
-
                             <div  th:class="${#fields.hasErrors('email')}
                                 ?  'has-error'">
                                 <label>Email Address</label>

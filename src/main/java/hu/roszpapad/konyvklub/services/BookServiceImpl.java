@@ -56,6 +56,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book makeBookNotOfferable(Book book) {
-        return null;
+        book.setOfferable(false);
+        return bookRepository.save(book);
     }
 }

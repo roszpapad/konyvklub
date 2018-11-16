@@ -24,6 +24,9 @@ public class Offer {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
+    @Lob
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +66,13 @@ public class Offer {
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

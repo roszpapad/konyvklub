@@ -1,6 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.dtos.AddressForEverythingDTO;
+import hu.roszpapad.konyvklub.dtos.AddressToBeSavedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.exceptions.UserAlreadyExistsException;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserToBeCreatedDTO prepareUserForCreation() {
         UserToBeCreatedDTO user = new UserToBeCreatedDTO();
-        AddressForEverythingDTO address = new AddressForEverythingDTO();
+        AddressToBeSavedDTO address = new AddressToBeSavedDTO();
         user.setAddress(address);
         return user;
     }

@@ -1,6 +1,6 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.AddressForEverythingDTO;
+import hu.roszpapad.konyvklub.dtos.AddressToBeSavedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.model.Address;
 import hu.roszpapad.konyvklub.model.User;
@@ -14,12 +14,12 @@ public class UserToBeCreatedDTOConverter implements Converter<User, UserToBeCrea
 
     private final ModelMapper modelMapper;
 
-    private final Converter<Address, AddressForEverythingDTO> addressForEverythingConverter;
+    private final Converter<Address, AddressToBeSavedDTO> addressToBeSavedDTOConverter;
 
     @Override
     public UserToBeCreatedDTO toDTO(User entity) {
         UserToBeCreatedDTO userDTO = new UserToBeCreatedDTO();
-        userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
+        userDTO.setAddress(addressToBeSavedDTOConverter.toDTO(entity.getAddress()));
         userDTO.setEmail(entity.getEmail());
         userDTO.setFirstName(entity.getFirstName());
         userDTO.setLastName(entity.getLastName());
@@ -33,7 +33,7 @@ public class UserToBeCreatedDTOConverter implements Converter<User, UserToBeCrea
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setAddress(addressForEverythingConverter.toEntity(dto.getAddress()));
+        user.setAddress(addressToBeSavedDTOConverter.toEntity(dto.getAddress()));
         user.setPassword(dto.getPassword());
         return user;
     }

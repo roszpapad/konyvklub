@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
 import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.TicketExpiredOrNotOpenException;
 import hu.roszpapad.konyvklub.model.*;
@@ -23,6 +24,8 @@ public class OfferServiceImpl implements OfferService {
 
     private final TicketRepository ticketRepository;
 
+    private final TicketService ticketService;
+
     @Override
     public Offer findById(Long id) {
         return offerRepository.findById(id).orElseThrow(() -> new OfferNotFoundException());
@@ -30,6 +33,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Offer createOffer(Offer offer) {
+        offer.setStatus(Status.PENDING);
         return offerRepository.save(offer);
     }
 
@@ -40,18 +44,24 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Offer updateOffer(Offer offer) {
-        //TODO: if (!offer.getStatus().equals(Status.PENDING)) throw vmi exception;
-        Offer current = offerRepository.findById(offer.getId()).orElseThrow(() -> new OfferNotFoundException());
 
+        Offer current = findById(offer.getId());
+        if (!current.getStatus().equals(Status.PENDING)){
+            throw new OfferCantBeUpdatedException();
+        }
+
+        current.setDescription(offer.getDescription());
         current.setBookToPay(offer.getBookToPay());
         return current;
     }
 
     @Override
     public void deleteOffer(Long offerId) {
-        Offer current = offerRepository.findById(offerId).
-                orElseThrow(() -> new OfferNotFoundException());
-        bookService.freeBook(current.getBookToPay());
+        Offer current = findById(offerId);
+        if (current.getStatus().equals(Status.PENDING))
+            bookService.freeBook(current.getBookToPay());
+
+        ticketService.removeOfferFromTicket(current.getTicket(), current);
         userService.removeOfferFromUser(current.getCustomer(), current);
         offerRepository.delete(current);
     }
@@ -66,7 +76,7 @@ public class OfferServiceImpl implements OfferService {
 
         List<Offer> notAcceptedOffers = ticket.getOffers();
         notAcceptedOffers.remove(offer);
-        rejectPendingOffers(notAcceptedOffers);
+        notAcceptedOffers.forEach(offer1 -> rejectOffer(offer1));
 
         Book soldBook = ticket.getBookToSell();
         Book paidBook = offer.getBookToPay();
@@ -83,13 +93,11 @@ public class OfferServiceImpl implements OfferService {
         return ticket;
     }
 
-    public void rejectPendingOffers(List<Offer> offers) {
-        offers.stream().filter(offer -> offer.getStatus().equals(Status.PENDING))
-                .forEach(offer -> rejectOffer(offer));
-    }
-
     public void rejectOffer(Offer offer){
-        offer.setStatus(Status.REJECTED);
-        bookService.freeBook(offer.getBookToPay());
+        if (offer.getStatus().equals(Status.PENDING)) {
+            offer.setStatus(Status.REJECTED);
+            bookService.freeBook(offer.getBookToPay());
+            offerRepository.save(offer);
+        }
     }
 }

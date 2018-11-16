@@ -26,5 +26,5 @@ public class UserToBeCreatedDTO {
 
     private String passConfirm;
 
-    private AddressForEverythingDTO address;
+    private AddressToBeSavedDTO address;
 }
