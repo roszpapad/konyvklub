@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 @PasswordsMatchConstraint
 public class UserToBeCreatedDTO {
 
-
     @NotBlank
     @NotNull
     private String firstName;

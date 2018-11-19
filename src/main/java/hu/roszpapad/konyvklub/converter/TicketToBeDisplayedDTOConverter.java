@@ -26,6 +26,7 @@ public class TicketToBeDisplayedDTOConverter implements Converter<Ticket,TicketT
         ticketDTO.setEndDate(entity.getEndDate());
         ticketDTO.setId(entity.getId());
         //TODO : offerDTOt csinalni ticketDTO.setOffers();
+        ticketDTO.setOffers(entity.getOffers());
         ticketDTO.setOpen(entity.isOpen());
         ticketDTO.setSeller(userToBeDisplayedDTOConverter.toDTO(entity.getSeller()));
         return ticketDTO;

@@ -45,7 +45,7 @@ public class OfferController {
         //todo offerDTO.setCustomer(currentUser);
         model.addAttribute("offer",offerDTO);
         model.addAttribute("ticket",ticket);
-        return "tickets/makeOffer";
+        return "offers/makeOffer";
     }
 
     @PostMapping("/ticket/{ticketId}/offer")

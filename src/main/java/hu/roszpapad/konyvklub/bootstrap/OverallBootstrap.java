@@ -2,11 +2,12 @@
 package hu.roszpapad.konyvklub.bootstrap;
 
 import hu.roszpapad.konyvklub.model.*;
-import hu.roszpapad.konyvklub.repositories.*;
-import hu.roszpapad.konyvklub.services.UserService;
+import hu.roszpapad.konyvklub.repositories.BookRepository;
+import hu.roszpapad.konyvklub.repositories.OfferRepository;
+import hu.roszpapad.konyvklub.repositories.TicketRepository;
+import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -14,30 +15,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class OverallBootstrap implements ApplicationListener<ContextRefreshedEvent>{
 
-    private final AddressRepository addressRepository;
     private final BookRepository bookRepository;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
-    private final ModelMapper modelMapper;
     private final OfferRepository offerRepository;
+
 
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         List<Ticket> toSave = getTickets();
-        //toSave.addOffer(getOffer());
+        getOffer();
+        Offer offer = offerRepository.findById(1L).get();
+        toSave.get(0).getOffers().add(offer);
+        offer.setTicket(toSave.get(0));
         ticketRepository.saveAll(toSave);
-        //ticketRepository.save(getTicketss());
-       /* Ticket ticket = ticketRepository.findById(1L).get();
-        ticket.addOffer(getOffer());
-        ticketRepository.save(ticket);*/
+        writeOffers(ticketRepository.findById(1L).get());
+    }
+
+    private void writeOffers(Ticket ticket){
+        System.out.println("Offerek:");
+        System.out.println(ticket.getOffers().stream().map(offer -> offer.getBookToPay().getTitle()).collect(Collectors.toList()));
+        System.out.println(ticket.getBookToSell().getTitle());
     }
 
     private List<Ticket> getTickets(){
@@ -148,9 +154,16 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
     private Offer getOffer(){
         Offer offer = new Offer();
-        offer.setCustomer(userRepository.findById(2L).get());
-        offer.setBookToPay(bookRepository.findById(2L).get());
-        return offer;
+        User user = userRepository.findById(2L).get();
+        Book book = bookRepository.findById(2L).get();
+        offer.setCustomer(user);
+        offer.setBookToPay(book);
+        user.getOffersInInterest().add(offer);
+        book.setOfferable(false);
+        Offer offerSaved = offerRepository.save(offer);
+        bookRepository.save(book);
+        userRepository.save(user);
+        return offerSaved;
     }
 }
 

@@ -1,0 +1,21 @@
+.pending .card-header{
+    background-color: rgb(56, 56, 255);
+    color:white;
+}
+
+.rejected .card-header {
+    background-color: rgb(255, 80, 80);
+    color:white;
+}
+
+.accepted .card-header {
+    background-color: rgb(88, 255, 88);
+    color:white;
+}
+
+.status-text {
+    font-size: 14px;
+}
+
+
+
