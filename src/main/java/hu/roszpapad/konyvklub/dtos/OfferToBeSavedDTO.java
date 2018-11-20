@@ -6,9 +6,8 @@ import hu.roszpapad.konyvklub.model.User;
 import lombok.Data;
 
 @Data
-public class OfferToBeSavedOrUpdatedDTO {
+public class OfferToBeSavedDTO {
 
-    private Long id;
     private Book bookToPay;
     private Status status = Status.PENDING;
     private User customer;

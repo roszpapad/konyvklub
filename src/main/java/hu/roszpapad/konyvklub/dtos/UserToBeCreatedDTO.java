@@ -21,6 +21,10 @@ public class UserToBeCreatedDTO {
     @NotBlank
     private String lastName;
 
+    @NotNull
+    @NotBlank
+    private String username;
+
     @ValidEmail
     private String email;
 

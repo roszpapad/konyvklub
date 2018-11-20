@@ -1,7 +1,7 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.OfferToBeSavedOrUpdatedDTO;
+import hu.roszpapad.konyvklub.dtos.OfferToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.exceptions.TicketClosedException;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.Ticket;
@@ -23,7 +23,7 @@ public class OfferController {
 
     private final TicketService ticketService;
 
-    private final Converter<Offer, OfferToBeSavedOrUpdatedDTO> offerConverter;
+    private final Converter<Offer, OfferToBeUpdatedDTO> offerConverter;
 
     @GetMapping("/ticket/{ticketId}/offer/{offerId}/accept")
     public String acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
@@ -40,7 +40,7 @@ public class OfferController {
         if (!ticket.isOpen())
             throw new TicketClosedException();
 
-        OfferToBeSavedOrUpdatedDTO offerDTO = new OfferToBeSavedOrUpdatedDTO();
+        OfferToBeUpdatedDTO offerDTO = new OfferToBeUpdatedDTO();
         offerDTO.setTicketId(ticketId);
         //todo offerDTO.setCustomer(currentUser);
         model.addAttribute("offer",offerDTO);
@@ -49,7 +49,7 @@ public class OfferController {
     }
 
     @PostMapping("/ticket/{ticketId}/offer")
-    public String createOffer(@ModelAttribute("offer") OfferToBeSavedOrUpdatedDTO offerDTO){
+    public String createOffer(@ModelAttribute("offer") OfferToBeUpdatedDTO offerDTO){
 
         Offer offer = offerService.createOffer(offerConverter.toEntity(offerDTO));
 

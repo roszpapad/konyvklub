@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,17 +32,15 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         List<Ticket> toSave = getTickets();
         getOffer();
+        getOffer1();
         Offer offer = offerRepository.findById(1L).get();
+        Offer offer1 = offerRepository.findById(2L).get();
         toSave.get(0).getOffers().add(offer);
+        toSave.get(0).getOffers().add(offer1);
         offer.setTicket(toSave.get(0));
+        offer1.setTicket(toSave.get(0));
+        offer.setStatus(Status.ACCEPTED);
         ticketRepository.saveAll(toSave);
-        writeOffers(ticketRepository.findById(1L).get());
-    }
-
-    private void writeOffers(Ticket ticket){
-        System.out.println("Offerek:");
-        System.out.println(ticket.getOffers().stream().map(offer -> offer.getBookToPay().getTitle()).collect(Collectors.toList()));
-        System.out.println(ticket.getBookToSell().getTitle());
     }
 
     private List<Ticket> getTickets(){
@@ -63,12 +60,14 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         seller.setFirstName("Laszlo");
         seller.setLastName("Kovacs");
         seller.setPassword("lola");
+        seller.setUsername("lacika");
         seller.setEmail("lola@freemail.hu");
 
         User costumer = new User();
         costumer.setFirstName("Zita");
         costumer.setLastName("Marias");
         costumer.setPassword("kima");
+        costumer.setUsername("Zituka");
         costumer.setEmail("kima@freemail.hu");
 
         seller.setAddress(address);
@@ -85,6 +84,10 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
         Book book2 = new Book();
         book2.setTitle("Gyuruk ura 2");
+        book2.setWriter("Kovacs Pal");
+        book2.setIsbn("12354657684");
+        book2.setPublisher("Konyv Kiado");
+        book2.setYearOfPublishing(2009);
         seller.addBook(book2);
 
         Book book3 = new Book();
@@ -158,6 +161,24 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         Book book = bookRepository.findById(2L).get();
         offer.setCustomer(user);
         offer.setBookToPay(book);
+        offer.setDescription("Az alabbi konyv nagyon erdekes, es pont az altalad leirt kalandokat igeri." +
+                " Higgy nekem, nem fogod megbanni!!");
+        user.getOffersInInterest().add(offer);
+        book.setOfferable(false);
+        Offer offerSaved = offerRepository.save(offer);
+        bookRepository.save(book);
+        userRepository.save(user);
+        return offerSaved;
+    }
+
+    private Offer getOffer1(){
+        Offer offer = new Offer();
+        User user = userRepository.findById(2L).get();
+        Book book = bookRepository.findById(2L).get();
+        offer.setCustomer(user);
+        offer.setBookToPay(book);
+        offer.setDescription("Az alabbi konyv nagyon erdekes, es pont az altalad leirt kalandokat igeri." +
+                " Higgy nekem, nem fogod megbanni!!");
         user.getOffersInInterest().add(offer);
         book.setOfferable(false);
         Offer offerSaved = offerRepository.save(offer);

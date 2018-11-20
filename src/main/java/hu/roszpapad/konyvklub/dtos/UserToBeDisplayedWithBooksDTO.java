@@ -2,9 +2,11 @@ package hu.roszpapad.konyvklub.dtos;
 
 import lombok.Data;
 
-@Data
-public class UserToBeDisplayedDTO {
+import java.util.ArrayList;
+import java.util.List;
 
+@Data
+public class UserToBeDisplayedWithBooksDTO {
     private Long id;
 
     private String username;
@@ -16,4 +18,6 @@ public class UserToBeDisplayedDTO {
     private String email;
 
     private AddressForEverythingDTO address;
+
+    private List<BookToBeDisplayedDTO> books = new ArrayList<>();
 }

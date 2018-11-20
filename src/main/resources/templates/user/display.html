@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Konyvklub</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+        crossorigin="anonymous">
 </head>
+
 <body>
 
+    <nav class="navbar navbar-expand-md">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/img/book.png}" class="img-responsive" style="width:45px; height:45px;" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav menu">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Rolunk</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Bejelentkezes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Regisztracio</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="wrapper">
+
+        <nav id="sidebar">
+            <ul class="list-unstyled">
+                <li class="sidebar-item" id="datasBtn">
+                    <a href="#">Adataim</a>
+                </li>
+                <li class="sidebar-item" id="booksBtn">
+                    <a href="#">Könyveim</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 ml-2">
+                    <button class="btn sidebar-toggler" id="sidebarCollapse">
+                        <i class="fas fa-bars"></i>
+                        <span>Menü</span>
+                    </button>
+
+                    <div class="row" id="account-details">
+                        <div class="col-12 col-md-6">
+                            <h2 class="mt-2 mb-4">Adataim</h2>
+                            <p th:text="${'Vezetéknév: ' + user.lastName}"></p>
+                            <p th:text="${'Keresztnév: ' + user.firstName}"></p>
+                            <p th:text="${'Email: ' + user.email}"></p>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <h2 class="mt-2 mb-4">Jelszó cseréje</h2>
+                            <form>
+                                <label for="old">Régi jelszó</label>
+                                <input type="password" name="old" class="form-control form-control-sm mb-3" />
+                                <label for="new">Új jelszó</label>
+                                <input type="password" name="new" class="form-control form-control-sm mb-3" />
+                                <label for="newConfirm">Új jelszó ismét</label>
+                                <input type="password" name="newConfirm" class="form-control form-control-sm mb-3" />
+                                <button type="submit" class="btn btn-primary float-right">Csere!</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row mt-4" id="books">
+                        <div class="col-12">
+                            <h2 class="mt-2 mb-4">Könyveim</h2>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>

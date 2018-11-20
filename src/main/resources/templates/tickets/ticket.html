@@ -53,7 +53,7 @@
         <div class="row card-row">
             <div class="col-10 offset-1">
                 <div class="card shadow">
-                    <h2 class="card-header" th:text="${ticket.bookToSell.title}">Book Title</h2>
+                    <h2 class="card-header text-center" th:text="${ticket.bookToSell.title}">Book Title</h2>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
@@ -71,12 +71,12 @@
         <div class="row" style="margin-top:50px;">
             <div class="col-12">
                 <div style="border-bottom: 1px solid black;">
-                    <h2>Offers
-                        <span class="float-right">
+                    <h2>Ajánlatok
+                        <span class="float-right btn-text-white">
                             <a class="btn btn-success">
                                 <span>
                                     <i class="fas fa-plus"></i>
-                                </span> Offer hozzaadasa</a>
+                                </span> Ajánlat hozzáadása</a>
                         </span>
                     </h2>
                 </div>
@@ -84,12 +84,12 @@
         </div>
         <div class="row" style="margin-top:50px;">
             <th:block th:each="offer : ${ticket.offers}">
-                <div class="col-12 col-md-8 offset-md-2" th:classappend="${#strings.equals(offer.status, 'PENDING')} ? pending : (${#strings.equals(offer.status, 'ACCEPTED')} ? accepted : rejected)">
+                <div class="col-12 col-md-8 offset-md-2 mb-5" th:classappend="${#strings.equals(offer.status, 'PENDING')} ? pending : (${#strings.equals(offer.status, 'ACCEPTED')} ? accepted : rejected)">
                     <div class="card shadow">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6 col-12">
-                                    <h2 th:text="${offer.customer.email}"></h2>
+                                    <h2 th:text="${offer.bookToPay.title}"></h2>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <p class="float-right status-text" th:text="${offer.status}"></p>
@@ -97,10 +97,35 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h5 th:text="${'Customer :' + offer.customer.email}" class="card-title"></h5>
-                            <p th:text="${offer.bookToPay.title}" class="card-text"></p>
-                            <a href="#" class="btn btn-primary float-right">Elfogad</a>
+                            <div class="row profile-row">
+                                <div class="col-12 mb-2">
+                                    <img th:src="@{/img/person.jpg}" class="profile-img" />
+                                    <span th:text="${offer.customer.username} + ', '" class="profile-name"></span>
+                                    <span th:text="${offer.customer.address.city}" class="profile-city"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12 col-sm-6">
+                                    <p th:text="${'Iro: ' + offer.bookToPay.writer}"></p>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <p th:text="${'Kiadas eve: ' + offer.bookToPay.yearOfPublishing}"></p>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <p th:text="${'Kiado: ' + offer.bookToPay.publisher}"></p>
+                                </div>
+                                <div th:if="${offer.bookToPay.isbn}" class="col-12 col-sm-6">
+                                    <p th:text="${'ISBN: ' + offer.bookToPay.isbn}"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mt-2 mb-2">
+                                    <h2>Miért velem cserélj?</h2>
+                                    <p th:text="${offer.description}"></p>
+                                </div>
+                            </div>
                             <a href="#" class="btn btn-danger float-right">Elutasit</a>
+                            <a href="#" class="btn btn-primary float-right mr-3">Elfogad</a>
                         </div>
                     </div>
                 </div>

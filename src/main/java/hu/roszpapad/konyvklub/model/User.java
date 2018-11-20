@@ -14,6 +14,7 @@ public class User {
     private String lastName;
     private String password;
     private String email;
+    private String username;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
@@ -130,5 +131,13 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
