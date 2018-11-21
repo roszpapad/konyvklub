@@ -45,7 +45,7 @@
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: 100vh;
+    min-height: 81vh;
     background-color: rgb(190,190,190);
 }
 
@@ -60,4 +60,43 @@
     #sidebar.active {
         margin-left: 0;
     }
+}
+
+#books {
+    display: none;
+}
+
+.add-book-btn{
+    border-radius: 50%;
+    color: white;
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.data-container {
+    position: relative;
+}
+
+
+.add-book-btn i {
+    font-size: 30px;
+}
+
+table {
+    color: white;
+}
+
+.offerable-row {
+    background-color: rgb(65, 230, 65);
+}
+
+.non-offerable-row {
+    background-color: rgb(255, 80, 80);
+}
+
+thead tr {
+    background-color: rgb(56, 56, 255);
 }

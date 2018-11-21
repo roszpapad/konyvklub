@@ -39,7 +39,6 @@ public class BookServiceImpl implements BookService {
         bookToUpdate.setWriter(book.getWriter());
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setPublisher(book.getPublisher());
-        bookToUpdate.setDescription(book.getDescription());
         bookToUpdate.setIsbn(book.getIsbn());
         return bookRepository.save(bookToUpdate);
     }

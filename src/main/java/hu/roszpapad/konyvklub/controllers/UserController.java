@@ -1,9 +1,11 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.dtos.BookToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedWithBooksDTO;
+import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ public class UserController {
     private final Converter<User, UserToBeDisplayedDTO> userToBeDisplayedConverter;
 
     private final Converter<User, UserToBeDisplayedWithBooksDTO> userToBeDisplayedWithBooksConverter;
+
+    private final Converter<Book, BookToBeCreatedDTO> bookToBeCreatedDTOConverter;
 
     @GetMapping("/register")
     public String registerUser(Model model){
@@ -66,6 +70,7 @@ public class UserController {
     public String getUserById(@PathVariable(name = "userId") Long userId,Model model){
 
         model.addAttribute("user", userToBeDisplayedWithBooksConverter.toDTO(userService.findById(userId)));
+        model.addAttribute("newBook", new BookToBeCreatedDTO());
         return "user/display";
     }
 
@@ -74,5 +79,13 @@ public class UserController {
 
         userService.switchActive(userId);
         return "redirect:/";
+    }
+
+    @PostMapping("/user/{userId}/book")
+    public String addBookToUser(@Valid @ModelAttribute(name = "newBook") BookToBeCreatedDTO bookDTO,
+                                @PathVariable(name = "userId") Long userId){
+
+        userService.addBookToUser(userService.findById(userId),bookToBeCreatedDTOConverter.toEntity(bookDTO));
+        return "redirect:/user/" + userId;
     }
 }

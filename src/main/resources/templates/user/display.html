@@ -63,6 +63,9 @@
         </nav>
 
         <div class="container">
+            <button type="button" class="btn btn-success add-book-btn float-right" data-toggle="modal" data-target="#addBookModal">
+                <i class="fas fa-plus"></i>
+            </button>
             <div class="row">
                 <div class="col-12 ml-2">
                     <button class="btn sidebar-toggler" id="sidebarCollapse">
@@ -92,15 +95,76 @@
                     </div>
                     <div class="row mt-4" id="books">
                         <div class="col-12">
-                            <h2 class="mt-2 mb-4">Könyveim</h2>
-                            
+                            <h2 class="mt-2 text-center">Könyveim</h2>
+                            <table class="table text-center table-responsive table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Iro</th>
+                                        <th>Cim</th>
+                                        <th>Kiado</th>
+                                        <th>Kiadas eve</th>
+                                        <th>ISBN</th>
+                                        <th>Hasznalatban van</th>
+                                        <th>Torles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <th:block th:each="book : ${user.books}">
+                                        <tr th:class="${book.offerable} ? 'offerable-row' : 'non-offerable-row'">
+                                            <td th:text="${book.writer}"></td>
+                                            <td th:text="${book.title}"></td>
+                                            <td th:text="${book.publisher}"></td>
+                                            <td th:text="${book.yearOfPublishing}"></td>
+                                            <td th:text="${book.isbn}"></td>
+                                            <td th:text="${book.offerable} ? 'NEM' : 'IGEN'"></td>
+                                            <td>
+                                                <form th:action="@{book/__${book.id}__(userId = ${user.id})}" th:method="delete">
+                                                    <input type="hidden" name="_method" value="delete" />
+                                                    <button type="submit" id="submitButton">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addBookModalTitle">Konyv hozzaadasa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:object="${newBook}" th:action="@{/user/__${user.id}__/book}" method="POST">
+                            <label>Cim</label>
+                            <input type="text" class="form-control" name="title" th:field="*{title}" required/>
+                            <label>Iro</label>
+                            <input type="text" class="form-control" name="writer" th:field="*{writer}" required/>
+                            <label>Kiado</label>
+                            <input type="text" class="form-control" name="publisher" th:field="*{publisher}" required/>
+                            <label>Kiadas eve</label>
+                            <input type="number" class="form-control" name="yearOfPublishing" th:field="*{yearOfPublishing}" required/>
+                            <label>ISBN</label>
+                            <input type="text" class="form-control" name="isbn" th:field="*{isbn}" />
+                            <button type="submit" class="btn btn-primary">Konyv hozzaadasa</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script th:src="@{/js/profile-menu.js}"></script>
 </body>
 
 </html>

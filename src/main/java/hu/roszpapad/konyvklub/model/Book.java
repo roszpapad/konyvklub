@@ -23,9 +23,6 @@ public class Book {
     private Boolean offerable = true;
     private String isbn;
 
-    @Lob
-    private String description;
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;

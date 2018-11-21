@@ -81,7 +81,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addBookToUser(User user, Book book) {
-        user.getBooks().add(book);
+
+        if (!user.getBooks().contains(book)) {
+            user.getBooks().add(book);
+            book.setOwner(user);
+            userRepository.save(user);
+        }
     }
 
     @Override
