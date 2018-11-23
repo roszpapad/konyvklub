@@ -71,15 +71,7 @@
     color: white;
     height: 60px;
     width: 60px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
 }
-
-.data-container {
-    position: relative;
-}
-
 
 .add-book-btn i {
     font-size: 30px;
@@ -99,4 +91,8 @@ table {
 
 thead tr {
     background-color: rgb(56, 56, 255);
+}
+
+#delete-btn {
+    color : white;
 }

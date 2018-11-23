@@ -6,12 +6,14 @@ import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class TicketServiceImpl implements TicketService{
 
     private final UserService userService;
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
     private final TicketRepository ticketRepository;
 
@@ -50,9 +52,9 @@ public class TicketServiceImpl implements TicketService{
         savableTicket.setEndDate(LocalDateTime.now().plusMonths(NUMBER_OF_MONTHS_ACTIVE));
         savableTicket.setOpen(true);
 
-        Book book = bookService.findById(ticket.getBookToSell().getId());
+        Book book = ticket.getBookToSell();
         User seller = book.getOwner();
-
+        book.setOfferable(false);
         savableTicket.setBookToSell(book);
         savableTicket.setSeller(seller);
         savableTicket.setDescription(ticket.getDescription());
@@ -74,13 +76,18 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public void deleteTicket(Long id) {
         Ticket current = findById(id);
+        List<Book> booksToBeFreed = new ArrayList<>();
 
         List<Offer> offersPending = current.getOffers().stream().filter(offer -> offer.getStatus().equals(Status.PENDING))
                 .collect(Collectors.toList());
-        offersPending.forEach(offer -> bookService.freeBook(offer.getBookToPay()));
-        bookService.freeBook(current.getBookToSell());
+        offersPending.forEach(offer -> booksToBeFreed.add(offer.getBookToPay()));
+        booksToBeFreed.add(current.getBookToSell());
         current.getOffers().forEach(offer -> userService.removeOfferFromUser(offer.getCustomer(), offer));
         userService.removeTicketFromUser(current.getSeller(),current);
+        booksToBeFreed.forEach(book -> {
+            book.setOfferable(true);
+            bookRepository.save(book);
+        });
         ticketRepository.delete(current);
     }
 

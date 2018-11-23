@@ -1,15 +1,12 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.OfferToBeUpdatedDTO;
-import hu.roszpapad.konyvklub.exceptions.TicketClosedException;
+import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
 import hu.roszpapad.konyvklub.model.Offer;
-import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.OfferService;
 import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +20,7 @@ public class OfferController {
 
     private final TicketService ticketService;
 
-    private final Converter<Offer, OfferToBeUpdatedDTO> offerConverter;
+    private final Converter<Offer, OfferToBeSavedDTO> offerToBeSavedDTOConverter;
 
     @GetMapping("/ticket/{ticketId}/offer/{offerId}/accept")
     public String acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
@@ -33,25 +30,11 @@ public class OfferController {
         return "redirect:/ticket/" + ticketId + "/offer/" + offerId;
     }
 
-    @GetMapping("/ticket/{ticketId}/offer/new")
-    public String newOffer(@PathVariable("ticketId") Long ticketId, Model model){
-        Ticket ticket = ticketService.findById(ticketId);
 
-        if (!ticket.isOpen())
-            throw new TicketClosedException();
+    @PostMapping("/tickets/{ticketId}/offer")
+    public String createOffer(@ModelAttribute("newOffer") OfferToBeSavedDTO offerDTO){
 
-        OfferToBeUpdatedDTO offerDTO = new OfferToBeUpdatedDTO();
-        offerDTO.setTicketId(ticketId);
-        //todo offerDTO.setCustomer(currentUser);
-        model.addAttribute("offer",offerDTO);
-        model.addAttribute("ticket",ticket);
-        return "offers/makeOffer";
-    }
-
-    @PostMapping("/ticket/{ticketId}/offer")
-    public String createOffer(@ModelAttribute("offer") OfferToBeUpdatedDTO offerDTO){
-
-        Offer offer = offerService.createOffer(offerConverter.toEntity(offerDTO));
+        Offer offer = offerService.createOffer(offerToBeSavedDTOConverter.toEntity(offerDTO));
 
         return "redirect:/ticket/" + offer.getTicket().getId();
     }

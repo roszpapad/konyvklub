@@ -26,5 +26,4 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-
 }

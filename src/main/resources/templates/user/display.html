@@ -63,9 +63,6 @@
         </nav>
 
         <div class="container">
-            <button type="button" class="btn btn-success add-book-btn float-right" data-toggle="modal" data-target="#addBookModal">
-                <i class="fas fa-plus"></i>
-            </button>
             <div class="row">
                 <div class="col-12 ml-2">
                     <button class="btn sidebar-toggler" id="sidebarCollapse">
@@ -96,7 +93,7 @@
                     <div class="row mt-4" id="books">
                         <div class="col-12">
                             <h2 class="mt-2 text-center">Könyveim</h2>
-                            <table class="table text-center table-responsive table-bordered">
+                            <table class="table text-center table-responsive table-bordered mt-4">
                                 <thead>
                                     <tr>
                                         <th>Iro</th>
@@ -118,9 +115,9 @@
                                             <td th:text="${book.isbn}"></td>
                                             <td th:text="${book.offerable} ? 'NEM' : 'IGEN'"></td>
                                             <td>
-                                                <form th:action="@{book/__${book.id}__(userId = ${user.id})}" th:method="delete">
+                                                <form th:if="${book.offerable}" th:action="@{book/__${book.id}__(userId = ${user.id})}" th:method="delete">
                                                     <input type="hidden" name="_method" value="delete" />
-                                                    <button type="submit" id="submitButton">
+                                                    <button type="submit" class="btn btn-danger" id="delete-btn">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
@@ -129,6 +126,11 @@
                                     </th:block>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-success add-book-btn" data-toggle="modal" data-target="#addBookModal">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 </div>

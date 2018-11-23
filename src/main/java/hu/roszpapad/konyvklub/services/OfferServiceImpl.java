@@ -6,6 +6,7 @@ import hu.roszpapad.konyvklub.exceptions.TicketExpiredOrNotOpenException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
+import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final UserService userService;
+
+    private final UserRepository userRepository;
 
     private final OfferRepository offerRepository;
 
@@ -33,7 +36,10 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Offer createOffer(Offer offer) {
-        offer.setStatus(Status.PENDING);
+        User customer = offer.getBookToPay().getOwner();
+        offer.setCustomer(customer);
+        customer.getOffersInInterest().add(offer);
+        userRepository.save(customer);
         return offerRepository.save(offer);
     }
 

@@ -3,7 +3,9 @@ package hu.roszpapad.konyvklub.services;
 import hu.roszpapad.konyvklub.exceptions.BookCantBeDeletedException;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
+import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,10 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+
+    private final UserService userService;
+
+    private final UserRepository userRepository;
 
     @Override
     public Book freeBook(Book book) {
@@ -27,7 +33,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book createBook(Book book) {
-        //TODO : book.setOwner("current user");
         return bookRepository.save(book);
     }
 
@@ -43,13 +48,18 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(bookToUpdate);
     }
 
+
+    //TODO : Gond van a book-ticket relacioval  - vmit kitalalni
     @Override
     public void deleteBook(Long id) {
         Book bookToDelete = findById(id);
         if (!bookToDelete.getOfferable()) {
             throw new BookCantBeDeletedException();
         } else {
-            bookRepository.delete(bookToDelete);
+            //userService.deleteBookFromUser(bookToDelete.getOwner(), bookToDelete);
+            User owner = bookToDelete.getOwner();
+            owner.getBooks().remove(bookToDelete);
+
         }
     }
 

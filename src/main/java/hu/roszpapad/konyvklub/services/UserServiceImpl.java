@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
     public void deleteBookFromUser(User user, Book book) {
         user.getBooks().remove(book);
         bookRepository.delete(book);
+        userRepository.save(user);
     }
 
     @Override

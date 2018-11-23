@@ -7,6 +7,7 @@ import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedWithBooksDTO;
 import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.User;
+import hu.roszpapad.konyvklub.services.BookService;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+
+    private final BookService bookService;
 
     private final Converter<User, UserToBeCreatedDTO> userToBeCreatedConverter;
 
@@ -85,7 +88,8 @@ public class UserController {
     public String addBookToUser(@Valid @ModelAttribute(name = "newBook") BookToBeCreatedDTO bookDTO,
                                 @PathVariable(name = "userId") Long userId){
 
-        userService.addBookToUser(userService.findById(userId),bookToBeCreatedDTOConverter.toEntity(bookDTO));
+        Book createdBook = bookService.createBook(bookToBeCreatedDTOConverter.toEntity(bookDTO));
+        userService.addBookToUser(userService.findById(userId), createdBook);
         return "redirect:/user/" + userId;
     }
 }

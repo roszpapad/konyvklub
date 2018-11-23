@@ -1,9 +1,8 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.BookToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
-import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.Ticket;
+import hu.roszpapad.konyvklub.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TicketToBeCreatedDTOConverter implements Converter<Ticket, TicketToBeCreatedDTO> {
 
-    private final Converter<Book, BookToBeDisplayedDTO> bookToBeDisplayedDTOConverter;
+    private final BookService bookService;
 
     @Override
     public TicketToBeCreatedDTO toDTO(Ticket entity) {
         TicketToBeCreatedDTO ticketDTO = new TicketToBeCreatedDTO();
-        ticketDTO.setBookToSell(bookToBeDisplayedDTOConverter.toDTO(entity.getBookToSell()));
+        ticketDTO.setId(entity.getBookToSell().getId());
         ticketDTO.setDescription(entity.getDescription());
         return ticketDTO;
     }
@@ -24,7 +23,7 @@ public class TicketToBeCreatedDTOConverter implements Converter<Ticket, TicketTo
     @Override
     public Ticket toEntity(TicketToBeCreatedDTO dto) {
         Ticket ticket = new Ticket();
-        ticket.setBookToSell(bookToBeDisplayedDTOConverter.toEntity(dto.getBookToSell()));
+        ticket.setBookToSell(bookService.findById(dto.getId()));
         ticket.setDescription(dto.getDescription());
         return ticket;
     }
