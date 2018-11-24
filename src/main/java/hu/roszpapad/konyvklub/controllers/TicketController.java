@@ -40,7 +40,11 @@ public class TicketController {
         model.addAttribute("newTicket",new TicketToBeCreatedDTO());
         List<Book> books = userService.findById(1L).getBooks();
         List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
-        books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));
+        books.forEach(book -> {
+            if (book.getOfferable()){
+                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
+            }
+        });
         model.addAttribute("userBooks",bookDTOs);
         return "tickets/tickets";
     }
@@ -53,7 +57,12 @@ public class TicketController {
         model.addAttribute("newOffer", newOffer);
         List<Book> books = userService.findById(1L).getBooks();
         List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
-        books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));
+        books.forEach(book -> {
+            if (book.getOfferable()){
+                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
+            }
+        });
+        model.addAttribute("userBooks",bookDTOs);
         return "tickets/ticket";
     }
 

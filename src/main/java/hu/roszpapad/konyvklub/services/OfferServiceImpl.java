@@ -39,6 +39,7 @@ public class OfferServiceImpl implements OfferService {
         User customer = offer.getBookToPay().getOwner();
         offer.setCustomer(customer);
         customer.getOffersInInterest().add(offer);
+        offer.getBookToPay().setOfferable(false);
         userRepository.save(customer);
         return offerRepository.save(offer);
     }
@@ -99,11 +100,13 @@ public class OfferServiceImpl implements OfferService {
         return ticket;
     }
 
-    public void rejectOffer(Offer offer){
+    public Offer rejectOffer(Offer offer){
         if (offer.getStatus().equals(Status.PENDING)) {
             offer.setStatus(Status.REJECTED);
-            bookService.freeBook(offer.getBookToPay());
-            offerRepository.save(offer);
+            offer.getBookToPay().setOfferable(true);
+            return offerRepository.save(offer);
+        } else {
+            throw new OfferCantBeUpdatedException();
         }
     }
 }

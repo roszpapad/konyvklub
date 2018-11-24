@@ -14,5 +14,5 @@ public interface OfferService {
     Collection<Offer> getOffersByStatusAndTicket(Status status, Ticket ticket);
     void deleteOffer(Long offerId);
     Ticket acceptOffer(Ticket ticket, Offer offer);
-    void rejectOffer(Offer offer);
+    Offer rejectOffer(Offer offer);
 }

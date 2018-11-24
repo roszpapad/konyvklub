@@ -92,4 +92,9 @@ public class UserController {
         userService.addBookToUser(userService.findById(userId), createdBook);
         return "redirect:/user/" + userId;
     }
+
+    @GetMapping("/login")
+    public String loginPage(){
+        return "user/login";
+    }
 }

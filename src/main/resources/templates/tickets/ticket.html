@@ -73,10 +73,10 @@
                 <div style="border-bottom: 1px solid black;">
                     <h2>Ajánlatok
                         <span class="float-right btn-text-white">
-                            <a class="btn btn-success">
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addOfferModal">
                                 <span>
                                     <i class="fas fa-plus"></i>
-                                </span> Ajánlat hozzáadása</a>
+                                </span> Ajánlat hozzáadása</button>
                         </span>
                     </h2>
                 </div>
@@ -124,7 +124,7 @@
                                     <p th:text="${offer.description}"></p>
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-danger float-right">Elutasit</a>
+                            <a th:href="@{/offers/__${offer.id}__}" class="btn btn-danger float-right">Elutasit</a>
                             <a href="#" class="btn btn-primary float-right mr-3">Elfogad</a>
                         </div>
                     </div>
@@ -146,12 +146,12 @@
                 <div class="modal-body">
                     <form th:object="${newOffer}" th:action="@{/tickets/__${ticket.id}__/offer}" method="POST">
                         <label>Cserélni kívánt könyv</label>
-                        <select class="form-control" th:field="*{id}">
+                        <select class="form-control" th:field="*{bookId}">
                             <option th:each="book : ${userBooks}" th:value="${book.id}" th:text="${book.title}"></option>
                         </select>
                         <label>Mit kérek cserébe?</label>
                         <textarea type="text" class="form-control" name="description" th:field="*{description}" required rows="5" />
-                        <button type="submit" class="btn btn-primary">Konyv hozzaadasa</button>
+                        <button type="submit" class="btn btn-primary">Ajánlat hozzáadása</button>
                     </form>
                 </div>
             </div>

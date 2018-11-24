@@ -36,6 +36,12 @@ public class OfferController {
 
         Offer offer = offerService.createOffer(offerToBeSavedDTOConverter.toEntity(offerDTO));
 
-        return "redirect:/ticket/" + offer.getTicket().getId();
+        return "redirect:/tickets/" + offer.getTicket().getId();
+    }
+
+    @GetMapping("/offers/{offerId}")
+    public String rejectOffer(@PathVariable(name = "offerId") Long offerId){
+        Offer offer = offerService.rejectOffer(offerService.findById(offerId));
+        return "redirect:/tickets/" + offer.getTicket().getId();
     }
 }
