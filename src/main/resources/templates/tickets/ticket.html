@@ -53,14 +53,35 @@
         <div class="row card-row">
             <div class="col-10 offset-1">
                 <div class="card shadow">
-                    <h2 class="card-header text-center" th:text="${ticket.bookToSell.title}">Book Title</h2>
+                    <div class="card-header text-center to-sell-header">
+                        <h2 th:text="${ticket.bookToSell.title}"></h2>
+                    </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <p th:text="${ticket.seller.email}"></p>
+                        <div class="row profile-row">
+                            <div class="col-12 mb-2">
+                                <img th:src="@{/img/person.jpg}" class="profile-img" />
+                                <span th:text="${ticket.seller.username} + ', '" class="profile-name"></span>
+                                <span th:text="${ticket.seller.address.city}" class="profile-city"></span>
                             </div>
-                            <div class="col-6">
-                                <p th:text="${ticket.open}"></p>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 col-sm-6">
+                                <p th:text="${'Iro: ' + ticket.bookToSell.writer}"></p>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p th:text="${'Kiadas eve: ' + ticket.bookToSell.yearOfPublishing}"></p>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p th:text="${'Kiado: ' + ticket.bookToSell.publisher}"></p>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p th:text="${'ISBN: ' + ticket.bookToSell.isbn}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mt-2 mb-2">
+                                <h2>Mit kérek cserébe?</h2>
+                                <p class="description" th:text="${ticket.description}"></p>
                             </div>
                         </div>
                     </div>
@@ -121,11 +142,11 @@
                             <div class="row">
                                 <div class="col-12 mt-2 mb-2">
                                     <h2>Miért velem cserélj?</h2>
-                                    <p th:text="${offer.description}"></p>
+                                    <p class="description" th:text="${offer.description}"></p>
                                 </div>
                             </div>
-                            <a th:href="@{/offers/__${offer.id}__}" class="btn btn-danger float-right">Elutasit</a>
-                            <a href="#" class="btn btn-primary float-right mr-3">Elfogad</a>
+                            <a th:if="${#strings.equals(offer.status, 'PENDING')}" th:href="@{/offers/__${offer.id}__}" class="btn btn-danger float-right">Elutasit</a>
+                            <a th:if="${#strings.equals(offer.status, 'PENDING')}" href="#" class="btn btn-primary float-right mr-3">Elfogad</a>
                         </div>
                     </div>
                 </div>
@@ -149,7 +170,7 @@
                         <select class="form-control" th:field="*{bookId}">
                             <option th:each="book : ${userBooks}" th:value="${book.id}" th:text="${book.title}"></option>
                         </select>
-                        <label>Mit kérek cserébe?</label>
+                        <label>Miért veled cseréljen?</label>
                         <textarea type="text" class="form-control" name="description" th:field="*{description}" required rows="5" />
                         <button type="submit" class="btn btn-primary">Ajánlat hozzáadása</button>
                     </form>

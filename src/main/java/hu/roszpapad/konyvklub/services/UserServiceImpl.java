@@ -11,7 +11,6 @@ import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserToBeCreatedDTO prepareUserForCreation() {
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (!userExists(user.getEmail())){
             User registeredUser = new User();
             registeredUser.setAddress(user.getAddress());
-            registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            //registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
             registeredUser.setLastName(user.getLastName());
             registeredUser.setFirstName(user.getFirstName());
             registeredUser.setEmail(user.getEmail());

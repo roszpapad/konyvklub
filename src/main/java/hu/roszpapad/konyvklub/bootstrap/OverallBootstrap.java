@@ -39,7 +39,7 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         toSave.get(0).getOffers().add(offer1);
         offer.setTicket(toSave.get(0));
         offer1.setTicket(toSave.get(0));
-        offer.setStatus(Status.ACCEPTED);
+        offer.setStatus(Status.REJECTED);
         ticketRepository.saveAll(toSave);
     }
 
@@ -60,7 +60,7 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         seller.setFirstName("Laszlo");
         seller.setLastName("Kovacs");
         seller.setPassword("lola");
-        seller.setUsername("lacika");
+        seller.setUsername("Hoppa");
         seller.setEmail("lola@freemail.hu");
 
         User costumer = new User();
@@ -133,7 +133,9 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         Ticket ticket = new Ticket();
         ticket.setSeller(seller);
         ticket.setBookToSell(book);
-        ticket.setDescription("I want to sell this book.");
+        ticket.setDescription("Szeretnék egy romantikus könyvet. Jöhet bármi, de irok konkrétakat is:" +
+                "\nHarry Potter\n" +
+                "Mary Poppins");
         tickets.add(ticket);
 
         Ticket ticket1 = new Ticket();

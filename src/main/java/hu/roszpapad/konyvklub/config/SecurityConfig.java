@@ -1,4 +1,4 @@
-package hu.roszpapad.konyvklub.config;
+/*package hu.roszpapad.konyvklub.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
@@ -32,9 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/css/**","/js/**","/img/**").permitAll()
+                .antMatchers("/","/css/**","/js/**","/img/**","/h2-console/**").permitAll()
                 .anyRequest()
                 .authenticated()
+                //.permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -46,4 +42,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login");
     }
-}
+}*/
