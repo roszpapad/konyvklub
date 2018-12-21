@@ -4,6 +4,7 @@ import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
 import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.TicketExpiredOrNotOpenException;
 import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
@@ -23,7 +24,7 @@ public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
     private final TicketRepository ticketRepository;
 
@@ -59,15 +60,16 @@ public class OfferServiceImpl implements OfferService {
 
         current.setDescription(offer.getDescription());
         current.setBookToPay(offer.getBookToPay());
-        return current;
+        return offerRepository.save(current);
     }
 
     @Override
     public void deleteOffer(Long offerId) {
         Offer current = findById(offerId);
-        if (current.getStatus().equals(Status.PENDING))
-            bookService.freeBook(current.getBookToPay());
-
+        if (current.getStatus().equals(Status.PENDING)) {
+            current.getBookToPay().setOfferable(true);
+            bookRepository.save(current.getBookToPay());
+        }
         ticketService.removeOfferFromTicket(current.getTicket(), current);
         userService.removeOfferFromUser(current.getCustomer(), current);
         offerRepository.delete(current);
@@ -91,13 +93,15 @@ public class OfferServiceImpl implements OfferService {
         User seller = ticket.getSeller();
         User customer = offer.getCustomer();
 
-        bookService.freeBook(soldBook);
-        bookService.freeBook(paidBook);
+        soldBook.setOfferable(true);
+        paidBook.setOfferable(true);
+        /*bookRepository.save(soldBook);
+        bookRepository.save(paidBook);*/
 
         userService.changeBookBetweenUsers(seller,soldBook,customer,paidBook);
 
-        ticketRepository.save(ticket);
-        return ticket;
+
+        return ticketRepository.save(ticket);
     }
 
     public Offer rejectOffer(Offer offer){

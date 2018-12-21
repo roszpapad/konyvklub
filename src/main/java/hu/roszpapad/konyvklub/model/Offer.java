@@ -3,7 +3,7 @@ package hu.roszpapad.konyvklub.model;
 import javax.persistence.*;
 
 @Entity
-public class Offer {
+public class Offer extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

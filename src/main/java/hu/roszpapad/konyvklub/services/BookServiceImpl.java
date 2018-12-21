@@ -3,11 +3,15 @@ package hu.roszpapad.konyvklub.services;
 import hu.roszpapad.konyvklub.exceptions.BookCantBeDeletedException;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
+import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +19,10 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final UserService userService;
+    private final OfferRepository offerRepository;
 
     private final UserRepository userRepository;
+
 
     @Override
     public Book freeBook(Book book) {
@@ -48,18 +53,21 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(bookToUpdate);
     }
 
-
-    //TODO : Gond van a book-ticket relacioval  - vmit kitalalni
     @Override
     public void deleteBook(Long id) {
         Book bookToDelete = findById(id);
         if (!bookToDelete.getOfferable()) {
             throw new BookCantBeDeletedException();
         } else {
-            //userService.deleteBookFromUser(bookToDelete.getOwner(), bookToDelete);
+            List<Offer> offers = offerRepository.findByBookToPay(bookToDelete);
+            offers.forEach(offer -> {
+                offer.getTicket().getOffers().remove(offer);
+                offerRepository.delete(offer);
+            });
             User owner = bookToDelete.getOwner();
             owner.getBooks().remove(bookToDelete);
-
+            bookRepository.delete(bookToDelete);
+            userRepository.save(owner);
         }
     }
 

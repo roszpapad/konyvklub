@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Book {
+public class Book extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

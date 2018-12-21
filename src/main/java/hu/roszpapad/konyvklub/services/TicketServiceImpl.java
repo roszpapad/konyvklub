@@ -1,9 +1,6 @@
 
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayedDTO;
-import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
@@ -29,11 +26,7 @@ public class TicketServiceImpl implements TicketService{
 
     private final UserRepository userRepository;
 
-    private final Converter<Ticket,TicketToBeDisplayedDTO> diplayableTicketConverter;
-
-    private final Converter<Offer,OfferToBeDisplayedDTO> displayableOfferConverter;
-
-    private final Long NUMBER_OF_MONTHS_ACTIVE = 3L;
+    private final int NUMBER_OF_MONTHS_ACTIVE = 1;
 
     @Override
     public List<Ticket> getTickets() {

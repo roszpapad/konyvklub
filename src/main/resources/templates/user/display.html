@@ -81,11 +81,11 @@
                             <h2 class="mt-2 mb-4">Jelszó cseréje</h2>
                             <form>
                                 <label for="old">Régi jelszó</label>
-                                <input type="password" name="old" class="form-control form-control-sm mb-3" />
+                                <input type="password" id="old" name="old" class="form-control form-control-sm mb-3" />
                                 <label for="new">Új jelszó</label>
-                                <input type="password" name="new" class="form-control form-control-sm mb-3" />
+                                <input type="password" name="new" id="new" class="form-control form-control-sm mb-3" />
                                 <label for="newConfirm">Új jelszó ismét</label>
-                                <input type="password" name="newConfirm" class="form-control form-control-sm mb-3" />
+                                <input type="password" name="newConfirm" id="newConfirm" class="form-control form-control-sm mb-3" />
                                 <button type="submit" class="btn btn-primary float-right">Csere!</button>
                             </form>
                         </div>
@@ -116,7 +116,7 @@
                                             <td th:text="${book.offerable} ? 'NEM' : 'IGEN'"></td>
                                             <td>
                                                 <form th:if="${book.offerable}" th:action="@{book/__${book.id}__(userId = ${user.id})}" th:method="delete">
-                                                    <input type="hidden" name="_method" value="delete" />
+                                                    <!--<input type="hidden" name="_method" value="delete" />-->
                                                     <button type="submit" class="btn btn-danger" id="delete-btn">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>

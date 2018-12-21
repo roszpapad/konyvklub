@@ -112,6 +112,7 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book4.setYearOfPublishing(2005);
         book4.setIsbn("123454");
         book4.setWriter("Bela Nagy");
+        book4.setOfferable(true);
         seller.addBook(book4);
 
         Book book5 = new Book();
@@ -150,11 +151,11 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         ticket2.setDescription("I want to sell this book.");
         tickets.add(ticket2);
 
-        Ticket ticket3 = new Ticket();
+       /* Ticket ticket3 = new Ticket();
         ticket3.setSeller(seller);
         ticket3.setBookToSell(book4);
         ticket3.setDescription("I want to sell this book.");
-        tickets.add(ticket3);
+        tickets.add(ticket3);*/
 
         Ticket ticket4 = new Ticket();
         ticket4.setSeller(seller);
