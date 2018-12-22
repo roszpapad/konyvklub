@@ -34,6 +34,17 @@ public class User extends Auditable {
 
     private Boolean active = true;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }

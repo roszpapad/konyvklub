@@ -52,6 +52,16 @@
                             </div>
 
                             <div>
+                                <label>Username</label>
+                                <input type="text" class="form-control" th:field="*{username}"/>
+                                <span class="help-block" th:if="${#fields.hasErrors('username')}">
+                                        <ul th:each="err : ${#fields.errors('username')}">
+                                            <li th:text="${err}"></li>
+                                        </ul>
+                                </span>
+                            </div>
+
+                            <div>
                                 <label>Email Address</label>
                                 <input type="text" class="form-control" th:field="*{email}"/>
                                 <span class="help-block" th:if="${#fields.hasErrors('email')}">

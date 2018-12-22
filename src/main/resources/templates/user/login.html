@@ -53,10 +53,10 @@
             <div class="col-6 offset-3">
                 <form th:action="@{/login}" method="post">
                     <label>User</label>
-                    <input type="text" class="form-control" name="username" value="">
+                    <input type="text" class="form-control" th:name="username">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="password" />
-                    <button type="submit" value="submit" class="btn btn-primary">Login</button>
+                    <input type="password" class="form-control" th:name="password" />
+                    <button type="submit" class="btn btn-primary">Login</button>
                 </form>
             </div>
         </div>

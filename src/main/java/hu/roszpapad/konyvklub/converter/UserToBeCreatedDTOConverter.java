@@ -24,6 +24,7 @@ public class UserToBeCreatedDTOConverter implements Converter<User, UserToBeCrea
         userDTO.setFirstName(entity.getFirstName());
         userDTO.setLastName(entity.getLastName());
         userDTO.setPassword(entity.getPassword());
+        userDTO.setUsername(entity.getUsername());
         return userDTO;
     }
 
@@ -35,6 +36,7 @@ public class UserToBeCreatedDTOConverter implements Converter<User, UserToBeCrea
         user.setLastName(dto.getLastName());
         user.setAddress(addressToBeSavedDTOConverter.toEntity(dto.getAddress()));
         user.setPassword(dto.getPassword());
+        user.setUsername(dto.getUsername());
         return user;
     }
 }

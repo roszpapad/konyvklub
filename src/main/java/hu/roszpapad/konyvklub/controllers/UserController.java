@@ -97,4 +97,10 @@ public class UserController {
     public String loginPage(){
         return "user/login";
     }
+
+    @PostMapping("/login")
+    public String login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        userService.login(username,password);
+        return "redirect:/";
+    }
 }
