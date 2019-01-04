@@ -10,4 +10,6 @@ import java.util.List;
 public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     List<Ticket> findAll();
+
+    List<Ticket> findByBookToSellTitle(String title);
 }

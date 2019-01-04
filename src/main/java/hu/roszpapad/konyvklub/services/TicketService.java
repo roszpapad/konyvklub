@@ -13,4 +13,5 @@ public interface TicketService {
     Ticket updateTicket(Ticket ticket);
     void deleteTicket(Long id);
     Ticket removeOfferFromTicket(Ticket ticket, Offer offer);
+    List<Ticket> filterTickets(String title, String writer);
 }

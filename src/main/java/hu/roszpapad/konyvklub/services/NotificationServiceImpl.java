@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,13 +24,20 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void deleteExpiredNotifications(User user) {
         List<Notification> notifications = user.getNotifications();
+        List<Notification> notificationsToDelete = new ArrayList<>();
         notifications.forEach(notification -> {
             if (notification.getEndDate().isBefore(LocalDateTime.now())){
+                notificationsToDelete.add(notification);
+            }
+        });
+
+        if (!notificationsToDelete.isEmpty()){
+            notificationsToDelete.forEach(notification -> {
                 User userOfNotification = notification.getUser();
                 userOfNotification.getNotifications().remove(notification);
                 notificationRepository.delete(notification);
-            }
-        });
+            });
+        }
 
     }
 
@@ -76,6 +84,6 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     public LocalDateTime calculateEndDate(){
-        return LocalDateTime.now().plus(NUMBER_OF_MONTHS_ACTIVE,ChronoUnit.MONTHS);
+        return LocalDateTime.now().plus(NUMBER_OF_MONTHS_ACTIVE,ChronoUnit.MINUTES);
     }
 }

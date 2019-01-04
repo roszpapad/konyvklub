@@ -30,6 +30,8 @@ public class OfferServiceImpl implements OfferService {
 
     private final TicketService ticketService;
 
+    private final NotificationService notificationService;
+
     @Override
     public Offer findById(Long id) {
         return offerRepository.findById(id).orElseThrow(() -> new OfferNotFoundException());
@@ -85,7 +87,10 @@ public class OfferServiceImpl implements OfferService {
 
         List<Offer> notAcceptedOffers = ticket.getOffers();
         notAcceptedOffers.remove(offer);
-        notAcceptedOffers.forEach(offer1 -> rejectOffer(offer1));
+        notAcceptedOffers.forEach(offer1 -> {
+            if (offer1.getStatus().equals(Status.PENDING))
+                rejectOffer(offer1);
+        });
 
         Book soldBook = ticket.getBookToSell();
         Book paidBook = offer.getBookToPay();
@@ -99,18 +104,16 @@ public class OfferServiceImpl implements OfferService {
         bookRepository.save(paidBook);*/
 
         userService.changeBookBetweenUsers(seller,soldBook,customer,paidBook);
-
+        notificationService.createAcceptedOfferNotification(offer);
+        notificationService.createAcceptedTicketNotification(offer);
 
         return ticketRepository.save(ticket);
     }
 
     public Offer rejectOffer(Offer offer){
-        if (offer.getStatus().equals(Status.PENDING)) {
-            offer.setStatus(Status.REJECTED);
-            offer.getBookToPay().setOfferable(true);
-            return offerRepository.save(offer);
-        } else {
-            throw new OfferCantBeUpdatedException();
-        }
+        offer.setStatus(Status.REJECTED);
+        offer.getBookToPay().setOfferable(true);
+        notificationService.createRejectedOfferNotification(offer);
+        return offerRepository.save(offer);
     }
 }

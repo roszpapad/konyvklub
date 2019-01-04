@@ -90,5 +90,22 @@ public class TicketServiceImpl implements TicketService{
         ticket.getOffers().remove(offer);
         return ticketRepository.save(ticket);
     }
+
+    @Override
+    public List<Ticket> filterTickets(String title, String writer) {
+        List<Ticket> tickets;
+        if (title != null && !title.isEmpty()){
+            tickets = ticketRepository.findByBookToSellTitle(title);
+        } else {
+            tickets = getTickets();
+        }
+
+        if (writer != null && !writer.isEmpty()){
+            tickets = tickets.stream()
+                    .filter(t -> t.getBookToSell().getWriter().equals(writer))
+                    .collect(Collectors.toList());
+        }
+        return tickets;
+    }
 }
 

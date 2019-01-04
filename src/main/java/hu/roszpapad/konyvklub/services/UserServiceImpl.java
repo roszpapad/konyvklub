@@ -1,23 +1,18 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.config.security.JwtTokenProvider;
 import hu.roszpapad.konyvklub.dtos.AddressToBeSavedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
-import hu.roszpapad.konyvklub.exceptions.TokenException;
 import hu.roszpapad.konyvklub.exceptions.UserAlreadyExistsException;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
+import hu.roszpapad.konyvklub.repositories.AuthorityRepository;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +22,8 @@ public class UserServiceImpl implements UserService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
+    private final AuthorityRepository authorityRepository;
+
 
     @Override
     public UserToBeCreatedDTO prepareUserForCreation() {
@@ -48,10 +43,11 @@ public class UserServiceImpl implements UserService {
             registeredUser.setFirstName(user.getFirstName());
             registeredUser.setEmail(user.getEmail());
             registeredUser.setUsername(user.getUsername());
-            List<Role> roles = Arrays.asList(Role.ROLE_CLIENT);
-            registeredUser.setRoles(roles);
+
+            Authority auth = authorityRepository.findAuthorityByAuthority("ROLE_KONYVKLUB_USER").get();
+            user.setAuthorities(Arrays.asList(auth));
+            user.setEnabled(false);
             User savedUser = userRepository.save(registeredUser);
-            jwtTokenProvider.createToken(savedUser.getUsername(), savedUser.getRoles());
             return savedUser;
         } else {
             throw new UserAlreadyExistsException();
@@ -134,18 +130,5 @@ public class UserServiceImpl implements UserService {
         bookRepository.save(book2);
         userRepository.save(user1);
         userRepository.save(user2);
-    }
-
-    @Override
-    public String login(String username, String password) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            String token = jwtTokenProvider.createToken(username, userRepository.findByUsername(username).get().getRoles());
-            System.out.println(token);
-            return token;
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-            throw new TokenException("Invalid username/password supplied");
-        }
     }
 }

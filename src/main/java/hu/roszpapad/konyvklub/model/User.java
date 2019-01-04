@@ -34,15 +34,25 @@ public class User extends Auditable {
 
     private Boolean active = true;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Authority> authorities;
 
-    public List<Role> getRoles() {
-        return roles;
+    private Boolean enabled;
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public Long getId() {

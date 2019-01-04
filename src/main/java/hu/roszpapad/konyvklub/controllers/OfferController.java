@@ -27,7 +27,7 @@ public class OfferController {
 
         offerService.acceptOffer(ticketService.findById(ticketId),offerService.findById(offerId));
 
-        return "redirect:/ticket/" + ticketId + "/offer/" + offerId;
+        return "redirect:/tickets/" + ticketId;
     }
 
 

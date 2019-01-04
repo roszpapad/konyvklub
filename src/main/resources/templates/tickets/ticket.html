@@ -146,7 +146,7 @@
                                 </div>
                             </div>
                             <a th:if="${#strings.equals(offer.status, 'PENDING')}" th:href="@{/offers/__${offer.id}__}" class="btn btn-danger float-right">Elutasit</a>
-                            <a th:if="${#strings.equals(offer.status, 'PENDING')}" href="#" class="btn btn-primary float-right mr-3">Elfogad</a>
+                            <a th:if="${#strings.equals(offer.status, 'PENDING')}" th:href="@{/ticket/__${ticket.id}__/offer/__${offer.id}__/accept}" class="btn btn-primary float-right mr-3">Elfogad</a>
                         </div>
                     </div>
                 </div>

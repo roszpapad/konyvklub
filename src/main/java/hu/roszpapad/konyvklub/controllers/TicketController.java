@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,8 +91,29 @@ public class TicketController {
     @DeleteMapping("/ticket/{ticketId}/delete")
     public String deleteTicket(@PathVariable("ticketId") Long ticketId){
         ticketService.deleteTicket(ticketId);
-        return "redirect:ticket/tickets";
+        return "redirect:tickets/all";
     }
+
+    @GetMapping("/tickets/filter")
+    public String findTickets(Model model, @PathParam(value = "title") String title,
+                              @PathParam(value = "writer") String writer){
+        List<Ticket> tickets = ticketService.filterTickets(title, writer);
+        List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
+        tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
+        model.addAttribute("tickets",ticketDTOs);
+
+        model.addAttribute("newTicket",new TicketToBeCreatedDTO());
+        List<Book> books = userService.findById(1L).getBooks();
+        List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
+        books.forEach(book -> {
+            if (book.getOfferable()){
+                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
+            }
+        });
+        model.addAttribute("userBooks",bookDTOs);
+        return "tickets/tickets";
+    }
+
 
 }
 
