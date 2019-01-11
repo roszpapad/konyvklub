@@ -1,19 +1,16 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.dtos.AddressToBeSavedDTO;
-import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
-import hu.roszpapad.konyvklub.exceptions.UserAlreadyExistsException;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.AuthorityRepository;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
+import hu.roszpapad.konyvklub.repositories.RegistrationTokenRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,40 +20,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
-
-
-    @Override
-    public UserToBeCreatedDTO prepareUserForCreation() {
-        UserToBeCreatedDTO user = new UserToBeCreatedDTO();
-        AddressToBeSavedDTO address = new AddressToBeSavedDTO();
-        user.setAddress(address);
-        return user;
-    }
+    private final RegistrationTokenRepository registrationTokenRepository;
 
     @Override
     public User registerUser(User user) {
-        if (!userExists(user.getEmail())){
-            User registeredUser = new User();
-            registeredUser.setAddress(user.getAddress());
-            registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            registeredUser.setLastName(user.getLastName());
-            registeredUser.setFirstName(user.getFirstName());
-            registeredUser.setEmail(user.getEmail());
-            registeredUser.setUsername(user.getUsername());
-            registeredUser.setEnabled(false);
-            Authority auth = authorityRepository.findAuthorityByAuthority("ROLE_KONYVKLUB_USER").get();
-            registeredUser.setAuthorities(Arrays.asList(auth));
-            User savedUser = userRepository.save(registeredUser);
-            return savedUser;
-        } else {
-            throw new UserAlreadyExistsException();
-        }
-    }
-
-    @Override
-    public Boolean userExists(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent();
+        User registeredUser = new User();
+        registeredUser.setAddress(user.getAddress());
+        registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        registeredUser.setLastName(user.getLastName());
+        registeredUser.setFirstName(user.getFirstName());
+        registeredUser.setEmail(user.getEmail());
+        registeredUser.setUsername(user.getUsername());
+        registeredUser.setEnabled(false);
+        Authority auth = authorityRepository.findAuthorityByAuthority("ROLE_KONYVKLUB_USER").get();
+        registeredUser.setAuthorities(Arrays.asList(auth));
+        User savedUser = userRepository.save(registeredUser);
+        return savedUser;
     }
 
     @Override
@@ -129,5 +108,16 @@ public class UserServiceImpl implements UserService {
         bookRepository.save(book2);
         userRepository.save(user1);
         userRepository.save(user2);
+    }
+
+    @Override
+    public RegistrationToken createRegistrationToken(User user, String token) {
+        RegistrationToken registrationToken = new RegistrationToken(token,user);
+        return registrationTokenRepository.save(registrationToken);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

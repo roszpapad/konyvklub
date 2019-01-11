@@ -1,6 +1,8 @@
 package hu.roszpapad.konyvklub.dtos;
 
 import hu.roszpapad.konyvklub.validators.annotations.PasswordsMatchConstraint;
+import hu.roszpapad.konyvklub.validators.annotations.UniqueEmail;
+import hu.roszpapad.konyvklub.validators.annotations.UniqueUsername;
 import hu.roszpapad.konyvklub.validators.annotations.ValidEmail;
 import lombok.Data;
 
@@ -19,9 +21,11 @@ public class UserToBeCreatedDTO {
     private String lastName;
 
     @NotNull
+    @UniqueUsername
     private String username;
 
     @ValidEmail
+    @UniqueEmail
     private String email;
 
     @NotNull

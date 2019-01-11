@@ -1,19 +1,15 @@
 package hu.roszpapad.konyvklub.services;
 
-import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.Offer;
-import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.model.User;
+import hu.roszpapad.konyvklub.model.*;
 
 public interface UserService {
 
-    UserToBeCreatedDTO prepareUserForCreation();
     User registerUser(User user);
-    Boolean userExists(String email);
     User updateUser(User user);
     User findById(Long id);
     User switchActive(Long id);
+    RegistrationToken createRegistrationToken(User user, String token);
+    User saveUser(User user);
 
     void addBookToUser(User user, Book book);
     void deleteBookFromUser(User user, Book book);
