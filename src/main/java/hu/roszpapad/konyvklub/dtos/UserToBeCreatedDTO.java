@@ -5,26 +5,26 @@ import hu.roszpapad.konyvklub.validators.annotations.ValidEmail;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 @PasswordsMatchConstraint
 public class UserToBeCreatedDTO {
 
-    @NotBlank
+    @NotNull
     private String firstName;
 
-    @NotBlank
+    @NotNull
     private String lastName;
 
-    @NotBlank
+    @NotNull
     private String username;
 
     @ValidEmail
     private String email;
 
-    @NotBlank
+    @NotNull
     @Size(min = 5, max = 30)
     private String password;
 

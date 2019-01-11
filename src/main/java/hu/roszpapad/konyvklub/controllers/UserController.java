@@ -10,6 +10,7 @@ import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.services.BookService;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,22 +34,19 @@ public class UserController {
 
     private final Converter<Book, BookToBeCreatedDTO> bookToBeCreatedDTOConverter;
 
-    @GetMapping("/register")
+    /*@GetMapping("/register")
     public String registerUser(Model model){
 
         model.addAttribute("user",userService.prepareUserForCreation());
         return "user/registration";
-    }
+    }*/
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("user") UserToBeCreatedDTO userToBeCreated, BindingResult bindingResult){
+    public ResponseEntity<?> register(@Valid @RequestBody UserToBeCreatedDTO userToBeCreated){
 
-        if(bindingResult.hasErrors()){
-            return "user/registration";
-        }
-
-        userService.registerUser(userToBeCreatedConverter.toEntity(userToBeCreated));
-        return "redirect:/";
+        User user = userService.registerUser(userToBeCreatedConverter.toEntity(userToBeCreated));
+        UserToBeDisplayedDTO userDTO = userToBeDisplayedConverter.toDTO(user);
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @GetMapping("/user/{userId}/update")

@@ -43,10 +43,9 @@ public class UserServiceImpl implements UserService {
             registeredUser.setFirstName(user.getFirstName());
             registeredUser.setEmail(user.getEmail());
             registeredUser.setUsername(user.getUsername());
-
+            registeredUser.setEnabled(false);
             Authority auth = authorityRepository.findAuthorityByAuthority("ROLE_KONYVKLUB_USER").get();
-            user.setAuthorities(Arrays.asList(auth));
-            user.setEnabled(false);
+            registeredUser.setAuthorities(Arrays.asList(auth));
             User savedUser = userRepository.save(registeredUser);
             return savedUser;
         } else {
