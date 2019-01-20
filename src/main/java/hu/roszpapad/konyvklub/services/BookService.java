@@ -2,6 +2,8 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.model.Book;
 
+import java.util.List;
+
 public interface BookService {
 
     Book freeBook(Book book);
@@ -15,4 +17,6 @@ public interface BookService {
     void deleteBook(Long id);
 
     Book makeBookNotOfferable(Book book);
+
+    List<Book> getAllBooksByUser(Long userId);
 }

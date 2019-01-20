@@ -120,13 +120,13 @@ public class UserController {
         return "redirect:/";
     }
 
-    @PostMapping("/user/{userId}/book")
-    public String addBookToUser(@Valid @ModelAttribute(name = "newBook") BookToBeCreatedDTO bookDTO,
+    @PostMapping("/users/{userId}/books")
+    public ResponseEntity<String> addBookToUser(@Valid @RequestBody BookToBeCreatedDTO bookDTO,
                                 @PathVariable(name = "userId") Long userId){
 
         Book createdBook = bookService.createBook(bookToBeCreatedDTOConverter.toEntity(bookDTO));
         userService.addBookToUser(userService.findById(userId), createdBook);
-        return "redirect:/user/" + userId;
+        return ResponseEntity.ok().body("Könyv mentve.");
     }
 
     @GetMapping("/login")

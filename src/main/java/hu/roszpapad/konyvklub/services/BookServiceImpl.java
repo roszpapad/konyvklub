@@ -2,6 +2,7 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.exceptions.BookCantBeDeletedException;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.User;
@@ -75,5 +76,11 @@ public class BookServiceImpl implements BookService {
     public Book makeBookNotOfferable(Book book) {
         book.setOfferable(false);
         return bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> getAllBooksByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
+        return user.getBooks();
     }
 }
