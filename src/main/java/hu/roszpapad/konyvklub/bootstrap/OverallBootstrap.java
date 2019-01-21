@@ -78,7 +78,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book.setTitle("Gyuruk ura");
         book.setPublisher("Valaki kiado");
         book.setYearOfPublishing(2005);
-        book.setIsbn("123454");
         book.setWriter("Bela Nagy");
         seller.addBook(book);
 
@@ -86,14 +85,12 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book1.setTitle("Sotet vilag");
         book1.setPublisher("Valaki kiado");
         book1.setYearOfPublishing(2005);
-        book1.setIsbn("123454");
         book1.setWriter("Bela Nagy");
         costumer.addBook(book1);
 
         Book book2 = new Book();
         book2.setTitle("Gyuruk ura 2");
         book2.setWriter("Kovacs Pal");
-        book2.setIsbn("12354657684");
         book2.setPublisher("Konyv Kiado");
         book2.setYearOfPublishing(2009);
         seller.addBook(book2);
@@ -102,7 +99,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book3.setTitle("Gyuruk ura 3");
         book3.setPublisher("Valaki kiado");
         book3.setYearOfPublishing(2005);
-        book3.setIsbn("123454");
         book3.setWriter("Bela Nagy");
         seller.addBook(book3);
 
@@ -110,7 +106,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book4.setTitle("Gyuruk ura 4");
         book4.setPublisher("Valaki kiado");
         book4.setYearOfPublishing(2005);
-        book4.setIsbn("123454");
         book4.setWriter("Bela Nagy");
         book4.setOfferable(true);
         seller.addBook(book4);
@@ -119,7 +114,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         book5.setTitle("Gyuruk ura 5");
         book5.setPublisher("Valaki kiado");
         book5.setYearOfPublishing(2005);
-        book5.setIsbn("123454");
         book5.setWriter("Bela Nagy");
         seller.addBook(book5);
 

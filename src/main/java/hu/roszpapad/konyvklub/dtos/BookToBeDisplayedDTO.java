@@ -10,6 +10,5 @@ public class BookToBeDisplayedDTO {
     private String writer;
     private String publisher;
     private Integer yearOfPublishing;
-    private String isbn;
     private Boolean offerable;
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +21,10 @@ public class BookController {
     private final BookService bookService;
     private final BookToBeDisplayedDTOConverter bookToBeDisplayedDTOConverter;
 
-    @DeleteMapping("/user/books/{bookId}")
-    private String deleteBook(@PathVariable(name = "bookId") Long bookId,
-                              @PathParam(value = "userId") Long userId){
+    @DeleteMapping("/books/{bookId}")
+    private ResponseEntity<?> deleteBook(@PathVariable(name = "bookId") Long bookId){
         bookService.deleteBook(bookId);
-        return "redirect:/user/" + userId;
+        return ResponseEntity.ok().body("Könyv törölve");
     }
 
     @GetMapping("/users/{userId}/books")

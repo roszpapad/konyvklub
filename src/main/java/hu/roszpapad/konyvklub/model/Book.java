@@ -21,7 +21,6 @@ public class Book extends Auditable{
     private String publisher;
     private Integer yearOfPublishing;
     private Boolean offerable = true;
-    private String isbn;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
