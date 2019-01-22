@@ -8,6 +8,7 @@ import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.TicketService;
 import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,21 +34,11 @@ public class TicketController {
     private final Converter<Book, BookToBeDisplayedDTO> bookToBeDisplayedDTOConverter;
 
     @GetMapping("/tickets/all")
-    public String getAllTickets(Model model) {
+    public ResponseEntity<List<TicketToBeDisplayedDTO>> getAllTickets() {
         List<Ticket> tickets = ticketService.getTickets();
         List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
         tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
-        model.addAttribute("tickets",ticketDTOs);
-        model.addAttribute("newTicket",new TicketToBeCreatedDTO());
-        List<Book> books = userService.findById(1L).getBooks();
-        List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
-        books.forEach(book -> {
-            if (book.getOfferable()){
-                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
-            }
-        });
-        model.addAttribute("userBooks",bookDTOs);
-        return "tickets/tickets";
+        return ResponseEntity.ok(ticketDTOs);
     }
 
     @GetMapping("/tickets/{ticketId}")
@@ -95,23 +86,12 @@ public class TicketController {
     }
 
     @GetMapping("/tickets/filter")
-    public String findTickets(Model model, @PathParam(value = "title") String title,
-                              @PathParam(value = "writer") String writer){
+    public ResponseEntity<List<TicketToBeDisplayedDTO>> findTickets(@PathParam(value = "title") String title,
+                                      @PathParam(value = "writer") String writer){
         List<Ticket> tickets = ticketService.filterTickets(title, writer);
         List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
         tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
-        model.addAttribute("tickets",ticketDTOs);
-
-        model.addAttribute("newTicket",new TicketToBeCreatedDTO());
-        List<Book> books = userService.findById(1L).getBooks();
-        List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
-        books.forEach(book -> {
-            if (book.getOfferable()){
-                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
-            }
-        });
-        model.addAttribute("userBooks",bookDTOs);
-        return "tickets/tickets";
+        return ResponseEntity.ok(ticketDTOs);
     }
 
 

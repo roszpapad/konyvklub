@@ -1,6 +1,5 @@
 package hu.roszpapad.konyvklub.dtos;
 
-import hu.roszpapad.konyvklub.model.Offer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,7 +10,7 @@ public class TicketToBeDisplayedDTO {
 
     private Long id;
     private BookToBeDisplayedDTO bookToSell;
-    private List<Offer> offers;
+    private List<OfferToBeDisplayedDTO> offers;
     private Boolean open;
     private String description;
     private UserToBeDisplayedDTO seller;

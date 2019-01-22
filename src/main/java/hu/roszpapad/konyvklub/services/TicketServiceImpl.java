@@ -26,7 +26,7 @@ public class TicketServiceImpl implements TicketService{
 
     private final UserRepository userRepository;
 
-    private final int NUMBER_OF_MONTHS_ACTIVE = 1;
+    private final int NUMBER_OF_WEEKS_ACTIVE = 2;
 
     @Override
     public List<Ticket> getTickets() {
@@ -42,7 +42,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public Ticket createTicket(Ticket ticket) {
         Ticket savableTicket = new Ticket();
-        savableTicket.setEndDate(LocalDateTime.now().plusMonths(NUMBER_OF_MONTHS_ACTIVE));
+        savableTicket.setEndDate(LocalDateTime.now().plusWeeks(NUMBER_OF_WEEKS_ACTIVE));
         savableTicket.setOpen(true);
 
         Book book = ticket.getBookToSell();
@@ -93,19 +93,30 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public List<Ticket> filterTickets(String title, String writer) {
-        List<Ticket> tickets;
-        if (title != null && !title.isEmpty()){
-            tickets = ticketRepository.findByBookToSellTitle(title);
-        } else {
-            tickets = getTickets();
+        List<Ticket> tickets = getTickets();
+        List<Ticket> ticketsToReturn = new ArrayList<>();
+        if (title != null && !title.isEmpty()) {
+            String lowerTitle = title.toLowerCase();
+            ticketsToReturn = tickets.stream()
+                    .filter(ticket -> ticket.getBookToSell().getTitle().toLowerCase().contains(lowerTitle))
+                    .collect(Collectors.toList());
         }
 
         if (writer != null && !writer.isEmpty()){
-            tickets = tickets.stream()
-                    .filter(t -> t.getBookToSell().getWriter().equals(writer))
-                    .collect(Collectors.toList());
+            String lowerWriter = writer.toLowerCase();
+            if (!ticketsToReturn.isEmpty()) {
+                ticketsToReturn = ticketsToReturn.stream()
+                        .filter(ticket -> ticket.getBookToSell().getWriter().toLowerCase().contains(lowerWriter))
+                        .collect(Collectors.toList());
+            } else {
+                ticketsToReturn = tickets.stream()
+                        .filter(ticket -> ticket.getBookToSell().getWriter().toLowerCase().contains(lowerWriter))
+                        .collect(Collectors.toList());
+            }
         }
-        return tickets;
+
+        return ticketsToReturn;
     }
+
 }
 
