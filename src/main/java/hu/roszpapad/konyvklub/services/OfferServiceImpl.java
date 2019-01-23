@@ -43,6 +43,7 @@ public class OfferServiceImpl implements OfferService {
         offer.setCustomer(customer);
         customer.getOffersInInterest().add(offer);
         offer.getBookToPay().setOfferable(false);
+        offer.setStatus(Status.PENDING);
         userRepository.save(customer);
         return offerRepository.save(offer);
     }

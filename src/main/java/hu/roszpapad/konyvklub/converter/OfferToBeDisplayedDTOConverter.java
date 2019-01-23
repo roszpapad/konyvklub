@@ -24,6 +24,7 @@ public class OfferToBeDisplayedDTOConverter implements Converter<Offer, OfferToB
         offerDTO.setId(entity.getId());
         offerDTO.setStatus(entity.getStatus());
         offerDTO.setTicketId(entity.getTicket().getId());
+        offerDTO.setDescription(entity.getDescription());
         return offerDTO;
     }
 

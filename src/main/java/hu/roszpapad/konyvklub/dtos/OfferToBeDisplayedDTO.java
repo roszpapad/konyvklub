@@ -11,4 +11,5 @@ public class OfferToBeDisplayedDTO {
     private Status status;
     private UserToBeDisplayedDTO customer;
     private Long ticketId;
+    private String description;
 }

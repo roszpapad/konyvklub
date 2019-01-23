@@ -42,20 +42,9 @@ public class TicketController {
     }
 
     @GetMapping("/tickets/{ticketId}")
-    public String getTicket(@PathVariable Long ticketId, Model model){
-        model.addAttribute("ticket",ticketToBeDisplayedDTOConverter.toDTO(ticketService.findById(ticketId)));
-        OfferToBeSavedDTO newOffer = new OfferToBeSavedDTO();
-        newOffer.setTicketId(ticketId);
-        model.addAttribute("newOffer", newOffer);
-        List<Book> books = userService.findById(1L).getBooks();
-        List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
-        books.forEach(book -> {
-            if (book.getOfferable()){
-                bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book));
-            }
-        });
-        model.addAttribute("userBooks",bookDTOs);
-        return "tickets/ticket";
+    public ResponseEntity<TicketToBeDisplayedDTO> getTicket(@PathVariable Long ticketId){
+        TicketToBeDisplayedDTO ticketDTO = ticketToBeDisplayedDTOConverter.toDTO(ticketService.findById(ticketId));
+        return ResponseEntity.ok(ticketDTO);
     }
 
     @PostMapping("/tickets")

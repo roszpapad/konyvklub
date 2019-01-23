@@ -19,4 +19,6 @@ public interface BookService {
     Book makeBookNotOfferable(Book book);
 
     List<Book> getAllBooksByUser(Long userId);
+
+    List<Book> getAllOfferableBooksByUser(Long userId);
 }

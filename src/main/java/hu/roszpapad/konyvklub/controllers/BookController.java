@@ -34,4 +34,12 @@ public class BookController {
         books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));
         return ResponseEntity.ok().body(bookDTOs);
     }
+
+    @GetMapping("/users/{userId}/offerableBooks")
+    private ResponseEntity<List<BookToBeDisplayedDTO>> getAllOfferableBooks(@PathVariable(name = "userId") Long userId){
+        List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
+        List<Book> books = bookService.getAllOfferableBooksByUser(userId);
+        books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));
+        return ResponseEntity.ok(bookDTOs);
+    }
 }

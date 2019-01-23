@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +82,13 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllBooksByUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
         return user.getBooks();
+    }
+
+    @Override
+    public List<Book> getAllOfferableBooksByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
+        return user.getBooks().stream()
+                .filter(book -> book.getOfferable())
+                .collect(Collectors.toList());
     }
 }

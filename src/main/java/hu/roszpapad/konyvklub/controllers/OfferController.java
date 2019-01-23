@@ -6,11 +6,9 @@ import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.services.OfferService;
 import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,12 +20,12 @@ public class OfferController {
 
     private final Converter<Offer, OfferToBeSavedDTO> offerToBeSavedDTOConverter;
 
-    @GetMapping("/ticket/{ticketId}/offer/{offerId}/accept")
-    public String acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
+    @GetMapping("/tickets/{ticketId}/offers/{offerId}")
+    public ResponseEntity<String> acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
 
         offerService.acceptOffer(ticketService.findById(ticketId),offerService.findById(offerId));
 
-        return "redirect:/tickets/" + ticketId;
+        return ResponseEntity.ok("Offer elfogadva.");
     }
 
 
@@ -40,8 +38,8 @@ public class OfferController {
     }
 
     @GetMapping("/offers/{offerId}")
-    public String rejectOffer(@PathVariable(name = "offerId") Long offerId){
+    public ResponseEntity<String> rejectOffer(@PathVariable(name = "offerId") Long offerId){
         Offer offer = offerService.rejectOffer(offerService.findById(offerId));
-        return "redirect:/tickets/" + offer.getTicket().getId();
+        return ResponseEntity.ok("Offer elutasitva.");
     }
 }
