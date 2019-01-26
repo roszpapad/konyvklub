@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.services.OfferService;
@@ -20,6 +21,8 @@ public class OfferController {
 
     private final Converter<Offer, OfferToBeSavedDTO> offerToBeSavedDTOConverter;
 
+    private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
+
     @GetMapping("/tickets/{ticketId}/offers/{offerId}")
     public ResponseEntity<String> acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
 
@@ -30,11 +33,11 @@ public class OfferController {
 
 
     @PostMapping("/tickets/{ticketId}/offer")
-    public String createOffer(@ModelAttribute("newOffer") OfferToBeSavedDTO offerDTO){
+    public ResponseEntity<OfferToBeDisplayedDTO> createOffer(@RequestBody OfferToBeSavedDTO offerDTO){
 
         Offer offer = offerService.createOffer(offerToBeSavedDTOConverter.toEntity(offerDTO));
 
-        return "redirect:/tickets/" + offer.getTicket().getId();
+        return ResponseEntity.ok(offerToBeDisplayedDTOConverter.toDTO(offer));
     }
 
     @GetMapping("/offers/{offerId}")

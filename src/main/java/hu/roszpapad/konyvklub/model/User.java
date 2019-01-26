@@ -16,6 +16,9 @@ public class User extends Auditable {
     private String email;
     private String username;
 
+    @Lob
+    private byte[] image;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
 

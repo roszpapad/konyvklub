@@ -47,12 +47,10 @@ public class TicketController {
         return ResponseEntity.ok(ticketDTO);
     }
 
-    @PostMapping("/tickets")
-    public String createTicket(Model model, @ModelAttribute(name = "newTicket") TicketToBeCreatedDTO ticketDTO){
+    @PostMapping("/tickets/new")
+    public ResponseEntity<Long> createTicket(@RequestBody TicketToBeCreatedDTO ticketDTO){
         Ticket ticket = ticketService.createTicket(ticketToBeCreatedDTOConverter.toEntity(ticketDTO));
-        model.addAttribute("ticket", ticketToBeDisplayedDTOConverter.toDTO(ticket));
-        model.addAttribute("newOffer", new OfferToBeSavedDTO());
-        return "redirect:tickets/" + ticket.getId();
+        return ResponseEntity.ok(ticket.getId());
     }
 
     @GetMapping("/ticket/{ticketId}/update")

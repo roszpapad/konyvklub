@@ -36,7 +36,7 @@ public class TicketToBeDisplayedDTOConverter implements Converter<Ticket,TicketT
         List<OfferToBeDisplayedDTO> offerDTOs = new ArrayList<>();
         entity.getOffers().forEach(offer -> offerDTOs.add(offerToBeDisplayedDTOConverter.toDTO(offer)));
         ticketDTO.setOffers(offerDTOs);
-        ticketDTO.setOpen(entity.isOpen());
+
         ticketDTO.setSeller(userToBeDisplayedDTOConverter.toDTO(entity.getSeller()));
         return ticketDTO;
     }
@@ -48,7 +48,6 @@ public class TicketToBeDisplayedDTOConverter implements Converter<Ticket,TicketT
         ticket.setDescription(dto.getDescription());
         ticket.setId(dto.getId());
         ticket.setBookToSell(bookToBeDisplayedDTOConverter.toEntity(dto.getBookToSell()));
-        ticket.setOpen(dto.getOpen());
         ticket.setSeller(userToBeDisplayedDTOConverter.toEntity(dto.getSeller()));
         ticket.setEndDate(dto.getEndDate());
         //TODO : ticket.setOffers();

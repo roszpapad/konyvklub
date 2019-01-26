@@ -2,7 +2,6 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
 import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
-import hu.roszpapad.konyvklub.exceptions.TicketExpiredOrNotOpenException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.OfferRepository;
@@ -80,11 +79,10 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Ticket acceptOffer(Ticket ticket, Offer offer) {
-        if (!ticket.isOpen())
-            throw new TicketExpiredOrNotOpenException();
+
 
         offer.setStatus(Status.ACCEPTED);
-        ticket.setOpen(false);
+
 
         List<Offer> notAcceptedOffers = ticket.getOffers();
         notAcceptedOffers.remove(offer);

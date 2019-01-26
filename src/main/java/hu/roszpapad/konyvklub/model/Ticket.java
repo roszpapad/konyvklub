@@ -19,8 +19,6 @@ public class Ticket extends Auditable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
     private List<Offer> offers = new ArrayList<>();
 
-    private Boolean open = true;
-
     @Lob
     private String description;
 
@@ -85,13 +83,5 @@ public class Ticket extends Auditable {
             this.offers.add(offer);
 
         return this;
-    }
-
-    public Boolean isOpen() {
-        return open;
-    }
-
-    public void setOpen(Boolean open) {
-        this.open = open;
     }
 }

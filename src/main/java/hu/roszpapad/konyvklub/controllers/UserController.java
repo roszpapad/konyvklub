@@ -1,10 +1,7 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.BookToBeCreatedDTO;
-import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
-import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedDTO;
-import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedWithBooksDTO;
+import hu.roszpapad.konyvklub.dtos.*;
 import hu.roszpapad.konyvklub.events.OnRegistrationCompleteEvent;
 import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.RegistrationToken;
@@ -128,11 +125,4 @@ public class UserController {
         userService.addBookToUser(userService.findById(userId), createdBook);
         return ResponseEntity.ok().body("Könyv mentve.");
     }
-
-    @GetMapping("/login")
-    public String loginPage(){
-        return "user/login";
-    }
-
-
 }

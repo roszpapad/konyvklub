@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TicketToBeCreatedDTO {
 
-    private Long id;
+    private Long bookId;
 
     private String description;
 }

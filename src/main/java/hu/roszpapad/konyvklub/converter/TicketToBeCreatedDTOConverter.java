@@ -15,7 +15,7 @@ public class TicketToBeCreatedDTOConverter implements Converter<Ticket, TicketTo
     @Override
     public TicketToBeCreatedDTO toDTO(Ticket entity) {
         TicketToBeCreatedDTO ticketDTO = new TicketToBeCreatedDTO();
-        ticketDTO.setId(entity.getBookToSell().getId());
+        ticketDTO.setBookId(entity.getBookToSell().getId());
         ticketDTO.setDescription(entity.getDescription());
         return ticketDTO;
     }
@@ -23,7 +23,7 @@ public class TicketToBeCreatedDTOConverter implements Converter<Ticket, TicketTo
     @Override
     public Ticket toEntity(TicketToBeCreatedDTO dto) {
         Ticket ticket = new Ticket();
-        ticket.setBookToSell(bookService.findById(dto.getId()));
+        ticket.setBookToSell(bookService.findById(dto.getBookId()));
         ticket.setDescription(dto.getDescription());
         return ticket;
     }

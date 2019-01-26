@@ -11,7 +11,6 @@ public class TicketToBeDisplayedDTO {
     private Long id;
     private BookToBeDisplayedDTO bookToSell;
     private List<OfferToBeDisplayedDTO> offers;
-    private Boolean open;
     private String description;
     private UserToBeDisplayedDTO seller;
     private LocalDateTime endDate;

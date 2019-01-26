@@ -43,7 +43,6 @@ public class TicketServiceImpl implements TicketService{
     public Ticket createTicket(Ticket ticket) {
         Ticket savableTicket = new Ticket();
         savableTicket.setEndDate(LocalDateTime.now().plusWeeks(NUMBER_OF_WEEKS_ACTIVE));
-        savableTicket.setOpen(true);
 
         Book book = ticket.getBookToSell();
         User seller = book.getOwner();
