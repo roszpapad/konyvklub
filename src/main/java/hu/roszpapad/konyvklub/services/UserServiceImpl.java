@@ -121,5 +121,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void changeProfilePicture(Long userId, String file) {
+        User user = findById(userId);
+        user.setImage(file);
+        saveUser(user);
+    }
 
+    @Override
+    public String findPicture(Long userId) {
+        return findById(userId).getImage();
+    }
 }

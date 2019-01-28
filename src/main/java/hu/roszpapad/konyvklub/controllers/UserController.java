@@ -12,6 +12,7 @@ import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,5 +125,20 @@ public class UserController {
         Book createdBook = bookService.createBook(bookToBeCreatedDTOConverter.toEntity(bookDTO));
         userService.addBookToUser(userService.findById(userId), createdBook);
         return ResponseEntity.ok().body("Könyv mentve.");
+    }
+
+    @PostMapping("/users/{userId}/changePicture")
+    public ResponseEntity<String> changeProfilePicture(@PathVariable(name = "userId") Long userId ,@RequestBody ImageDTO base64){
+        userService.changeProfilePicture(userId, base64.getFile());
+        return ResponseEntity.ok("Profilkép csere megtörtént!");
+    }
+
+    @GetMapping("/users/{userId}/picture")
+    @ResponseBody
+    public ResponseEntity<String> getProfilePicture(@PathVariable(name = "userId") Long userId, HttpServletResponse response){
+
+        String picBase64 = userService.findPicture(userId);
+        //return ResponseEntity.ok(picBase64);
+        return ResponseEntity.status(200).contentType(MediaType.TEXT_PLAIN).body(picBase64);
     }
 }

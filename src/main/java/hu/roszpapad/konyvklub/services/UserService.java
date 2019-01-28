@@ -16,4 +16,7 @@ public interface UserService {
     User removeTicketFromUser(User user, Ticket ticket);
     User removeOfferFromUser(User user, Offer offer);
     void changeBookBetweenUsers(User user1, Book book1, User user2, Book book2);
+    void changeProfilePicture(Long userId, String file);
+
+    String findPicture(Long userId);
 }

@@ -17,7 +17,7 @@ public class User extends Auditable {
     private String username;
 
     @Lob
-    private byte[] image;
+    private String image;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
@@ -174,5 +174,13 @@ public class User extends Auditable {
 
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
