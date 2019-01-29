@@ -5,6 +5,8 @@ import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.model.User;
 
+import java.util.List;
+
 public interface NotificationService {
 
     void deleteExpiredNotifications(User user);
@@ -16,4 +18,8 @@ public interface NotificationService {
     Notification createAcceptedOfferNotification(Offer offer);
 
     Notification createExpiredTicketNotification(Ticket ticket);
+
+    List<Notification> getNotificationsByUser(Long userId);
+
+    int getNumberOfNotificationsByUser(Long userId);
 }

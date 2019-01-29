@@ -17,9 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-    private static final int NUMBER_OF_MONTHS_ACTIVE = 1;
+    private static final int NUMBER_OF_WEEKS_ACTIVE = 1;
 
     private final NotificationRepository notificationRepository;
+
+    private final UserService userService;
 
     @Override
     public void deleteExpiredNotifications(User user) {
@@ -45,7 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
     public Notification createRejectedOfferNotification(Offer offer) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
-        notification.setMessage("Rejected Offer :");
+        notification.setMessage("Ajánlat elutasítva:");
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getCustomer());
@@ -57,10 +59,10 @@ public class NotificationServiceImpl implements NotificationService {
     public Notification createAcceptedTicketNotification(Offer offer) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
-        notification.setMessage("Accepted Ticket :");
+        notification.setMessage("Ticket elkelt:");
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
-        notification.setUser(offer.getCustomer());
+        notification.setUser(offer.getTicket().getSeller());
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }
@@ -69,7 +71,7 @@ public class NotificationServiceImpl implements NotificationService {
     public Notification createAcceptedOfferNotification(Offer offer) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
-        notification.setMessage("Accepted Offer :");
+        notification.setMessage("Ajánlat elfogadva:");
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getCustomer());
@@ -84,6 +86,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     public LocalDateTime calculateEndDate(){
-        return LocalDateTime.now().plus(NUMBER_OF_MONTHS_ACTIVE,ChronoUnit.MINUTES);
+        return LocalDateTime.now().plus(NUMBER_OF_WEEKS_ACTIVE,ChronoUnit.WEEKS);
+    }
+
+    @Override
+    public List<Notification> getNotificationsByUser(Long userId) {
+        User user = userService.findById(userId);
+        return notificationRepository.findByUser(user);
+    }
+
+    @Override
+    public int getNumberOfNotificationsByUser(Long userId) {
+        return getNotificationsByUser(userId).size();
     }
 }

@@ -26,6 +26,8 @@ public class TicketServiceImpl implements TicketService{
 
     private final UserRepository userRepository;
 
+    private final OfferService offerService;
+
     private final int NUMBER_OF_WEEKS_ACTIVE = 2;
 
     @Override
@@ -68,18 +70,17 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public void deleteTicket(Long id) {
         Ticket current = findById(id);
-        List<Book> booksToBeFreed = new ArrayList<>();
 
         List<Offer> offersPending = current.getOffers().stream().filter(offer -> offer.getStatus().equals(Status.PENDING))
                 .collect(Collectors.toList());
-        offersPending.forEach(offer -> booksToBeFreed.add(offer.getBookToPay()));
-        booksToBeFreed.add(current.getBookToSell());
+
+        offersPending.forEach(offer -> offerService.rejectOffer(offer));
         current.getOffers().forEach(offer -> userService.removeOfferFromUser(offer.getCustomer(), offer));
         userService.removeTicketFromUser(current.getSeller(),current);
-        booksToBeFreed.forEach(book -> {
-            book.setOfferable(true);
-            bookRepository.save(book);
-        });
+
+        Book currentBook = current.getBookToSell();
+        currentBook.setOfferable(true);
+        bookRepository.save(currentBook);
         ticketRepository.delete(current);
     }
 

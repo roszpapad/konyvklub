@@ -27,8 +27,6 @@ public class OfferServiceImpl implements OfferService {
 
     private final TicketRepository ticketRepository;
 
-    private final TicketService ticketService;
-
     private final NotificationService notificationService;
 
     @Override
@@ -72,7 +70,10 @@ public class OfferServiceImpl implements OfferService {
             current.getBookToPay().setOfferable(true);
             bookRepository.save(current.getBookToPay());
         }
-        ticketService.removeOfferFromTicket(current.getTicket(), current);
+        //ticketService.removeOfferFromTicket(current.getTicket(), current);
+        Ticket ticket = current.getTicket();
+        ticket.getOffers().remove(current);
+        ticketRepository.save(ticket);
         userService.removeOfferFromUser(current.getCustomer(), current);
         offerRepository.delete(current);
     }
