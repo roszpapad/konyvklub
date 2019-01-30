@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class NotificationToBeDisplayedDTO {
 
+    private String ticketId;
+
     private String message;
 
     private String givenBookName;

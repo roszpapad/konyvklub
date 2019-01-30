@@ -19,6 +19,8 @@ public class Notification extends Auditable {
     @Lob
     private String message;
 
+    private Long ticketId;
+
     private String givenBookName;
 
     private String offeredBookName;

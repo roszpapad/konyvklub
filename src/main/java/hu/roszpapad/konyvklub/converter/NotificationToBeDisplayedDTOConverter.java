@@ -14,11 +14,11 @@ public class NotificationToBeDisplayedDTOConverter implements Converter<Notifica
 
     @Override
     public NotificationToBeDisplayedDTO toDTO(Notification entity) {
-        return null;
+        return modelMapper.map(entity, NotificationToBeDisplayedDTO.class);
     }
 
     @Override
     public Notification toEntity(NotificationToBeDisplayedDTO dto) {
-        return null;
+        return modelMapper.map(dto, Notification.class);
     }
 }

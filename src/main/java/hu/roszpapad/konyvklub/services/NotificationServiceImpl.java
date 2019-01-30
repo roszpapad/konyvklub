@@ -51,6 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getCustomer());
+        notification.setTicketId(offer.getTicket().getId());
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }
@@ -63,6 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getTicket().getSeller());
+        //TODO chat
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }
@@ -75,6 +77,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getCustomer());
+        //TODO chat
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }
