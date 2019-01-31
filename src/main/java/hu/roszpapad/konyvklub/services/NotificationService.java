@@ -13,9 +13,9 @@ public interface NotificationService {
 
     Notification createRejectedOfferNotification(Offer offer);
 
-    Notification createAcceptedTicketNotification(Offer offer);
+    Notification createAcceptedTicketNotification(Offer offer, String channelId);
 
-    Notification createAcceptedOfferNotification(Offer offer);
+    Notification createAcceptedOfferNotification(Offer offer, String channelId);
 
     Notification createExpiredTicketNotification(Ticket ticket);
 

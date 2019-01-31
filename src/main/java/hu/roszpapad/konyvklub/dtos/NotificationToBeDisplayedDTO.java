@@ -7,6 +7,8 @@ public class NotificationToBeDisplayedDTO {
 
     private String ticketId;
 
+    private String channelId;
+
     private String message;
 
     private String givenBookName;

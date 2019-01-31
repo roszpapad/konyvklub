@@ -57,27 +57,27 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification createAcceptedTicketNotification(Offer offer) {
+    public Notification createAcceptedTicketNotification(Offer offer, String channelId) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
         notification.setMessage("Ticket elkelt:");
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getTicket().getSeller());
-        //TODO chat
+        notification.setChannelId(channelId);
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }
 
     @Override
-    public Notification createAcceptedOfferNotification(Offer offer) {
+    public Notification createAcceptedOfferNotification(Offer offer, String channelId) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
         notification.setMessage("Ajánlat elfogadva:");
         notification.setGivenBookName(offer.getTicket().getBookToSell().getTitle());
         notification.setOfferedBookName(offer.getBookToPay().getTitle());
         notification.setUser(offer.getCustomer());
-        //TODO chat
+        notification.setChannelId(channelId);
         deleteExpiredNotifications(offer.getCustomer());
         return notificationRepository.save(notification);
     }

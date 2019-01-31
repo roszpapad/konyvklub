@@ -21,6 +21,8 @@ public class Notification extends Auditable {
 
     private Long ticketId;
 
+    private String channelId;
+
     private String givenBookName;
 
     private String offeredBookName;

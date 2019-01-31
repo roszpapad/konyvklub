@@ -29,6 +29,8 @@ public class OfferServiceImpl implements OfferService {
 
     private final NotificationService notificationService;
 
+    private final ChatChannelService chatChannelService;
+
     @Override
     public Offer findById(Long id) {
         return offerRepository.findById(id).orElseThrow(() -> new OfferNotFoundException());
@@ -104,8 +106,10 @@ public class OfferServiceImpl implements OfferService {
         bookRepository.save(paidBook);*/
 
         userService.changeBookBetweenUsers(seller,soldBook,customer,paidBook);
-        notificationService.createAcceptedOfferNotification(offer);
-        notificationService.createAcceptedTicketNotification(offer);
+        ChatChannel chatChannel = chatChannelService.createChatChannel(seller.getUsername(),customer.getUsername());
+        notificationService.createAcceptedOfferNotification(offer,chatChannel.getId());
+        notificationService.createAcceptedTicketNotification(offer,chatChannel.getId());
+
 
         return ticketRepository.save(ticket);
     }
