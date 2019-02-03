@@ -20,13 +20,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     private final ChatChannelService chatChannelService;
 
     @Override
-    public List<ChatMessage> getMessagesByChannel(String channelId) {
-        List<ChatMessage> messages = chatMessageRepository.findByChatChannelIdOrderByCreatedDateDesc(channelId);
+    public List<ChatMessage> getMessagesByChannel(Long channelId) {
+        List<ChatMessage> messages = chatMessageRepository.findByChatChannelIdOrderByCreatedDateAsc(channelId);
         return messages;
     }
 
     @Override
-    public ChatMessage saveMessage(String channelId, ChatMessageToGetDTO messageGot) {
+    public ChatMessage saveMessage(Long channelId, ChatMessageToGetDTO messageGot) {
         ChatMessage messageToSave = new ChatMessage();
         ChatChannel chatChannel = chatChannelService.findById(channelId);
         messageToSave.setChatChannel(chatChannel);

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChatChannelService {
 
-    ChatChannel findById(String channelId);
+    ChatChannel findById(Long channelId);
     List<ChatChannel> findByUsername(String username);
     ChatChannel createChatChannel(String usernameOne, String usernameTwo);
 }

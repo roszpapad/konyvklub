@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ChatMessageRepository extends CrudRepository<ChatMessage, Long>{
 
-    List<ChatMessage> findByChatChannelIdOrderByCreatedDateDesc(String id);
+    List<ChatMessage> findByChatChannelIdOrderByCreatedDateAsc(Long id);
 }

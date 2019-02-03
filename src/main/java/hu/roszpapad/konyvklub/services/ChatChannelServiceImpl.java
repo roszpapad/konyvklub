@@ -14,7 +14,7 @@ public class ChatChannelServiceImpl implements ChatChannelService {
     private final ChatChannelRepository chatChannelRepository;
 
     @Override
-    public ChatChannel findById(String channelId) {
+    public ChatChannel findById(Long channelId) {
         //TODO exception handling
         return chatChannelRepository.findById(channelId).orElseThrow(() -> new RuntimeException());
     }

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ChatMessageService {
 
-    List<ChatMessage> getMessagesByChannel(String channelId);
+    List<ChatMessage> getMessagesByChannel(Long channelId);
 
-    ChatMessage saveMessage(String channelId, ChatMessageToGetDTO messageGot);
+    ChatMessage saveMessage(Long channelId, ChatMessageToGetDTO messageGot);
 
     ChatMessageToSendDTO prepareForSending(ChatMessage message);
 }

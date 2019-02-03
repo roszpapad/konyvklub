@@ -9,12 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ChatChannelRepository extends CrudRepository<ChatChannel,String>{
+public interface ChatChannelRepository extends CrudRepository<ChatChannel,Long>{
 
 
-    @Query(" FROM"
-            + "    chat_channel c"
-            + "  WHERE"
-            + "    :username IN (c.usernameOne, c.usernameTwo) ")
+    @Query("Select c FROM ChatChannel c WHERE :username IN (c.usernameOne, c.usernameTwo)")
     List<ChatChannel> findUserChannels(@Param("username") String username);
 }

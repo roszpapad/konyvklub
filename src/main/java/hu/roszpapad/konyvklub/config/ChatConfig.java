@@ -12,6 +12,7 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry.addEndpoint("/konyvklub-websocket")
+                .setAllowedOrigins("*")
                 .withSockJS();
     }
 

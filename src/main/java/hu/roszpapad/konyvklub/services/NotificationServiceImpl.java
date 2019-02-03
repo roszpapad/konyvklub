@@ -57,7 +57,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification createAcceptedTicketNotification(Offer offer, String channelId) {
+    public Notification createAcceptedTicketNotification(Offer offer, Long channelId) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
         notification.setMessage("Ticket elkelt:");
@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification createAcceptedOfferNotification(Offer offer, String channelId) {
+    public Notification createAcceptedOfferNotification(Offer offer, Long channelId) {
         Notification notification = new Notification();
         notification.setEndDate(calculateEndDate());
         notification.setMessage("Ajánlat elfogadva:");
