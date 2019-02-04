@@ -22,8 +22,11 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -140,5 +143,13 @@ public class UserController {
         String picBase64 = userService.findPicture(userId);
         //return ResponseEntity.ok(picBase64);
         return ResponseEntity.status(200).contentType(MediaType.TEXT_PLAIN).body(picBase64);
+    }
+
+    @GetMapping("/users/filtered")
+    public ResponseEntity<List<UserToBeDisplayedDTO>> getUsersByUsernameFilter(@PathParam(value = "username") String username){
+        List<User> users = userService.getUsersByUsernameFilter(username);
+        List<UserToBeDisplayedDTO> userDTOs = new ArrayList<>();
+        users.forEach(user -> userDTOs.add(userToBeDisplayedConverter.toDTO(user)));
+        return ResponseEntity.ok(userDTOs);
     }
 }

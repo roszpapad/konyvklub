@@ -16,4 +16,6 @@ public class UserToBeDisplayedDTO {
     private String email;
 
     private AddressForEverythingDTO address;
+
+    private Boolean active;
 }

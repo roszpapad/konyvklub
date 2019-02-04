@@ -2,6 +2,8 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.model.*;
 
+import java.util.List;
+
 public interface UserService {
 
     User registerUser(User user);
@@ -10,6 +12,7 @@ public interface UserService {
     User switchActive(Long id);
     RegistrationToken createRegistrationToken(User user, String token);
     User saveUser(User user);
+    List<User> findAll();
 
     void addBookToUser(User user, Book book);
     void deleteBookFromUser(User user, Book book);
@@ -19,4 +22,5 @@ public interface UserService {
     void changeProfilePicture(Long userId, String file);
 
     String findPicture(Long userId);
+    List<User> getUsersByUsernameFilter(String username);
 }

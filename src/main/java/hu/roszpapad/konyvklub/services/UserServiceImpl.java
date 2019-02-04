@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -131,5 +134,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public String findPicture(Long userId) {
         return findById(userId).getImage();
+    }
+
+    @Override
+    public List<User> getUsersByUsernameFilter(String username) {
+        List<User> users = findAll();
+        List<User> usersToReturn = new ArrayList<>();
+        if (username != null && !username.equals("")){
+            String toFind = username.toLowerCase();
+            usersToReturn = users.stream()
+                    .filter(user -> user.getUsername().toLowerCase().contains(toFind))
+                    .collect(Collectors.toList());
+        }
+        return usersToReturn;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

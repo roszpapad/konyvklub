@@ -22,6 +22,7 @@ public class UserToBeDisplayedDTOConverter implements Converter<User, UserToBeDi
         userDTO.setUsername(entity.getUsername());
         userDTO.setLastName(entity.getLastName());
         userDTO.setAddress(addressForEverythingConverter.toDTO(entity.getAddress()));
+        userDTO.setActive(entity.isActive());
         return userDTO;
     }
 
@@ -34,6 +35,7 @@ public class UserToBeDisplayedDTOConverter implements Converter<User, UserToBeDi
         user.setUsername(dto.getUsername());
         user.setAddress(addressForEverythingConverter.toEntity(dto.getAddress()));
         user.setEmail(dto.getEmail());
+        user.setActive(dto.getActive());
         return user;
     }
 }
