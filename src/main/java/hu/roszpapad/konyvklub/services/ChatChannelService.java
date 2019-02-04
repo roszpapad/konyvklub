@@ -8,5 +8,5 @@ public interface ChatChannelService {
 
     ChatChannel findById(Long channelId);
     List<ChatChannel> findByUsername(String username);
-    ChatChannel createChatChannel(String usernameOne, String usernameTwo);
+    ChatChannel createChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay);
 }

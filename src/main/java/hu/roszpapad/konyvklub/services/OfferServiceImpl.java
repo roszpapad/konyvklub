@@ -81,7 +81,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Ticket acceptOffer(Ticket ticket, Offer offer) {
+    public void acceptOffer(Ticket ticket, Offer offer) {
 
 
         offer.setStatus(Status.ACCEPTED);
@@ -102,16 +102,16 @@ public class OfferServiceImpl implements OfferService {
 
         soldBook.setOfferable(true);
         paidBook.setOfferable(true);
-        /*bookRepository.save(soldBook);
-        bookRepository.save(paidBook);*/
+        
 
         userService.changeBookBetweenUsers(seller,soldBook,customer,paidBook);
-        ChatChannel chatChannel = chatChannelService.createChatChannel(seller.getUsername(),customer.getUsername());
+        ChatChannel chatChannel = chatChannelService
+                .createChatChannel(seller.getUsername(),customer.getUsername(),soldBook.getTitle(),paidBook.getTitle());
         notificationService.createAcceptedOfferNotification(offer,chatChannel.getId());
         notificationService.createAcceptedTicketNotification(offer,chatChannel.getId());
 
 
-        return ticketRepository.save(ticket);
+        ticketRepository.delete(ticket);
     }
 
     public Offer rejectOffer(Offer offer){

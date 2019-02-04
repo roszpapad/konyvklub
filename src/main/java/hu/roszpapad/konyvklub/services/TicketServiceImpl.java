@@ -92,10 +92,12 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public List<Ticket> filterTickets(String title, String writer) {
+    public List<Ticket> filterTickets(String title, String writer, String city) {
+        boolean isFiltered = false;
         List<Ticket> tickets = getTickets();
         List<Ticket> ticketsToReturn = new ArrayList<>();
         if (title != null && !title.isEmpty()) {
+            isFiltered = true;
             String lowerTitle = title.toLowerCase();
             ticketsToReturn = tickets.stream()
                     .filter(ticket -> ticket.getBookToSell().getTitle().toLowerCase().contains(lowerTitle))
@@ -103,6 +105,7 @@ public class TicketServiceImpl implements TicketService{
         }
 
         if (writer != null && !writer.isEmpty()){
+            isFiltered = true;
             String lowerWriter = writer.toLowerCase();
             if (!ticketsToReturn.isEmpty()) {
                 ticketsToReturn = ticketsToReturn.stream()
@@ -114,6 +117,20 @@ public class TicketServiceImpl implements TicketService{
                         .collect(Collectors.toList());
             }
         }
+
+        if (city != null && !city.isEmpty()){
+            String lowerCity = city.toLowerCase();
+            if (isFiltered) {
+                ticketsToReturn = ticketsToReturn.stream()
+                        .filter(ticket -> ticket.getSeller().getAddress().getCity().toLowerCase().contains(lowerCity))
+                        .collect(Collectors.toList());
+            } else {
+                ticketsToReturn = tickets.stream()
+                        .filter(ticket -> ticket.getSeller().getAddress().getCity().toLowerCase().contains(lowerCity))
+                        .collect(Collectors.toList());
+            }
+        }
+
 
         return ticketsToReturn;
     }

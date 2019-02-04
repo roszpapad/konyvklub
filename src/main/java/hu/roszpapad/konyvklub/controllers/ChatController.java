@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,15 +36,12 @@ public class ChatController {
     private final Converter<ChatMessage, ChatMessageToSendDTO> chatMessageToSendDTOConverter;
 
     @MessageMapping("/chat/{channelId}")
-    //@SendTo("/topic/chat")
-    public /*ResponseEntity<ChatMessageToSendDTO> ChatMessageToSendDTO*/void sendMessage(@DestinationVariable Long channelId,
+    @SendTo("/topic/chat/{channelId}")
+    public ChatMessageToSendDTO sendMessage(@DestinationVariable Long channelId,
                                                             ChatMessageToGetDTO messageGot){
 
         ChatMessage message = chatMessageService.saveMessage(channelId, messageGot);
-
-        //return ResponseEntity.ok(chatMessageService.prepareForSending(message));
-        //return chatMessageService.prepareForSending(message);
-        simpMessagingTemplate.convertAndSend("/topic/chat", chatMessageService.prepareForSending(message));
+        return chatMessageService.prepareForSending(message);
     }
 
     @GetMapping("/users/{username}/channels")

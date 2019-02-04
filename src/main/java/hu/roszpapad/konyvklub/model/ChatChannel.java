@@ -19,9 +19,15 @@ public class ChatChannel extends Auditable {
 
     private String usernameTwo;
 
-    public ChatChannel(String usernameOne, String usernameTwo) {
+    private String bookToSell;
+
+    private String bookToPay;
+
+    public ChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay) {
         this.usernameOne = usernameOne;
         this.usernameTwo = usernameTwo;
+        this.bookToSell = bookToSell;
+        this.bookToPay = bookToPay;
     }
 
     public ChatChannel() {

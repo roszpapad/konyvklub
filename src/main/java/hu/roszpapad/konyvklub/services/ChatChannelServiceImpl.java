@@ -25,8 +25,8 @@ public class ChatChannelServiceImpl implements ChatChannelService {
     }
 
     @Override
-    public ChatChannel createChatChannel(String usernameOne, String usernameTwo) {
-        ChatChannel channel = new ChatChannel(usernameOne, usernameTwo);
+    public ChatChannel createChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay) {
+        ChatChannel channel = new ChatChannel(usernameOne, usernameTwo, bookToSell, bookToPay);
         return chatChannelRepository.save(channel);
     }
 }

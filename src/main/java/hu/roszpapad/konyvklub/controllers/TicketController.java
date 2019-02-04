@@ -74,8 +74,9 @@ public class TicketController {
 
     @GetMapping("/tickets/filter")
     public ResponseEntity<List<TicketToBeDisplayedDTO>> findTickets(@PathParam(value = "title") String title,
-                                      @PathParam(value = "writer") String writer){
-        List<Ticket> tickets = ticketService.filterTickets(title, writer);
+                                                                    @PathParam(value = "writer") String writer,
+                                                                    @PathParam(value = "city") String city){
+        List<Ticket> tickets = ticketService.filterTickets(title, writer,city);
         List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
         tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
         return ResponseEntity.ok(ticketDTOs);

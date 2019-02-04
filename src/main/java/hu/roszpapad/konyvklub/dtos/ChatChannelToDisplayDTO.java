@@ -10,4 +10,8 @@ public class ChatChannelToDisplayDTO {
     private String usernameOne;
 
     private String usernameTwo;
+
+    private String bookToSell;
+
+    private String bookToPay;
 }
