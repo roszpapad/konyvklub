@@ -92,10 +92,20 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public List<Ticket> filterTickets(String title, String writer, String city) {
+    public List<Ticket> filterTickets(String title, String writer, String city, boolean owned, Long id) {
+
         boolean isFiltered = false;
+
         List<Ticket> tickets = getTickets();
         List<Ticket> ticketsToReturn = new ArrayList<>();
+
+        if (owned) {
+            tickets = tickets.stream()
+                    .filter(ticket -> ticket.getSeller().getId() == id)
+                    .collect(Collectors.toList());
+            ticketsToReturn = tickets;
+        }
+
         if (title != null && !title.isEmpty()) {
             isFiltered = true;
             String lowerTitle = title.toLowerCase();

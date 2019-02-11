@@ -115,10 +115,10 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}/switchActive")
-    public String switchActive(@PathVariable(name = "userId") Long userId){
+    public ResponseEntity<String> switchActive(@PathVariable(name = "userId") Long userId){
 
         userService.switchActive(userId);
-        return "redirect:/";
+        return ResponseEntity.ok("Atvaltva!");
     }
 
     @PostMapping("/users/{userId}/books")
