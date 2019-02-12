@@ -114,10 +114,10 @@ public class UserController {
         return "user/display";
     }
 
-    @GetMapping("/user/{userId}/switchActive")
-    public ResponseEntity<String> switchActive(@PathVariable(name = "userId") Long userId){
+    @GetMapping("/user/{username}/switchActive")
+    public ResponseEntity<String> switchActive(@PathVariable(name = "username") String username){
 
-        userService.switchActive(userId);
+        userService.switchActive(username);
         return ResponseEntity.ok("Atvaltva!");
     }
 

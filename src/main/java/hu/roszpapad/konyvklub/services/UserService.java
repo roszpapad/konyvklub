@@ -9,7 +9,7 @@ public interface UserService {
     User registerUser(User user);
     User updateUser(User user);
     User findById(Long id);
-    User switchActive(Long id);
+    User switchActive(String username);
     RegistrationToken createRegistrationToken(User user, String token);
     User saveUser(User user);
     List<User> findAll();

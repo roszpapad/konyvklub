@@ -61,8 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User switchActive(Long id) {
-        User user = findById(id);
+    public User switchActive(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
         user.setActive(!user.isActive());
         return userRepository.save(user);
     }
