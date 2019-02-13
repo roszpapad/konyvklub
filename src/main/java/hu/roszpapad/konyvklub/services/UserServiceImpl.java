@@ -153,4 +153,10 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public boolean isActive(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        return user.isActive();
+    }
 }

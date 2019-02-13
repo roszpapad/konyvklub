@@ -7,12 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
 
     private final ReportRepository reportRepository;
+
+    private final UserService userService;
+
 
     @Override
     public Report createReport(ReportToBeCreatedDTO reportDTO) {
@@ -24,7 +28,18 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<Report> getTicketsByReported(String reported) {
-        return reportRepository.findByReported(reported);
+    public List<Report> getReportsByReported(String reported) {
+        List<Report> reports = reportRepository.findByReported(reported);
+        return reports.stream()
+                .filter(report -> userService.isActive(report.getReported()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Report> getAllReports() {
+        List<Report> reports = reportRepository.findAll();
+        return reports.stream()
+                .filter(report -> userService.isActive(report.getReported()))
+                .collect(Collectors.toList());
     }
 }

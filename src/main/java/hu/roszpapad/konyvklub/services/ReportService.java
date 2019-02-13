@@ -9,5 +9,6 @@ import java.util.List;
 public interface ReportService {
 
     Report createReport(ReportToBeCreatedDTO reportDTO);
-    List<Report> getTicketsByReported(String reported);
+    List<Report> getReportsByReported(String reported);
+    List<Report> getAllReports();
 }

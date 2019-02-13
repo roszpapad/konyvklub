@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ReportController {
     private final Converter<Report, ReportToBeDisplayedDTO> reportToBeDisplayedDTOConverter;
 
     @PostMapping("/reports/create")
-    public ResponseEntity<ReportToBeDisplayedDTO> createReport(@RequestBody ReportToBeCreatedDTO reportDTO){
+    public ResponseEntity<ReportToBeDisplayedDTO> createReport(@Valid @RequestBody ReportToBeCreatedDTO reportDTO){
         Report report = reportService.createReport(reportDTO);
         return ResponseEntity.ok(reportToBeDisplayedDTOConverter.toDTO(report));
     }
@@ -33,7 +34,16 @@ public class ReportController {
     @GetMapping("/reports/filtered")
     public ResponseEntity<List<ReportToBeDisplayedDTO>> listReportsByReported(@PathParam(value = "reported") String reported){
 
-        List<Report> reports = reportService.getTicketsByReported(reported);
+        List<Report> reports = reportService.getReportsByReported(reported);
+        List<ReportToBeDisplayedDTO> reportDTOs = new ArrayList<>();
+        reports.forEach(report -> reportDTOs.add(reportToBeDisplayedDTOConverter.toDTO(report)));
+        return ResponseEntity.ok(reportDTOs);
+    }
+
+    @GetMapping("/reports/all")
+    public ResponseEntity<List<ReportToBeDisplayedDTO>> listReports(){
+
+        List<Report> reports = reportService.getAllReports();
         List<ReportToBeDisplayedDTO> reportDTOs = new ArrayList<>();
         reports.forEach(report -> reportDTOs.add(reportToBeDisplayedDTOConverter.toDTO(report)));
         return ResponseEntity.ok(reportDTOs);

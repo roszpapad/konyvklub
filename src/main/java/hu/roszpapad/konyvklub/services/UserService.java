@@ -13,6 +13,7 @@ public interface UserService {
     RegistrationToken createRegistrationToken(User user, String token);
     User saveUser(User user);
     List<User> findAll();
+    boolean isActive(String username);
 
     void addBookToUser(User user, Book book);
     void deleteBookFromUser(User user, Book book);
