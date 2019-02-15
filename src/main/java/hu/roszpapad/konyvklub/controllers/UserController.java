@@ -3,9 +3,7 @@ package hu.roszpapad.konyvklub.controllers;
 import hu.roszpapad.konyvklub.converter.Converter;
 import hu.roszpapad.konyvklub.dtos.*;
 import hu.roszpapad.konyvklub.events.OnRegistrationCompleteEvent;
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.RegistrationToken;
-import hu.roszpapad.konyvklub.model.User;
+import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.RegistrationTokenRepository;
 import hu.roszpapad.konyvklub.services.BookService;
 import hu.roszpapad.konyvklub.services.UserService;
@@ -44,6 +42,10 @@ public class UserController {
     private final Converter<User, UserToBeDisplayedWithBooksDTO> userToBeDisplayedWithBooksConverter;
 
     private final Converter<Book, BookToBeCreatedDTO> bookToBeCreatedDTOConverter;
+
+    private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
+
+    private final Converter<Ticket, TicketToBeDisplayedDTO> ticketToBeDisplayedDTOConverter;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -138,7 +140,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/picture")
     @ResponseBody
-    public ResponseEntity<String> getProfilePicture(@PathVariable(name = "userId") Long userId, HttpServletResponse response){
+    public ResponseEntity<String> getProfilePicture(@PathVariable(name = "userId") Long userId){
 
         String picBase64 = userService.findPicture(userId);
         //return ResponseEntity.ok(picBase64);
@@ -151,5 +153,28 @@ public class UserController {
         List<UserToBeDisplayedDTO> userDTOs = new ArrayList<>();
         users.forEach(user -> userDTOs.add(userToBeDisplayedConverter.toDTO(user)));
         return ResponseEntity.ok(userDTOs);
+    }
+
+    @GetMapping("/users/{username}/pictureByUsername")
+    public ResponseEntity<String> getProfilePictureByUsername(@PathVariable(name = "username") String username){
+
+        String picBase64 = userService.findPictureByUsername(username);
+        return ResponseEntity.status(200).contentType(MediaType.TEXT_PLAIN).body(picBase64);
+    }
+
+    @GetMapping("/users/{userId}/offers")
+    public ResponseEntity<List<OfferToBeDisplayedDTO>> getUserOffers(@PathVariable(name = "userId") Long userId){
+        List<Offer> offers = userService.getUserOffers(userId);
+        List<OfferToBeDisplayedDTO> offerDTOs = new ArrayList<>();
+        offers.forEach(offer -> offerDTOs.add(offerToBeDisplayedDTOConverter.toDTO(offer)));
+        return ResponseEntity.ok(offerDTOs);
+    }
+
+    @GetMapping("/users/{userId}/tickets")
+    public ResponseEntity<List<TicketToBeDisplayedDTO>> getUserTickets(@PathVariable(name = "userId") Long userId){
+        List<Ticket> tickets = userService.getUserTickets(userId);
+        List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
+        tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
+        return ResponseEntity.ok(ticketDTOs);
     }
 }

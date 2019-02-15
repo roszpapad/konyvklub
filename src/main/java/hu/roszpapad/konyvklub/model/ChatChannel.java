@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "chat_channel")
 public class ChatChannel extends Auditable {
 
     @Id
@@ -22,6 +21,13 @@ public class ChatChannel extends Auditable {
     private String bookToSell;
 
     private String bookToPay;
+
+    public ChatChannel(String usernameOne, String usernameTwo) {
+        this.usernameOne = usernameOne;
+        this.usernameTwo = usernameTwo;
+        this.bookToSell = null;
+        this.bookToPay = null;
+    }
 
     public ChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay) {
         this.usernameOne = usernameOne;

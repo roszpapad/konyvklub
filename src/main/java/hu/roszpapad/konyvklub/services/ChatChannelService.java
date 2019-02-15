@@ -7,6 +7,9 @@ import java.util.List;
 public interface ChatChannelService {
 
     ChatChannel findById(Long channelId);
-    List<ChatChannel> findByUsername(String username);
-    ChatChannel createChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay);
+    List<ChatChannel> findBusinessByUsername(String username);
+    List<ChatChannel> findFriendlyByUsername(String username);
+    ChatChannel createBusinessChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay);
+    ChatChannel createFriendlyChatChannel(String usernameOne, String usernameTwo);
+    boolean friendlyChannelExists(String usernameOne, String usernameTwo);
 }

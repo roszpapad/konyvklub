@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +21,30 @@ public class ChatChannelServiceImpl implements ChatChannelService {
     }
 
     @Override
-    public List<ChatChannel> findByUsername(String username) {
-        return chatChannelRepository.findUserChannels(username);
+    public List<ChatChannel> findBusinessByUsername(String username) {
+        return chatChannelRepository.findUserBusinessChannels(username);
     }
 
     @Override
-    public ChatChannel createChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay) {
+    public ChatChannel createBusinessChatChannel(String usernameOne, String usernameTwo, String bookToSell, String bookToPay) {
         ChatChannel channel = new ChatChannel(usernameOne, usernameTwo, bookToSell, bookToPay);
         return chatChannelRepository.save(channel);
+    }
+
+    @Override
+    public List<ChatChannel> findFriendlyByUsername(String username) {
+        return chatChannelRepository.findUserFriendlyChannels(username);
+    }
+
+    @Override
+    public ChatChannel createFriendlyChatChannel(String usernameOne, String usernameTwo) {
+        ChatChannel channel = new ChatChannel(usernameOne, usernameTwo);
+        return chatChannelRepository.save(channel);
+    }
+
+    @Override
+    public boolean friendlyChannelExists(String usernameOne, String usernameTwo) {
+        Optional<ChatChannel> channel = chatChannelRepository.findFriendlyChannel(usernameOne, usernameTwo);
+        return channel.isPresent();
     }
 }

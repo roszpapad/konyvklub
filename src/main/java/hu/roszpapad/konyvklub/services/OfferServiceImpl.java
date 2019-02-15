@@ -90,8 +90,10 @@ public class OfferServiceImpl implements OfferService {
         List<Offer> notAcceptedOffers = ticket.getOffers();
         notAcceptedOffers.remove(offer);
         notAcceptedOffers.forEach(offer1 -> {
+            userService.removeOfferFromUser(offer1.getCustomer(), offer1);
             if (offer1.getStatus().equals(Status.PENDING))
                 rejectOffer(offer1);
+
         });
 
         Book soldBook = ticket.getBookToSell();
@@ -100,17 +102,19 @@ public class OfferServiceImpl implements OfferService {
         User seller = ticket.getSeller();
         User customer = offer.getCustomer();
 
+        seller.getTicketsCreated().remove(ticket);
+        customer.getOffersInInterest().remove(offer);
         soldBook.setOfferable(true);
         paidBook.setOfferable(true);
         
 
         userService.changeBookBetweenUsers(seller,soldBook,customer,paidBook);
         ChatChannel chatChannel = chatChannelService
-                .createChatChannel(seller.getUsername(),customer.getUsername(),soldBook.getTitle(),paidBook.getTitle());
+                .createBusinessChatChannel(seller.getUsername(),customer.getUsername(),soldBook.getTitle(),paidBook.getTitle());
         notificationService.createAcceptedOfferNotification(offer,chatChannel.getId());
         notificationService.createAcceptedTicketNotification(offer,chatChannel.getId());
-
-
+        offerRepository.delete(offer);
+        offerRepository.deleteAll(ticket.getOffers());
         ticketRepository.delete(ticket);
     }
 
@@ -120,4 +124,6 @@ public class OfferServiceImpl implements OfferService {
         notificationService.createRejectedOfferNotification(offer);
         return offerRepository.save(offer);
     }
+
+
 }

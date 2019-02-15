@@ -44,10 +44,22 @@ public class ChatController {
         return chatMessageService.prepareForSending(message);
     }
 
-    @GetMapping("/users/{username}/channels")
-    public ResponseEntity<List<ChatChannelToDisplayDTO>> getChannels(@PathVariable(name = "username") String username){
+    @GetMapping("/users/{username}/friendlyChannels")
+    public ResponseEntity<List<ChatChannelToDisplayDTO>> getFriendlyChannels(@PathVariable(name = "username") String username){
 
-        List<ChatChannel> channels = chatChannelService.findByUsername(username);
+        List<ChatChannel> channels = chatChannelService.findFriendlyByUsername(username);
+
+        List<ChatChannelToDisplayDTO> channelsDTO = new ArrayList<>();
+
+        channels.forEach(chatChannel -> channelsDTO.add(chatChannelToDisplayDTOConverter.toDTO(chatChannel)));
+
+        return ResponseEntity.ok(channelsDTO);
+    }
+
+    @GetMapping("/users/{username}/businessChannels")
+    public ResponseEntity<List<ChatChannelToDisplayDTO>> getBusinessChannels(@PathVariable(name = "username") String username){
+
+        List<ChatChannel> channels = chatChannelService.findBusinessByUsername(username);
 
         List<ChatChannelToDisplayDTO> channelsDTO = new ArrayList<>();
 

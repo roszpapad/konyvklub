@@ -159,4 +159,22 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
         return user.isActive();
     }
+
+    @Override
+    public List<Offer> getUserOffers(Long id) {
+        User user = findById(id);
+        return user.getOffersInInterest();
+    }
+
+    @Override
+    public List<Ticket> getUserTickets(Long id) {
+        User user = findById(id);
+        return user.getTicketsCreated();
+    }
+
+    @Override
+    public String findPictureByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        return user.getImage();
+    }
 }
