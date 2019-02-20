@@ -90,6 +90,25 @@ public class UserController {
         }
     }
 
+    @PostMapping("/users/sendChangePasswordEmail")
+    public ResponseEntity<String> sendChangePasswordEmail(@Valid @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO){
+
+        userService.sendChangePasswordEmail(changePasswordRequestDTO.getUsername());
+        return ResponseEntity.ok("Jelszó cseréjéhez e-mailt küldtünk Önnek.");
+    }
+
+    @PostMapping("/users/changePassword")
+    public void changePassword(@RequestBody ChangingPasswordDTO changingPasswordDTO, HttpServletResponse response) throws IOException{
+        String result = userService.changePassword(changingPasswordDTO.getToken(), changingPasswordDTO.getPassword());
+        String url = "http://localhost:4200/users/changePassword?token=" + changingPasswordDTO.getToken();
+        if (result.equals("notFound") || result.equals("expired")){
+            response.sendRedirect(url + "&status=" + result);
+        }
+        if (result.equals("success")){
+            response.sendRedirect("http://localhost:4200/login?status=" + result);
+        }
+    }
+
     @GetMapping("/user/{userId}/update")
     public String updateUser(@PathVariable(name = "userId") Long userId, Model model){
 

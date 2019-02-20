@@ -11,6 +11,9 @@ public interface UserService {
     User findById(Long id);
     User switchActive(String username);
     RegistrationToken createRegistrationToken(User user, String token);
+    ChangePasswordToken createChangePasswordToken(User user, String token);
+    String changePassword(String token, String password);
+    void sendChangePasswordEmail(String username);
     User saveUser(User user);
     List<User> findAll();
     boolean isActive(String username);

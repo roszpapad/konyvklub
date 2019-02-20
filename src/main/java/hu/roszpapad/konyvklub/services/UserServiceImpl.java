@@ -2,17 +2,18 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
-import hu.roszpapad.konyvklub.repositories.AuthorityRepository;
-import hu.roszpapad.konyvklub.repositories.BookRepository;
-import hu.roszpapad.konyvklub.repositories.RegistrationTokenRepository;
-import hu.roszpapad.konyvklub.repositories.UserRepository;
+import hu.roszpapad.konyvklub.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final RegistrationTokenRepository registrationTokenRepository;
+    private final ChangePasswordTokenRepository changePasswordTokenRepository;
+    private final JavaMailSender javaMailSender;
 
     @Override
     public User registerUser(User user) {
@@ -117,6 +120,52 @@ public class UserServiceImpl implements UserService {
     public RegistrationToken createRegistrationToken(User user, String token) {
         RegistrationToken registrationToken = new RegistrationToken(token,user);
         return registrationTokenRepository.save(registrationToken);
+    }
+
+    @Override
+    public ChangePasswordToken createChangePasswordToken(User user, String token) {
+        ChangePasswordToken changePasswordToken = new ChangePasswordToken(token,user);
+        return changePasswordTokenRepository.save(changePasswordToken);
+    }
+
+    @Override
+    public void sendChangePasswordEmail(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        String token = UUID.randomUUID().toString();
+        ChangePasswordToken changePasswordToken = createChangePasswordToken(user,token);
+        String recipientAddress = changePasswordToken.getUser().getEmail();
+        String subject = "Jelszó csere - konyvklub";
+        String confirmationUrl
+                = "/users/changePassword?token=" + changePasswordToken.getToken();
+        String message = "Kattintson a következő linkre a jelszava cseréjéhez.";
+
+        MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                mimeMessage.setRecipient(Message.RecipientType.TO,new InternetAddress(recipientAddress));
+                mimeMessage.setSubject(subject);
+                mimeMessage.setText(message + "<br/>"
+                        + "<a href='http://localhost:4200" + confirmationUrl +  "'>Jelszó cseréhez kattintson ide!</a>","UTF-8","html");
+            }
+        };
+        javaMailSender.send(mimeMessagePreparator);
+    }
+
+
+    @Override
+    public String changePassword(String token, String password) {
+        Optional<ChangePasswordToken> changePasswordTokenOptional = changePasswordTokenRepository.findByToken(token);
+        if (!changePasswordTokenOptional.isPresent()){
+            return "notFound";
+        }
+        ChangePasswordToken changePasswordToken = changePasswordTokenOptional.get();
+        if (changePasswordToken.getExpiryDate().isBefore(LocalDateTime.now())){
+            return "expired";
+        }
+        User user = changePasswordToken.getUser();
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        return "success";
     }
 
     @Override

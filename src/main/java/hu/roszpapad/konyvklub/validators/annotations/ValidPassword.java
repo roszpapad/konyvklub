@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.validators.annotations;
 
-import hu.roszpapad.konyvklub.validators.PasswordsMatchConstraintValidator;
+
+import hu.roszpapad.konyvklub.validators.ValidPasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,10 +12,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordsMatchConstraintValidator.class)
-public @interface PasswordsMatchConstraint {
+@Constraint(validatedBy = ValidPasswordValidator.class)
+public @interface ValidPassword {
 
-    String message() default "A jelszavak nem egyeznek.";
+    String message() default "A megadott jelszó helytelen";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
