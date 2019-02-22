@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
@@ -98,15 +99,9 @@ public class UserController {
     }
 
     @PostMapping("/users/changePassword")
-    public void changePassword(@RequestBody ChangingPasswordDTO changingPasswordDTO, HttpServletResponse response) throws IOException{
+    public ResponseEntity<String> changePassword(@RequestBody ChangingPasswordDTO changingPasswordDTO, HttpServletResponse response, HttpServletRequest request) throws IOException{
         String result = userService.changePassword(changingPasswordDTO.getToken(), changingPasswordDTO.getPassword());
-        String url = "http://localhost:4200/users/changePassword?token=" + changingPasswordDTO.getToken();
-        if (result.equals("notFound") || result.equals("expired")){
-            response.sendRedirect(url + "&status=" + result);
-        }
-        if (result.equals("success")){
-            response.sendRedirect("http://localhost:4200/login?status=" + result);
-        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/user/{userId}/update")

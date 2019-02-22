@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         String recipientAddress = changePasswordToken.getUser().getEmail();
         String subject = "Jelszó csere - konyvklub";
         String confirmationUrl
-                = "/users/changePassword?token=" + changePasswordToken.getToken();
+                = "/changePassword?token=" + changePasswordToken.getToken();
         String message = "Kattintson a következő linkre a jelszava cseréjéhez.";
 
         MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
