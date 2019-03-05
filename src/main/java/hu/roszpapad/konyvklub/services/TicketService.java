@@ -11,7 +11,7 @@ public interface TicketService {
     Ticket findById(Long id);
     Ticket createTicket(Ticket ticket);
     Ticket updateTicket(Ticket ticket);
-    void deleteTicket(Long id);
+    void deleteTicket(Long id, boolean isFromScheduler);
     Ticket removeOfferFromTicket(Ticket ticket, Offer offer);
     List<Ticket> filterTickets(String title, String writer, String city, boolean owned, Long id);
 }

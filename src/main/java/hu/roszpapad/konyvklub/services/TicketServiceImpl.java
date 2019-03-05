@@ -8,6 +8,7 @@ import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class TicketServiceImpl implements TicketService{
     private final UserRepository userRepository;
 
     private final OfferService offerService;
+
+    private final NotificationService notificationService;
 
     private final int NUMBER_OF_WEEKS_ACTIVE = 2;
 
@@ -68,7 +71,8 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public void deleteTicket(Long id) {
+    @Transactional
+    public void deleteTicket(Long id, boolean isFromScheduler) {
         Ticket current = findById(id);
 
         List<Offer> offersPending = current.getOffers().stream().filter(offer -> offer.getStatus().equals(Status.PENDING))
@@ -76,6 +80,11 @@ public class TicketServiceImpl implements TicketService{
 
         offersPending.forEach(offer -> offerService.rejectOffer(offer));
         current.getOffers().forEach(offer -> userService.removeOfferFromUser(offer.getCustomer(), offer));
+
+        if (isFromScheduler){
+            notificationService.createExpiredTicketNotification(current);
+        }
+
         userService.removeTicketFromUser(current.getSeller(),current);
 
         Book currentBook = current.getBookToSell();

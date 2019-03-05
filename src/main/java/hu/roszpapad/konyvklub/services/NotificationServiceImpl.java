@@ -84,8 +84,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification createExpiredTicketNotification(Ticket ticket) {
-        //TODO: THIS
-        return null;
+        Notification notification = new Notification();
+        notification.setEndDate(calculateEndDate());
+        notification.setMessage("Ticket lejárt:");
+        notification.setGivenBookName(ticket.getBookToSell().getTitle());
+        notification.setOfferedBookName(null);
+        notification.setUser(ticket.getSeller());
+        deleteExpiredNotifications(ticket.getSeller());
+        return notificationRepository.save(notification);
     }
 
     public LocalDateTime calculateEndDate(){

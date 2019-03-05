@@ -2,6 +2,8 @@ package hu.roszpapad.konyvklub.dtos;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class NotificationToBeDisplayedDTO {
 
@@ -14,4 +16,6 @@ public class NotificationToBeDisplayedDTO {
     private String givenBookName;
 
     private String offeredBookName;
+
+    private LocalDateTime createDate;
 }

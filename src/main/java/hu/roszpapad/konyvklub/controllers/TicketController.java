@@ -68,7 +68,7 @@ public class TicketController {
 
     @DeleteMapping("/ticket/{ticketId}/delete")
     public String deleteTicket(@PathVariable("ticketId") Long ticketId){
-        ticketService.deleteTicket(ticketId);
+        ticketService.deleteTicket(ticketId, false);
         return "redirect:tickets/all";
     }
 
