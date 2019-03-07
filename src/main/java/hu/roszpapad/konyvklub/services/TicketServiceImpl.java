@@ -1,11 +1,12 @@
 
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
+import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
-import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +26,6 @@ public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
 
-    private final UserRepository userRepository;
-
     private final OfferService offerService;
 
     private final NotificationService notificationService;
@@ -45,19 +44,19 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Ticket createTicket(Ticket ticket) {
+    public Ticket createTicket(TicketToBeCreatedDTO ticketDTO) {
         Ticket savableTicket = new Ticket();
+        Book book = bookRepository.findById(ticketDTO.getBookId()).orElseThrow(() -> new BookNotFoundException());
         savableTicket.setEndDate(LocalDateTime.now().plusWeeks(NUMBER_OF_WEEKS_ACTIVE));
 
-        Book book = ticket.getBookToSell();
         User seller = book.getOwner();
         book.setOfferable(false);
         savableTicket.setBookToSell(book);
         savableTicket.setSeller(seller);
-        savableTicket.setDescription(ticket.getDescription());
+        savableTicket.setDescription(ticketDTO.getDescription());
         Ticket savedTicket = ticketRepository.save(savableTicket);
         seller.getTicketsCreated().add(savedTicket);
-        userRepository.save(seller);
+        userService.saveUser(seller);
         return savedTicket;
     }
 

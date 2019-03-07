@@ -2,15 +2,13 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.Converter;
-import hu.roszpapad.konyvklub.dtos.*;
-import hu.roszpapad.konyvklub.model.Book;
+import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
+import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.TicketService;
-import hu.roszpapad.konyvklub.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -23,15 +21,7 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    private final UserService userService;
-
-    private final Converter<Ticket, TicketToBeCreatedDTO> ticketToBeCreatedDTOConverter;
-
     private final Converter<Ticket, TicketToBeDisplayedDTO> ticketToBeDisplayedDTOConverter;
-
-    private final Converter<Ticket, TicketToBeUpdatedDTO> ticketToBeUpdatedDTOConverter;
-
-    private final Converter<Book, BookToBeDisplayedDTO> bookToBeDisplayedDTOConverter;
 
     @GetMapping("/tickets/all")
     public ResponseEntity<List<TicketToBeDisplayedDTO>> getAllTickets() {
@@ -49,21 +39,8 @@ public class TicketController {
 
     @PostMapping("/tickets/new")
     public ResponseEntity<Long> createTicket(@RequestBody TicketToBeCreatedDTO ticketDTO){
-        Ticket ticket = ticketService.createTicket(ticketToBeCreatedDTOConverter.toEntity(ticketDTO));
+        Ticket ticket = ticketService.createTicket(ticketDTO);
         return ResponseEntity.ok(ticket.getId());
-    }
-
-    @GetMapping("/ticket/{ticketId}/update")
-    public String updateTicket(Model model, @PathVariable("ticketId") Long ticketId){
-        model.addAttribute("ticket",ticketToBeUpdatedDTOConverter.toDTO(ticketService.findById(ticketId)));
-        return "tickets/update";
-    }
-
-    @PutMapping("/ticket/update")
-    public String updateTicket(Model model, @ModelAttribute(name = "ticket") TicketToBeUpdatedDTO ticketDTO){
-        Ticket ticket = ticketService.updateTicket(ticketToBeUpdatedDTOConverter.toEntity(ticketDTO));
-        model.addAttribute("ticket",ticketToBeDisplayedDTOConverter.toDTO(ticket));
-        return "redirect:tickets/ticket";
     }
 
     @DeleteMapping("/ticket/{ticketId}/delete")

@@ -1,12 +1,13 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.model.*;
 
 import java.util.List;
 
 public interface UserService {
 
-    User registerUser(User user);
+    User registerUser(UserToBeCreatedDTO user);
     User updateUser(User user);
     User findById(Long id);
     User switchActive(String username);
@@ -17,6 +18,7 @@ public interface UserService {
     User saveUser(User user);
     List<User> findAll();
     boolean isActive(String username);
+
 
     void addBookToUser(User user, Book book);
     void deleteBookFromUser(User user, Book book);
@@ -30,4 +32,5 @@ public interface UserService {
     String findPicture(Long userId);
     String findPictureByUsername(String username);
     List<User> getUsersByUsernameFilter(String username);
+    Address getAddressByUserId(Long id);
 }

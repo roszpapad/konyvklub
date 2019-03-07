@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.*;
@@ -29,9 +30,17 @@ public class UserServiceImpl implements UserService {
     private final JavaMailSender javaMailSender;
 
     @Override
-    public User registerUser(User user) {
+    public User registerUser(UserToBeCreatedDTO user) {
         User registeredUser = new User();
-        registeredUser.setAddress(user.getAddress());
+        Address address = new Address();
+        address.setCity(user.getAddress().getCity());
+        if (user.getAddress().getNumber() != null){
+           address.setNumber(user.getAddress().getNumber());
+        }
+        if (user.getAddress().getStreet() != null){
+            address.setStreet(user.getAddress().getStreet());
+        }
+        registeredUser.setAddress(address);
         registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
         registeredUser.setLastName(user.getLastName());
         registeredUser.setFirstName(user.getFirstName());
@@ -40,8 +49,7 @@ public class UserServiceImpl implements UserService {
         registeredUser.setEnabled(false);
         Authority auth = authorityRepository.findAuthorityByAuthority("ROLE_KONYVKLUB_USER").get();
         registeredUser.setAuthorities(Arrays.asList(auth));
-        User savedUser = userRepository.save(registeredUser);
-        return savedUser;
+        return userRepository.save(registeredUser);
     }
 
     @Override
@@ -225,5 +233,11 @@ public class UserServiceImpl implements UserService {
     public String findPictureByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
         return user.getImage();
+    }
+
+    @Override
+    public Address getAddressByUserId(Long id) {
+        User user = findById(id);
+        return user.getAddress();
     }
 }

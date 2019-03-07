@@ -1,16 +1,17 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
+import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
 import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
-import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -18,8 +19,6 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final UserService userService;
-
-    private final UserRepository userRepository;
 
     private final OfferRepository offerRepository;
 
@@ -37,19 +36,24 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer createOffer(Offer offer) {
-        User customer = offer.getBookToPay().getOwner();
-        offer.setCustomer(customer);
-        customer.getOffersInInterest().add(offer);
-        offer.getBookToPay().setOfferable(false);
-        offer.setStatus(Status.PENDING);
-        userRepository.save(customer);
-        return offerRepository.save(offer);
-    }
+    public Offer createOffer(OfferToBeSavedDTO offerDTO) {
 
-    @Override
-    public Collection<Offer> getOffersByStatusAndTicket(Status status, Ticket ticket) {
-        return offerRepository.findAllByStatusAndTicket(status,ticket);
+        Offer offerToBeSaved = new Offer();
+        Book book = bookRepository.findById(offerDTO.getBookId()).orElseThrow(() -> new BookNotFoundException());
+        Ticket ticket = ticketRepository.findById(offerDTO.getTicketId()).orElseThrow(() -> new TicketNotFoundException());
+        offerToBeSaved.setTicket(ticket);
+        offerToBeSaved.setBookToPay(book);
+        offerToBeSaved.setDescription(offerDTO.getDescription());
+
+        User customer = book.getOwner();
+        offerToBeSaved.setCustomer(customer);
+
+        book.setOfferable(false);
+        offerToBeSaved.setStatus(Status.PENDING);
+        Offer savedOffer = offerRepository.save(offerToBeSaved);
+        customer.getOffersInInterest().add(savedOffer);
+        userService.saveUser(customer);
+        return savedOffer;
     }
 
     @Override

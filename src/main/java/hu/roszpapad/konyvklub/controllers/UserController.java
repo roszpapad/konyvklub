@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.controllers;
 
+import hu.roszpapad.konyvklub.converter.AddressForEverythingDTOConverter;
 import hu.roszpapad.konyvklub.converter.Converter;
 import hu.roszpapad.konyvklub.dtos.*;
 import hu.roszpapad.konyvklub.events.OnRegistrationCompleteEvent;
@@ -13,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -36,13 +35,9 @@ public class UserController {
 
     private final BookService bookService;
 
-    private final Converter<User, UserToBeCreatedDTO> userToBeCreatedConverter;
+    private final AddressForEverythingDTOConverter addressForEverythingDTOConverter;
 
     private final Converter<User, UserToBeDisplayedDTO> userToBeDisplayedConverter;
-
-    private final Converter<User, UserToBeDisplayedWithBooksDTO> userToBeDisplayedWithBooksConverter;
-
-    private final Converter<Book, BookToBeCreatedDTO> bookToBeCreatedDTOConverter;
 
     private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
 
@@ -55,7 +50,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserToBeCreatedDTO userToBeCreated, WebRequest request){
 
-        User user = userService.registerUser(userToBeCreatedConverter.toEntity(userToBeCreated));
+        User user = userService.registerUser(userToBeCreated);
         UserToBeDisplayedDTO userDTO = userToBeDisplayedConverter.toDTO(user);
 
         try {
@@ -104,32 +99,6 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/user/{userId}/update")
-    public String updateUser(@PathVariable(name = "userId") Long userId, Model model){
-
-        model.addAttribute("user", userToBeDisplayedConverter.toDTO(userService.findById(userId)));
-        return "user/update";
-    }
-
-    @PutMapping("/update")
-    public String update(@Valid @ModelAttribute(name = "user") UserToBeDisplayedDTO userDTO, BindingResult bindingResult){
-
-        if (bindingResult.hasErrors()){
-            return "user/update";
-        }
-
-        userService.updateUser(userToBeDisplayedConverter.toEntity(userDTO));
-        return "redirect:/";
-    }
-
-    @GetMapping("/user/{userId}")
-    public String getUserById(@PathVariable(name = "userId") Long userId,Model model){
-
-        model.addAttribute("user", userToBeDisplayedWithBooksConverter.toDTO(userService.findById(userId)));
-        model.addAttribute("newBook", new BookToBeCreatedDTO());
-        return "user/display";
-    }
-
     @GetMapping("/user/{username}/switchActive")
     public ResponseEntity<String> switchActive(@PathVariable(name = "username") String username){
 
@@ -141,7 +110,7 @@ public class UserController {
     public ResponseEntity<String> addBookToUser(@Valid @RequestBody BookToBeCreatedDTO bookDTO,
                                 @PathVariable(name = "userId") Long userId){
 
-        Book createdBook = bookService.createBook(bookToBeCreatedDTOConverter.toEntity(bookDTO));
+        Book createdBook = bookService.createBook(bookDTO);
         userService.addBookToUser(userService.findById(userId), createdBook);
         return ResponseEntity.ok().body("Könyv mentve.");
     }
@@ -150,6 +119,12 @@ public class UserController {
     public ResponseEntity<String> changeProfilePicture(@PathVariable(name = "userId") Long userId ,@RequestBody ImageDTO base64){
         userService.changeProfilePicture(userId, base64.getFile());
         return ResponseEntity.ok("Profilkép csere megtörtént!");
+    }
+
+    @GetMapping("/users/{userId}/address")
+    public ResponseEntity<AddressForEverythingDTO> changeProfilePicture(@PathVariable(name = "userId") Long userId){
+        Address address = userService.getAddressByUserId(userId);
+        return ResponseEntity.ok(addressForEverythingDTOConverter.toDTO(address));
     }
 
     @GetMapping("/users/{userId}/picture")

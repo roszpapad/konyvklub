@@ -19,8 +19,6 @@ public class OfferController {
 
     private final TicketService ticketService;
 
-    private final Converter<Offer, OfferToBeSavedDTO> offerToBeSavedDTOConverter;
-
     private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
 
     @GetMapping("/tickets/{ticketId}/offers/{offerId}")
@@ -35,7 +33,7 @@ public class OfferController {
     @PostMapping("/tickets/{ticketId}/offer")
     public ResponseEntity<OfferToBeDisplayedDTO> createOffer(@RequestBody OfferToBeSavedDTO offerDTO){
 
-        Offer offer = offerService.createOffer(offerToBeSavedDTOConverter.toEntity(offerDTO));
+        Offer offer = offerService.createOffer(offerDTO);
 
         return ResponseEntity.ok(offerToBeDisplayedDTOConverter.toDTO(offer));
     }

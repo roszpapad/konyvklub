@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.dtos.BookToBeCreatedDTO;
 import hu.roszpapad.konyvklub.exceptions.BookCantBeDeletedException;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
@@ -27,19 +28,18 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public Book freeBook(Book book) {
-
-        book.setOfferable(true);
-        return bookRepository.save(book);
-    }
-
-    @Override
     public Book findById(Long id) {
         return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException());
     }
 
     @Override
-    public Book createBook(Book book) {
+    public Book createBook(BookToBeCreatedDTO bookDTO) {
+        Book book = new Book();
+        book.setOfferable(true);
+        book.setWriter(bookDTO.getWriter());
+        book.setYearOfPublishing(bookDTO.getYearOfPublishing());
+        book.setPublisher(bookDTO.getPublisher());
+        book.setTitle(bookDTO.getTitle());
         return bookRepository.save(book);
     }
 
@@ -70,12 +70,6 @@ public class BookServiceImpl implements BookService {
             bookRepository.delete(bookToDelete);
             userRepository.save(owner);
         }
-    }
-
-    @Override
-    public Book makeBookNotOfferable(Book book) {
-        book.setOfferable(false);
-        return bookRepository.save(book);
     }
 
     @Override
