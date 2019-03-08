@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
+import hu.roszpapad.konyvklub.dtos.UserToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.*;
@@ -53,13 +54,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(UserToBeUpdatedDTO user) {
         User current = findById(user.getId());
 
         current.setFirstName(user.getFirstName());
         current.setLastName(user.getLastName());
-        current.setEmail(user.getEmail());
-        current.setAddress(user.getAddress());
+        current.getAddress().setCity(user.getAddress().getCity());
+        if (user.getAddress().getNumber() != null){
+            current.getAddress().setNumber(user.getAddress().getNumber());
+        }
+        if (user.getAddress().getStreet() != null){
+            current.getAddress().setStreet(user.getAddress().getStreet());
+        }
         return userRepository.save(current);
     }
 

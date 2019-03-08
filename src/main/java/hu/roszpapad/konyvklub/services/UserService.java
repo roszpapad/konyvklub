@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
+import hu.roszpapad.konyvklub.dtos.UserToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.model.*;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface UserService {
 
     User registerUser(UserToBeCreatedDTO user);
-    User updateUser(User user);
+    User updateUser(UserToBeUpdatedDTO user);
     User findById(Long id);
     User switchActive(String username);
     RegistrationToken createRegistrationToken(User user, String token);

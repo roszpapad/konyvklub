@@ -166,4 +166,16 @@ public class UserController {
         tickets.forEach(ticket -> ticketDTOs.add(ticketToBeDisplayedDTOConverter.toDTO(ticket)));
         return ResponseEntity.ok(ticketDTOs);
     }
+
+    @PutMapping("/users/update")
+    public ResponseEntity<UserToBeDisplayedDTO> updateUser(@Valid @RequestBody UserToBeUpdatedDTO userDTO){
+        User user = userService.updateUser(userDTO);
+        return ResponseEntity.ok(userToBeDisplayedConverter.toDTO(user));
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserToBeDisplayedDTO> getUserById(@PathVariable(name = "userId") Long userId){
+        User user = userService.findById(userId);
+        return ResponseEntity.ok(userToBeDisplayedConverter.toDTO(user));
+    }
 }
