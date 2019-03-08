@@ -2,6 +2,7 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
+import hu.roszpapad.konyvklub.dtos.TicketToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
 import hu.roszpapad.konyvklub.model.*;
@@ -61,12 +62,12 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Ticket updateTicket(Ticket ticket) {
+    public Ticket updateTicket(TicketToBeUpdatedDTO ticket) {
         Ticket current = findById(ticket.getId());
 
         current.setDescription(ticket.getDescription());
 
-        return ticketRepository.save(ticket);
+        return ticketRepository.save(current);
     }
 
     @Override

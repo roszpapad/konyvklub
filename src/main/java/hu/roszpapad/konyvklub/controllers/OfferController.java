@@ -3,6 +3,7 @@ package hu.roszpapad.konyvklub.controllers;
 import hu.roszpapad.konyvklub.converter.Converter;
 import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
+import hu.roszpapad.konyvklub.dtos.OfferToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.services.OfferService;
 import hu.roszpapad.konyvklub.services.TicketService;
@@ -42,5 +43,17 @@ public class OfferController {
     public ResponseEntity<String> rejectOffer(@PathVariable(name = "offerId") Long offerId){
         Offer offer = offerService.rejectOffer(offerService.findById(offerId));
         return ResponseEntity.ok("Offer elutasitva.");
+    }
+
+    @DeleteMapping("/offers/{offerId}/delete")
+    public ResponseEntity<String> deleteOffer(@PathVariable(name = "offerId") Long offerId){
+        offerService.deleteOffer(offerId);
+        return ResponseEntity.ok("Offer törölve");
+    }
+
+    @PutMapping("/offers/update")
+    public ResponseEntity<OfferToBeDisplayedDTO> updateOffer(@RequestBody OfferToBeUpdatedDTO offerDTO){
+        Offer offer = offerService.updateOffer(offerDTO);
+        return ResponseEntity.ok(offerToBeDisplayedDTOConverter.toDTO(offer));
     }
 }

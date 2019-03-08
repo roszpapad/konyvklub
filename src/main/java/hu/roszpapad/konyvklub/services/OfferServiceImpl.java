@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
+import hu.roszpapad.konyvklub.dtos.OfferToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
 import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
 import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
@@ -57,7 +58,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer updateOffer(Offer offer) {
+    public Offer updateOffer(OfferToBeUpdatedDTO offer) {
 
         Offer current = findById(offer.getId());
         if (!current.getStatus().equals(Status.PENDING)){
@@ -65,7 +66,16 @@ public class OfferServiceImpl implements OfferService {
         }
 
         current.setDescription(offer.getDescription());
-        current.setBookToPay(offer.getBookToPay());
+        Book currentBook = current.getBookToPay();
+        Book book = bookRepository.findById(offer.getBookId()).orElseThrow(()-> new BookNotFoundException());
+        if (!book.getId().equals(currentBook.getId())){
+            currentBook.setOfferable(true);
+            bookRepository.save(currentBook);
+            book.setOfferable(false);
+            bookRepository.save(book);
+            current.setBookToPay(book);
+        }
+
         return offerRepository.save(current);
     }
 
@@ -76,7 +86,6 @@ public class OfferServiceImpl implements OfferService {
             current.getBookToPay().setOfferable(true);
             bookRepository.save(current.getBookToPay());
         }
-        //ticketService.removeOfferFromTicket(current.getTicket(), current);
         Ticket ticket = current.getTicket();
         ticket.getOffers().remove(current);
         ticketRepository.save(ticket);

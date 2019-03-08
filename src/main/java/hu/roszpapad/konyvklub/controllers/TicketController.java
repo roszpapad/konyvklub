@@ -4,6 +4,7 @@ package hu.roszpapad.konyvklub.controllers;
 import hu.roszpapad.konyvklub.converter.Converter;
 import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
+import hu.roszpapad.konyvklub.dtos.TicketToBeUpdatedDTO;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,16 @@ public class TicketController {
         return ResponseEntity.ok(ticket.getId());
     }
 
-    @DeleteMapping("/ticket/{ticketId}/delete")
-    public String deleteTicket(@PathVariable("ticketId") Long ticketId){
+    @DeleteMapping("/tickets/{ticketId}/delete")
+    public ResponseEntity<String> deleteTicket(@PathVariable("ticketId") Long ticketId){
         ticketService.deleteTicket(ticketId, false);
-        return "redirect:tickets/all";
+        return ResponseEntity.ok("Ticket törölve.");
+    }
+
+    @PutMapping("/tickets/update")
+    public ResponseEntity<TicketToBeDisplayedDTO> updateTicket(@RequestBody TicketToBeUpdatedDTO ticketDTO){
+        Ticket ticket = ticketService.updateTicket(ticketDTO);
+        return ResponseEntity.ok(ticketToBeDisplayedDTOConverter.toDTO(ticket));
     }
 
     @GetMapping("/tickets/filter")
