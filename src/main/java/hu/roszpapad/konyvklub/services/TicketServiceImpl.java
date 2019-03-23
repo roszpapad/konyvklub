@@ -3,8 +3,7 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeUpdatedDTO;
-import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
-import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
@@ -41,13 +40,13 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public Ticket findById(Long id) {
         return ticketRepository.findById(id)
-                .orElseThrow(() -> new TicketNotFoundException());
+                .orElseThrow(() -> new NotFoundException(Ticket.class));
     }
 
     @Override
     public Ticket createTicket(TicketToBeCreatedDTO ticketDTO) {
         Ticket savableTicket = new Ticket();
-        Book book = bookRepository.findById(ticketDTO.getBookId()).orElseThrow(() -> new BookNotFoundException());
+        Book book = bookRepository.findById(ticketDTO.getBookId()).orElseThrow(() -> new NotFoundException(Book.class));
         savableTicket.setEndDate(LocalDateTime.now().plusWeeks(NUMBER_OF_WEEKS_ACTIVE));
 
         User seller = book.getOwner();

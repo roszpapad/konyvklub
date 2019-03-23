@@ -15,13 +15,16 @@ import javax.validation.constraints.Size;
 public class UserToBeCreatedDTO {
 
     @NotNull
+    @Size(min = 2, max = 20)
     private String firstName;
 
     @NotNull
+    @Size(min = 2, max = 20)
     private String lastName;
 
     @NotNull
     @UniqueUsername
+    @Size(min = 4, max = 10)
     private String username;
 
     @ValidEmail
@@ -29,7 +32,7 @@ public class UserToBeCreatedDTO {
     private String email;
 
     @NotNull
-    @Size(min = 5, max = 30)
+    @Size(min = 6, max = 15)
     private String password;
 
     private String passConfirm;

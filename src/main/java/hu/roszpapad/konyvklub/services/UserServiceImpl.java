@@ -2,7 +2,7 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.UserToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.UserToBeUpdatedDTO;
-import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -73,19 +73,23 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new NotFoundException(User.class));
         return user;
     }
 
     @Override
     public User switchActive(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class));
         user.setActive(!user.isActive());
         return userRepository.save(user);
     }
 
     @Override
     public void addBookToUser(User user, Book book) {
+
+        if (user.getBooks().size() >= 10){
+            bookRepository.delete(book);
+        }
 
         if (!user.getBooks().contains(book)) {
             user.getBooks().add(book);
@@ -144,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendChangePasswordEmail(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class));
         String token = UUID.randomUUID().toString();
         ChangePasswordToken changePasswordToken = createChangePasswordToken(user,token);
         String recipientAddress = changePasswordToken.getUser().getEmail();
@@ -219,7 +223,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isActive(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class));
         return user.isActive();
     }
 
@@ -237,7 +241,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findPictureByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(User.class));
         return user.getImage();
     }
 

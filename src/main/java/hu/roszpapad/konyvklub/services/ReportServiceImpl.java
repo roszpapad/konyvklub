@@ -42,4 +42,10 @@ public class ReportServiceImpl implements ReportService{
                 .filter(report -> userService.isActive(report.getReported()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteReportsByReported(String reported) {
+        List<Report> reports = getReportsByReported(reported);
+        reportRepository.deleteAll(reports);
+    }
 }

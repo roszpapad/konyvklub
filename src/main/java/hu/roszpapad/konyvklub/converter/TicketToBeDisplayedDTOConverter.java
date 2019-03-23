@@ -1,13 +1,8 @@
 package hu.roszpapad.konyvklub.converter;
 
-import hu.roszpapad.konyvklub.dtos.BookToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.OfferToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
-import hu.roszpapad.konyvklub.dtos.UserToBeDisplayedDTO;
-import hu.roszpapad.konyvklub.model.Book;
-import hu.roszpapad.konyvklub.model.Offer;
 import hu.roszpapad.konyvklub.model.Ticket;
-import hu.roszpapad.konyvklub.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +11,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TicketToBeDisplayedDTOConverter implements Converter<Ticket,TicketToBeDisplayedDTO>{
+public class TicketToBeDisplayedDTOConverter {
 
-    private final Converter<User, UserToBeDisplayedDTO> userToBeDisplayedDTOConverter;
+    private final UserToBeDisplayedDTOConverter userToBeDisplayedDTOConverter;
 
-    private final Converter<Book, BookToBeDisplayedDTO> bookToBeDisplayedDTOConverter;
+    private final BookToBeDisplayedDTOConverter bookToBeDisplayedDTOConverter;
 
-    private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
+    private final OfferToBeDisplayedDTOConverter offerToBeDisplayedDTOConverter;
 
-    @Override
     public TicketToBeDisplayedDTO toDTO(Ticket entity){
 
         TicketToBeDisplayedDTO ticketDTO = new TicketToBeDisplayedDTO();
@@ -39,18 +33,5 @@ public class TicketToBeDisplayedDTOConverter implements Converter<Ticket,TicketT
 
         ticketDTO.setSeller(userToBeDisplayedDTOConverter.toDTO(entity.getSeller()));
         return ticketDTO;
-    }
-
-    @Override
-    public Ticket toEntity(TicketToBeDisplayedDTO dto) {
-
-        Ticket ticket = new Ticket();
-        ticket.setDescription(dto.getDescription());
-        ticket.setId(dto.getId());
-        ticket.setBookToSell(bookToBeDisplayedDTOConverter.toEntity(dto.getBookToSell()));
-        ticket.setSeller(userToBeDisplayedDTOConverter.toEntity(dto.getSeller()));
-        ticket.setEndDate(dto.getEndDate());
-        //TODO : ticket.setOffers();
-        return ticket;
     }
 }

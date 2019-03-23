@@ -1,25 +1,25 @@
 package hu.roszpapad.konyvklub.controllers;
 
-import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.converter.NotificationToBeDisplayedDTOConverter;
 import hu.roszpapad.konyvklub.dtos.NotificationToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.model.Notification;
 import hu.roszpapad.konyvklub.services.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class NotificationsController {
 
     private final NotificationService notificationService;
 
-    private final Converter<Notification, NotificationToBeDisplayedDTO> notificationToBeDisplayedDTOConverter;
+    private final NotificationToBeDisplayedDTOConverter notificationToBeDisplayedDTOConverter;
 
     @GetMapping("/notifications/{userId}")
     public ResponseEntity<List<NotificationToBeDisplayedDTO>> getUserNotifications(@PathVariable(name = "userId") Long userId){

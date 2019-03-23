@@ -8,17 +8,11 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class AddressForEverythingDTOConverter implements Converter<Address,AddressForEverythingDTO> {
+public class AddressForEverythingDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    @Override
     public AddressForEverythingDTO toDTO(Address entity) {
         return modelMapper.map(entity,AddressForEverythingDTO.class);
-    }
-
-    @Override
-    public Address toEntity(AddressForEverythingDTO dto) {
-        return modelMapper.map(dto, Address.class);
     }
 }

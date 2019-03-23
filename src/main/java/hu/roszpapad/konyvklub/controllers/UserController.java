@@ -1,7 +1,9 @@
 package hu.roszpapad.konyvklub.controllers;
 
 import hu.roszpapad.konyvklub.converter.AddressForEverythingDTOConverter;
-import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.converter.OfferToBeDisplayedDTOConverter;
+import hu.roszpapad.konyvklub.converter.TicketToBeDisplayedDTOConverter;
+import hu.roszpapad.konyvklub.converter.UserToBeDisplayedDTOConverter;
 import hu.roszpapad.konyvklub.dtos.*;
 import hu.roszpapad.konyvklub.events.OnRegistrationCompleteEvent;
 import hu.roszpapad.konyvklub.model.*;
@@ -13,7 +15,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
 
@@ -37,11 +38,11 @@ public class UserController {
 
     private final AddressForEverythingDTOConverter addressForEverythingDTOConverter;
 
-    private final Converter<User, UserToBeDisplayedDTO> userToBeDisplayedConverter;
+    private final UserToBeDisplayedDTOConverter userToBeDisplayedConverter;
 
-    private final Converter<Offer, OfferToBeDisplayedDTO> offerToBeDisplayedDTOConverter;
+    private final OfferToBeDisplayedDTOConverter offerToBeDisplayedDTOConverter;
 
-    private final Converter<Ticket, TicketToBeDisplayedDTO> ticketToBeDisplayedDTOConverter;
+    private final TicketToBeDisplayedDTOConverter ticketToBeDisplayedDTOConverter;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 

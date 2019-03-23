@@ -8,16 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ChatChannelToDisplayDTOConverter implements Converter<ChatChannel, ChatChannelToDisplayDTO> {
+public class ChatChannelToDisplayDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    @Override
     public ChatChannelToDisplayDTO toDTO(ChatChannel entity) {
         return modelMapper.map(entity, ChatChannelToDisplayDTO.class);
     }
 
-    @Override
     public ChatChannel toEntity(ChatChannelToDisplayDTO dto) {
         return modelMapper.map(dto,ChatChannel.class);
     }

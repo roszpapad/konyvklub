@@ -8,16 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class NotificationToBeDisplayedDTOConverter implements Converter<Notification, NotificationToBeDisplayedDTO> {
+public class NotificationToBeDisplayedDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    @Override
     public NotificationToBeDisplayedDTO toDTO(Notification entity) {
         return modelMapper.map(entity, NotificationToBeDisplayedDTO.class);
     }
 
-    @Override
     public Notification toEntity(NotificationToBeDisplayedDTO dto) {
         return modelMapper.map(dto, Notification.class);
     }

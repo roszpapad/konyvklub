@@ -3,22 +3,20 @@ package hu.roszpapad.konyvklub.controllers;
 import hu.roszpapad.konyvklub.converter.FriendRequestToBeDisplayedDTOConverter;
 import hu.roszpapad.konyvklub.dtos.FriendRequestToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.FriendRequestToBeDisplayedDTO;
+import hu.roszpapad.konyvklub.exceptions.FriendRequestCantBeCreatedException;
 import hu.roszpapad.konyvklub.model.FriendRequest;
 import hu.roszpapad.konyvklub.services.FriendRequestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class FriendRequestController {
 
@@ -64,5 +62,12 @@ public class FriendRequestController {
     public ResponseEntity<String> wasRequestedYet(@PathParam(value = "requestStarter") String requestStarter,
                                                   @PathParam(value = "requestDestination") String requestDestination){
         return ResponseEntity.ok(friendRequestService.wasRequestedYet(requestStarter,requestDestination).toString());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FriendRequestCantBeCreatedException.class)
+    public ResponseEntity<?> handleCreateException(Exception exception){
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }

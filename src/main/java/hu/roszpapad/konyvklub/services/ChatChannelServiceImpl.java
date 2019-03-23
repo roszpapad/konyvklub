@@ -1,5 +1,6 @@
 package hu.roszpapad.konyvklub.services;
 
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.model.ChatChannel;
 import hu.roszpapad.konyvklub.repositories.ChatChannelRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,7 @@ public class ChatChannelServiceImpl implements ChatChannelService {
 
     @Override
     public ChatChannel findById(Long channelId) {
-        //TODO exception handling
-        return chatChannelRepository.findById(channelId).orElseThrow(() -> new RuntimeException());
+        return chatChannelRepository.findById(channelId).orElseThrow(() -> new NotFoundException(ChatChannel.class));
     }
 
     @Override

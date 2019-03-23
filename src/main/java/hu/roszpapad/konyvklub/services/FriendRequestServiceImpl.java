@@ -1,8 +1,8 @@
 package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.FriendRequestToBeCreatedDTO;
-import hu.roszpapad.konyvklub.exceptions.FriendRequestNotFoundException;
-import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.FriendRequestCantBeCreatedException;
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.model.FriendRequest;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.FriendRequestRepository;
@@ -24,6 +24,11 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     @Override
     public FriendRequest createRequest(FriendRequestToBeCreatedDTO requestDTO) {
+        String usernameOne = requestDTO.getRequestStarter();
+        String usernameTwo = requestDTO.getRequestDestination();
+        if (chatChannelService.friendlyChannelExists(usernameOne, usernameTwo) || wasRequestedYet(usernameOne,usernameTwo)){
+            throw new FriendRequestCantBeCreatedException("Barátkérelmet már elküldve ezelőtt / már barátok.");
+        }
         FriendRequest request = new FriendRequest();
         request.setRequestDestination(requestDTO.getRequestDestination());
         request.setRequestStarter(requestDTO.getRequestStarter());
@@ -33,10 +38,11 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     @Override
     public void acceptRequest(Long id) {
-        FriendRequest request = friendRequestRepository.findById(id).orElseThrow(() -> new FriendRequestNotFoundException());
+        FriendRequest request = friendRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(FriendRequest.class));
         request.setAccepted(true);
-        User requestDestination = userRepository.findByUsername(request.getRequestDestination()).orElseThrow(() -> new UserNotFoundException());
-        User requestStarter = userRepository.findByUsername(request.getRequestStarter()).orElseThrow(() -> new UserNotFoundException());
+        friendRequestRepository.save(request);
+        User requestDestination = userRepository.findByUsername(request.getRequestDestination()).orElseThrow(() -> new NotFoundException(User.class));
+        User requestStarter = userRepository.findByUsername(request.getRequestStarter()).orElseThrow(() -> new NotFoundException(User.class));
         if (!chatChannelService.friendlyChannelExists(requestStarter.getUsername(), requestDestination.getUsername())){
             chatChannelService.createFriendlyChatChannel(requestStarter.getUsername(), requestDestination.getUsername());
         }
@@ -44,7 +50,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     @Override
     public void rejectRequest(Long id) {
-        FriendRequest request = friendRequestRepository.findById(id).orElseThrow(() -> new FriendRequestNotFoundException());
+        FriendRequest request = friendRequestRepository.findById(id).orElseThrow(() -> new NotFoundException(FriendRequest.class));
         friendRequestRepository.delete(request);
     }
 

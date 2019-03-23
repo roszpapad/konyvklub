@@ -1,6 +1,7 @@
 package hu.roszpapad.konyvklub.controllers;
 
-import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.converter.ChatChannelToDisplayDTOConverter;
+import hu.roszpapad.konyvklub.converter.ChatMessageToSendDTOConverter;
 import hu.roszpapad.konyvklub.dtos.ChatChannelToDisplayDTO;
 import hu.roszpapad.konyvklub.dtos.ChatMessageToGetDTO;
 import hu.roszpapad.konyvklub.dtos.ChatMessageToSendDTO;
@@ -13,14 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ChatController {
 
@@ -28,9 +29,9 @@ public class ChatController {
 
     private final ChatMessageService chatMessageService;
 
-    private final Converter<ChatChannel, ChatChannelToDisplayDTO> chatChannelToDisplayDTOConverter;
+    private final ChatChannelToDisplayDTOConverter chatChannelToDisplayDTOConverter;
 
-    private final Converter<ChatMessage, ChatMessageToSendDTO> chatMessageToSendDTOConverter;
+    private final ChatMessageToSendDTOConverter chatMessageToSendDTOConverter;
 
     @MessageMapping("/chat/{channelId}")
     @SendTo("/topic/chat/{channelId}")

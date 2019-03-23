@@ -2,10 +2,9 @@ package hu.roszpapad.konyvklub.services;
 
 import hu.roszpapad.konyvklub.dtos.OfferToBeSavedDTO;
 import hu.roszpapad.konyvklub.dtos.OfferToBeUpdatedDTO;
-import hu.roszpapad.konyvklub.exceptions.BookNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.exceptions.OfferCantBeUpdatedException;
-import hu.roszpapad.konyvklub.exceptions.OfferNotFoundException;
-import hu.roszpapad.konyvklub.exceptions.TicketNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.TicketClosedException;
 import hu.roszpapad.konyvklub.model.*;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
 import hu.roszpapad.konyvklub.repositories.OfferRepository;
@@ -13,6 +12,7 @@ import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,15 +33,18 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Offer findById(Long id) {
-        return offerRepository.findById(id).orElseThrow(() -> new OfferNotFoundException());
+        return offerRepository.findById(id).orElseThrow(() -> new NotFoundException(Offer.class));
     }
 
     @Override
     public Offer createOffer(OfferToBeSavedDTO offerDTO) {
 
         Offer offerToBeSaved = new Offer();
-        Book book = bookRepository.findById(offerDTO.getBookId()).orElseThrow(() -> new BookNotFoundException());
-        Ticket ticket = ticketRepository.findById(offerDTO.getTicketId()).orElseThrow(() -> new TicketNotFoundException());
+        Book book = bookRepository.findById(offerDTO.getBookId()).orElseThrow(() -> new NotFoundException(Book.class));
+        Ticket ticket = ticketRepository.findById(offerDTO.getTicketId()).orElseThrow(() -> new NotFoundException(Ticket.class));
+        if (ticket.getEndDate().isBefore(LocalDateTime.now())){
+            throw new TicketClosedException("A ticketre nem lehet már ajánlani.");
+        }
         offerToBeSaved.setTicket(ticket);
         offerToBeSaved.setBookToPay(book);
         offerToBeSaved.setDescription(offerDTO.getDescription());
@@ -62,12 +65,12 @@ public class OfferServiceImpl implements OfferService {
 
         Offer current = findById(offer.getId());
         if (!current.getStatus().equals(Status.PENDING)){
-            throw new OfferCantBeUpdatedException();
+            throw new OfferCantBeUpdatedException("Az offer nem updatelhető, mert már elutasították.");
         }
 
         current.setDescription(offer.getDescription());
         Book currentBook = current.getBookToPay();
-        Book book = bookRepository.findById(offer.getBookId()).orElseThrow(()-> new BookNotFoundException());
+        Book book = bookRepository.findById(offer.getBookId()).orElseThrow(()-> new NotFoundException(Book.class));
         if (!book.getId().equals(currentBook.getId())){
             currentBook.setOfferable(true);
             bookRepository.save(currentBook);
@@ -95,10 +98,6 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void acceptOffer(Ticket ticket, Offer offer) {
-
-
-        offer.setStatus(Status.ACCEPTED);
-
 
         List<Offer> notAcceptedOffers = ticket.getOffers();
         notAcceptedOffers.remove(offer);

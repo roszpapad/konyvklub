@@ -9,15 +9,15 @@ import javax.validation.constraints.Size;
 public class BookToBeCreatedDTO {
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 50)
     private String title;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 50)
     private String writer;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 50)
     private String publisher;
 
     @NotNull

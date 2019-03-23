@@ -14,6 +14,6 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFound(Exception exception){
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }

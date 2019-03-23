@@ -1,7 +1,7 @@
 
 package hu.roszpapad.konyvklub.controllers;
 
-import hu.roszpapad.konyvklub.converter.Converter;
+import hu.roszpapad.konyvklub.converter.TicketToBeDisplayedDTOConverter;
 import hu.roszpapad.konyvklub.dtos.TicketToBeCreatedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeDisplayedDTO;
 import hu.roszpapad.konyvklub.dtos.TicketToBeUpdatedDTO;
@@ -9,20 +9,20 @@ import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class TicketController {
 
     private final TicketService ticketService;
 
-    private final Converter<Ticket, TicketToBeDisplayedDTO> ticketToBeDisplayedDTOConverter;
+    private final TicketToBeDisplayedDTOConverter ticketToBeDisplayedDTOConverter;
 
     @GetMapping("/tickets/all")
     public ResponseEntity<List<TicketToBeDisplayedDTO>> getAllTickets() {
@@ -39,7 +39,7 @@ public class TicketController {
     }
 
     @PostMapping("/tickets/new")
-    public ResponseEntity<Long> createTicket(@RequestBody TicketToBeCreatedDTO ticketDTO){
+    public ResponseEntity<Long> createTicket(@Valid @RequestBody TicketToBeCreatedDTO ticketDTO){
         Ticket ticket = ticketService.createTicket(ticketDTO);
         return ResponseEntity.ok(ticket.getId());
     }

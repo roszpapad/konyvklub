@@ -11,8 +11,6 @@ public interface BookService {
 
     Book createBook(BookToBeCreatedDTO book);
 
-    Book updateBook(Book book);
-
     void deleteBook(Long id);
 
     List<Book> getAllBooksByUser(Long userId);

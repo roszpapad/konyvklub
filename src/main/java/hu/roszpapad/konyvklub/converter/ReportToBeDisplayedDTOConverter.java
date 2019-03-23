@@ -8,16 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReportToBeDisplayedDTOConverter implements Converter<Report, ReportToBeDisplayedDTO>{
+public class ReportToBeDisplayedDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    @Override
     public ReportToBeDisplayedDTO toDTO(Report entity) {
         return modelMapper.map(entity, ReportToBeDisplayedDTO.class);
     }
 
-    @Override
     public Report toEntity(ReportToBeDisplayedDTO dto) {
         return modelMapper.map(dto, Report.class);
     }

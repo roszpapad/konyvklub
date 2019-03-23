@@ -11,4 +11,5 @@ public interface ReportService {
     Report createReport(ReportToBeCreatedDTO reportDTO);
     List<Report> getReportsByReported(String reported);
     List<Report> getAllReports();
+    void deleteReportsByReported(String reported);
 }

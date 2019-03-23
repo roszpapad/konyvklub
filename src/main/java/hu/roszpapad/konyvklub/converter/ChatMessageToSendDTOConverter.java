@@ -8,16 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ChatMessageToSendDTOConverter implements Converter<ChatMessage, ChatMessageToSendDTO>{
+public class ChatMessageToSendDTOConverter {
 
     private final ModelMapper modelMapper;
 
-    @Override
     public ChatMessageToSendDTO toDTO(ChatMessage entity) {
         return modelMapper.map(entity, ChatMessageToSendDTO.class);
     }
 
-    @Override
     public ChatMessage toEntity(ChatMessageToSendDTO dto) {
         return modelMapper.map(dto, ChatMessage.class);
     }

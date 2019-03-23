@@ -1,7 +1,7 @@
 package hu.roszpapad.konyvklub.validators;
 
 import hu.roszpapad.konyvklub.dtos.ChangePasswordRequestDTO;
-import hu.roszpapad.konyvklub.exceptions.UserNotFoundException;
+import hu.roszpapad.konyvklub.exceptions.NotFoundException;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import hu.roszpapad.konyvklub.validators.annotations.ValidPassword;
@@ -20,7 +20,7 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
 
     @Override
     public boolean isValid(ChangePasswordRequestDTO changePasswordRequestDTO, ConstraintValidatorContext constraintValidatorContext) {
-        User user = userRepository.findByUsername(changePasswordRequestDTO.getUsername()).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByUsername(changePasswordRequestDTO.getUsername()).orElseThrow(() -> new NotFoundException(User.class));
         return passwordEncoder.matches(changePasswordRequestDTO.getPassword(), user.getPassword());
     }
 
