@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -88,6 +89,7 @@ public class UserController {
     }
 
     @PostMapping("/users/sendChangePasswordEmail")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> sendChangePasswordEmail(@Valid @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO){
 
         userService.sendChangePasswordEmail(changePasswordRequestDTO.getUsername());
@@ -95,12 +97,14 @@ public class UserController {
     }
 
     @PostMapping("/users/changePassword")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> changePassword(@RequestBody ChangingPasswordDTO changingPasswordDTO, HttpServletResponse response, HttpServletRequest request) throws IOException{
         String result = userService.changePassword(changingPasswordDTO.getToken(), changingPasswordDTO.getPassword());
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/user/{username}/switchActive")
+    @PreAuthorize("hasRole('KONYVKLUB_ADMIN')")
     public ResponseEntity<String> switchActive(@PathVariable(name = "username") String username){
 
         userService.switchActive(username);
@@ -108,6 +112,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/books")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> addBookToUser(@Valid @RequestBody BookToBeCreatedDTO bookDTO,
                                 @PathVariable(name = "userId") Long userId){
 
@@ -117,13 +122,15 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/changePicture")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> changeProfilePicture(@PathVariable(name = "userId") Long userId ,@RequestBody ImageDTO base64){
         userService.changeProfilePicture(userId, base64.getFile());
         return ResponseEntity.ok("Profilkép csere megtörtént!");
     }
 
     @GetMapping("/users/{userId}/address")
-    public ResponseEntity<AddressForEverythingDTO> changeProfilePicture(@PathVariable(name = "userId") Long userId){
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
+    public ResponseEntity<AddressForEverythingDTO> getAddress(@PathVariable(name = "userId") Long userId){
         Address address = userService.getAddressByUserId(userId);
         return ResponseEntity.ok(addressForEverythingDTOConverter.toDTO(address));
     }
@@ -138,6 +145,7 @@ public class UserController {
     }
 
     @GetMapping("/users/filtered")
+    @PreAuthorize("hasRole('KONYVKLUB_ADMIN')")
     public ResponseEntity<List<UserToBeDisplayedDTO>> getUsersByUsernameFilter(@PathParam(value = "username") String username){
         List<User> users = userService.getUsersByUsernameFilter(username);
         List<UserToBeDisplayedDTO> userDTOs = new ArrayList<>();
@@ -153,6 +161,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/offers")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<OfferToBeDisplayedDTO>> getUserOffers(@PathVariable(name = "userId") Long userId){
         List<Offer> offers = userService.getUserOffers(userId);
         List<OfferToBeDisplayedDTO> offerDTOs = new ArrayList<>();
@@ -161,6 +170,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/tickets")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<TicketToBeDisplayedDTO>> getUserTickets(@PathVariable(name = "userId") Long userId){
         List<Ticket> tickets = userService.getUserTickets(userId);
         List<TicketToBeDisplayedDTO> ticketDTOs = new ArrayList<>();
@@ -169,12 +179,14 @@ public class UserController {
     }
 
     @PutMapping("/users/update")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<UserToBeDisplayedDTO> updateUser(@Valid @RequestBody UserToBeUpdatedDTO userDTO){
         User user = userService.updateUser(userDTO);
         return ResponseEntity.ok(userToBeDisplayedConverter.toDTO(user));
     }
 
     @GetMapping("/users/{userId}")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<UserToBeDisplayedDTO> getUserById(@PathVariable(name = "userId") Long userId){
         User user = userService.findById(userId);
         return ResponseEntity.ok(userToBeDisplayedConverter.toDTO(user));

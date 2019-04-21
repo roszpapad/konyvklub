@@ -7,6 +7,7 @@ import hu.roszpapad.konyvklub.model.Report;
 import hu.roszpapad.konyvklub.services.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,12 +24,14 @@ public class ReportController {
     private final ReportToBeDisplayedDTOConverter reportToBeDisplayedDTOConverter;
 
     @PostMapping("/reports/create")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<ReportToBeDisplayedDTO> createReport(@Valid @RequestBody ReportToBeCreatedDTO reportDTO){
         Report report = reportService.createReport(reportDTO);
         return ResponseEntity.ok(reportToBeDisplayedDTOConverter.toDTO(report));
     }
 
     @GetMapping("/reports/filtered")
+    @PreAuthorize("hasRole('KONYVKLUB_ADMIN')")
     public ResponseEntity<List<ReportToBeDisplayedDTO>> listReportsByReported(@PathParam(value = "reported") String reported){
 
         List<Report> reports = reportService.getReportsByReported(reported);
@@ -38,6 +41,7 @@ public class ReportController {
     }
 
     @DeleteMapping("/reports/{reported}/delete")
+    @PreAuthorize("hasRole('KONYVKLUB_ADMIN')")
     public ResponseEntity<String> deleteReportsByReported(@PathVariable(value = "reported") String reported){
 
         reportService.deleteReportsByReported(reported);
@@ -45,6 +49,7 @@ public class ReportController {
     }
 
     @GetMapping("/reports/all")
+    @PreAuthorize("hasRole('KONYVKLUB_ADMIN')")
     public ResponseEntity<List<ReportToBeDisplayedDTO>> listReports(){
 
         List<Report> reports = reportService.getAllReports();

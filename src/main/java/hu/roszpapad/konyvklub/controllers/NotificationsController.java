@@ -6,6 +6,7 @@ import hu.roszpapad.konyvklub.model.Notification;
 import hu.roszpapad.konyvklub.services.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class NotificationsController {
     private final NotificationToBeDisplayedDTOConverter notificationToBeDisplayedDTOConverter;
 
     @GetMapping("/notifications/{userId}")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<NotificationToBeDisplayedDTO>> getUserNotifications(@PathVariable(name = "userId") Long userId){
 
         List<NotificationToBeDisplayedDTO> notiDTOs = new ArrayList<>();
@@ -31,6 +33,7 @@ public class NotificationsController {
     }
 
     @GetMapping("/notifications/{userId}/size")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public int getUserNotificationsCount(@PathVariable(name = "userId") Long userId){
         return notificationService.getNumberOfNotificationsByUser(userId);
     }

@@ -8,6 +8,7 @@ import hu.roszpapad.konyvklub.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,13 +22,15 @@ public class BookController {
     private final BookToBeDisplayedDTOConverter bookToBeDisplayedDTOConverter;
 
     @DeleteMapping("/books/{bookId}")
-    private ResponseEntity<?> deleteBook(@PathVariable(name = "bookId") Long bookId){
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
+    public ResponseEntity<?> deleteBook(@PathVariable(name = "bookId") Long bookId){
         bookService.deleteBook(bookId);
         return ResponseEntity.ok().body("Könyv törölve");
     }
 
     @GetMapping("/users/{userId}/books")
-    private ResponseEntity<List<BookToBeDisplayedDTO>> getAllBooks(@PathVariable(name = "userId") Long userId){
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
+    public ResponseEntity<List<BookToBeDisplayedDTO>> getAllBooks(@PathVariable(name = "userId") Long userId){
         List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
         List<Book> books = bookService.getAllBooksByUser(userId);
         books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));
@@ -35,7 +38,8 @@ public class BookController {
     }
 
     @GetMapping("/users/{userId}/offerableBooks")
-    private ResponseEntity<List<BookToBeDisplayedDTO>> getAllOfferableBooks(@PathVariable(name = "userId") Long userId){
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
+    public ResponseEntity<List<BookToBeDisplayedDTO>> getAllOfferableBooks(@PathVariable(name = "userId") Long userId){
         List<BookToBeDisplayedDTO> bookDTOs = new ArrayList<>();
         List<Book> books = bookService.getAllOfferableBooksByUser(userId);
         books.forEach(book -> bookDTOs.add(bookToBeDisplayedDTOConverter.toDTO(book)));

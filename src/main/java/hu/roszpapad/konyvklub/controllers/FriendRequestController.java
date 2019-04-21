@@ -9,9 +9,9 @@ import hu.roszpapad.konyvklub.services.FriendRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +25,28 @@ public class FriendRequestController {
     private final FriendRequestToBeDisplayedDTOConverter friendRequestToBeDisplayedDTOConverter;
 
     @PostMapping("/friendRequests/create")
-    public ResponseEntity<FriendRequestToBeDisplayedDTO> createRequest(@Valid @RequestBody FriendRequestToBeCreatedDTO requestDTO){
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
+    public ResponseEntity<FriendRequestToBeDisplayedDTO> createRequest(@RequestBody FriendRequestToBeCreatedDTO requestDTO){
         FriendRequest request = friendRequestService.createRequest(requestDTO);
         return ResponseEntity.ok(friendRequestToBeDisplayedDTOConverter.toDTO(request));
     }
 
     @GetMapping("/friendRequests/{requestId}/accept")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> acceptRequest(@PathVariable(name = "requestId") Long id){
         friendRequestService.acceptRequest(id);
         return ResponseEntity.ok("Barátkérelem elfogadva.");
     }
 
     @GetMapping("/friendRequests/{requestId}/reject")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> rejectRequest(@PathVariable(name = "requestId") Long id){
         friendRequestService.rejectRequest(id);
         return ResponseEntity.ok("Barátkérelem elutasitva.");
     }
 
     @GetMapping("/friendRequests/getByStarter")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<FriendRequestToBeDisplayedDTO>> getRequestsByStarter(@PathParam(value = "requestStarter") String requestStarter){
         List<FriendRequest> requests = friendRequestService.getRequestsByStarter(requestStarter);
         List<FriendRequestToBeDisplayedDTO> requestDTOs = new ArrayList<>();
@@ -51,6 +55,7 @@ public class FriendRequestController {
     }
 
     @GetMapping("/friendRequests/getByDestination")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<FriendRequestToBeDisplayedDTO>> getRequestsByDestination(@PathParam(value = "requestDestination") String requestDestination){
         List<FriendRequest> requests = friendRequestService.getRequestsByDestination(requestDestination);
         List<FriendRequestToBeDisplayedDTO> requestDTOs = new ArrayList<>();
@@ -59,6 +64,7 @@ public class FriendRequestController {
     }
 
     @GetMapping("/friendRequests/wasRequestedYet")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> wasRequestedYet(@PathParam(value = "requestStarter") String requestStarter,
                                                   @PathParam(value = "requestDestination") String requestDestination){
         return ResponseEntity.ok(friendRequestService.wasRequestedYet(requestStarter,requestDestination).toString());

@@ -12,6 +12,7 @@ import hu.roszpapad.konyvklub.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class OfferController {
     private final OfferToBeDisplayedDTOConverter offerToBeDisplayedDTOConverter;
 
     @GetMapping("/tickets/{ticketId}/offers/{offerId}")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> acceptOffer(@PathVariable("ticketId") Long ticketId, @PathVariable("offerId") Long offerId){
 
         offerService.acceptOffer(ticketService.findById(ticketId),offerService.findById(offerId));
@@ -36,6 +38,7 @@ public class OfferController {
 
 
     @PostMapping("/tickets/{ticketId}/offer")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<OfferToBeDisplayedDTO> createOffer(@Valid @RequestBody OfferToBeSavedDTO offerDTO){
 
         Offer offer = offerService.createOffer(offerDTO);
@@ -44,18 +47,21 @@ public class OfferController {
     }
 
     @GetMapping("/offers/{offerId}")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> rejectOffer(@PathVariable(name = "offerId") Long offerId){
         Offer offer = offerService.rejectOffer(offerService.findById(offerId));
         return ResponseEntity.ok("Offer elutasitva.");
     }
 
     @DeleteMapping("/offers/{offerId}/delete")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<String> deleteOffer(@PathVariable(name = "offerId") Long offerId){
         offerService.deleteOffer(offerId);
         return ResponseEntity.ok("Offer törölve");
     }
 
     @PutMapping("/offers/update")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<OfferToBeDisplayedDTO> updateOffer(@RequestBody OfferToBeUpdatedDTO offerDTO){
         Offer offer = offerService.updateOffer(offerDTO);
         return ResponseEntity.ok(offerToBeDisplayedDTOConverter.toDTO(offer));

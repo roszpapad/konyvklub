@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class ChatController {
     }
 
     @GetMapping("/users/{username}/friendlyChannels")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<ChatChannelToDisplayDTO>> getFriendlyChannels(@PathVariable(name = "username") String username){
 
         List<ChatChannel> channels = chatChannelService.findFriendlyByUsername(username);
@@ -55,6 +57,7 @@ public class ChatController {
     }
 
     @GetMapping("/users/{username}/businessChannels")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<ChatChannelToDisplayDTO>> getBusinessChannels(@PathVariable(name = "username") String username){
 
         List<ChatChannel> channels = chatChannelService.findBusinessByUsername(username);
@@ -67,11 +70,13 @@ public class ChatController {
     }
 
     @GetMapping("/users/channels/{channelId}")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<ChatChannelToDisplayDTO> getChannel(@PathVariable(name = "channelId") Long channelId){
         return ResponseEntity.ok(chatChannelToDisplayDTOConverter.toDTO(chatChannelService.findById(channelId)));
     }
 
     @GetMapping("/channels/{channelId}/messages")
+    @PreAuthorize("hasRole('KONYVKLUB_USER')")
     public ResponseEntity<List<ChatMessageToSendDTO>> getMessagesByChannel(@PathVariable(name = "channelId") Long channelId){
 
         List<ChatMessage> messages = chatMessageService.getMessagesByChannel(channelId);
