@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 public @interface UniqueUsername {
 
-    String message() default "Ezzel a felhasznalonevvel mar regisztraltak.";
+    String message() default "Ezzel a felhasználónévvel már regisztráltak.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

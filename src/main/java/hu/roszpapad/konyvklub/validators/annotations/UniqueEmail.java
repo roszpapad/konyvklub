@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueEmailValidator.class)
 public @interface UniqueEmail {
 
-    String message() default "Ezzel az email cimmel mar regisztraltak";
+    String message() default "Ezzel az e-mail címmel már regisztráltak";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

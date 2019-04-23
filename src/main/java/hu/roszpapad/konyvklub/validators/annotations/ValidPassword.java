@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ValidPasswordValidator.class)
 public @interface ValidPassword {
 
-    String message() default "A megadott jelszó helytelen";
+    String message() default "A megadott jelszó helytelen.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ValidEmailValidator.class)
 public @interface ValidEmail {
 
-    String message() default "Please enter a valid email address";
+    String message() default "Kérem adjon meg egy érvényes e-mail címet.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
