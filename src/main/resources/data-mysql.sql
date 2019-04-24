@@ -8,7 +8,7 @@ INSERT INTO konyvklub_schema.address (city, number, street) VALUES ('Szatmar', '
 
 INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name, password, username, address_id) VALUES (true, 'roszpapadavid@yahoo.com', true, 'VMI', 'VMI', '$2a$10$Rvh.Dl8.s.xJYzvP4w8JF.J3319IUb0/acl6DkXyVvgiup9Vy51j2', 'roszpapad', 1);
 INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name, password, username, address_id) VALUES (true, 'roszpapadavid1@yahoo.com', true, 'Dávid', 'Roszpapa', '$2a$10$Rvh.Dl8.s.xJYzvP4w8JF.J3319IUb0/acl6DkXyVvgiup9Vy51j2', 'roszpapad1', 2);
-INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name, password, username, address_id) VALUES (true, 'roszpapadavid2@yahoo.com', true, 'VMI', 'VMI', '$2a$10$Rvh.Dl8.s.xJYzvP4w8JF.J3319IUb0/acl6DkXyVvgiup9Vy51j2', 'fanniadmin', 3);
+INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name, password, username, address_id) VALUES (true, 'roszpapadavid2@yahoo.com', true, 'VMI', 'VMI', '$2a$10$Rvh.Dl8.s.xJYzvP4w8JF.J3319IUb0/acl6DkXyVvgiup9Vy51j2', 'admin', 3);
 INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name, password, username, address_id) VALUES (true, 'roszpapadavid3@yahoo.com', true, 'VMI', 'VMI', '$2a$10$Rvh.Dl8.s.xJYzvP4w8JF.J3319IUb0/acl6DkXyVvgiup9Vy51j2', 'roszpapad2', 4);
 
 INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (false, 'Könyvet olvasni jó', 'Gyűrűk ura', 'Béla Nagy', 2005, 1);
