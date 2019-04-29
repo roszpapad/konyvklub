@@ -5,7 +5,6 @@ import hu.roszpapad.konyvklub.model.Book;
 import hu.roszpapad.konyvklub.model.Ticket;
 import hu.roszpapad.konyvklub.model.User;
 import hu.roszpapad.konyvklub.repositories.BookRepository;
-import hu.roszpapad.konyvklub.repositories.OfferRepository;
 import hu.roszpapad.konyvklub.repositories.TicketRepository;
 import hu.roszpapad.konyvklub.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
     private final BookRepository bookRepository;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    private final OfferRepository offerRepository;
-
 
     @Override
     @Transactional
@@ -34,8 +31,6 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         Book book1 = bookRepository.findById(1L).get();
         Book book2 = bookRepository.findById(2L).get();
         Book book3 = bookRepository.findById(3L).get();
-        Book book4 = bookRepository.findById(4L).get();
-        Book book5 = bookRepository.findById(5L).get();
 
         User user1 = userRepository.findById(1L).get();
         User user2 = userRepository.findById(2L).get();
@@ -45,9 +40,8 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
 
         user1.getBooks().add(book1);
         user1.getBooks().add(book3);
-        user1.getBooks().add(book4);
         user2.getBooks().add(book2);
-        user2.getBooks().add(book5);
+
 
         ticket1.setBookToSell(book1);
         ticket1.setSeller(user1);
@@ -55,7 +49,7 @@ public class OverallBootstrap implements ApplicationListener<ContextRefreshedEve
         ticket2.setSeller(user1);
 
         userRepository.save(user1);
-        userRepository.save(user1);
+        userRepository.save(user2);
 
         ticketRepository.save(ticket1);
         ticketRepository.save(ticket2);

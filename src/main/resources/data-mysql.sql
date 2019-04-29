@@ -14,8 +14,6 @@ INSERT INTO konyvklub_schema.user (active, email, enabled, first_name, last_name
 INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (false, 'Könyvet olvasni jó', 'Gyűrűk ura', 'Béla Nagy', 2005, 1);
 INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (true, 'Nagy Zoltán kiadó', 'Sötet világ', 'Magyar Henrik', 2012, 2);
 INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (false, 'Spartacus', 'Harry Potter', 'J.K. Rowling', 2004, 1);
-INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (true, 'Spartan Publisher', 'Mary Poppins', 'Lee Stuart', 2002, 1);
-INSERT INTO konyvklub_schema.book (offerable, publisher, title, writer, year_of_publishing, owner_id) VALUES (true, 'Prometheus', 'Nine weeks after Christmas', 'Mark Johnson', 2000, 2);
 
 INSERT INTO konyvklub_schema.ticket (description, end_date, book_to_sell_id, seller_id) VALUES ('Egy romantikus könyvet szeretnék a 80-as évekből.', '2021-04-12', 1, 1);
 INSERT INTO konyvklub_schema.ticket (description, end_date, book_to_sell_id, seller_id) VALUES ('Egy romantikus könyvet szeretnék a 90-es évekből.', '2021-04-12', 3, 1);
